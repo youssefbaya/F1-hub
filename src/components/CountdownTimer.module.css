@@ -1,0 +1,38 @@
+.timer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+.value {
+  font-family: var(--head);
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  line-height: 1;
+  min-width: 2ch;
+  text-align: center;
+}
+.label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-top: 0.4rem;
+}
+.sep {
+  font-family: var(--head);
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 900;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  align-self: flex-start;
+  margin-top: 0.2rem;
+}
