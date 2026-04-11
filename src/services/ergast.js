@@ -1,4 +1,4 @@
-const BASE = 'https://ergast.com/api/f1'
+const BASE = 'https://api.jolpi.ca/ergast/f1'
 
 export async function getCurrentSeason() {
   const res = await fetch(`${BASE}/current.json`)
