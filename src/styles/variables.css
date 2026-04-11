@@ -1,0 +1,15 @@
+:root {
+  --bg:       #0a0a0f;
+  --surface:  #111118;
+  --surface2: #1a1a24;
+  --line:     rgba(255,255,255,0.06);
+  --accent:   #e10600;
+  --accent-s: #b30500;
+  --accent-g: rgba(225,6,0,0.12);
+  --white:    #f0f0f5;
+  --grey:     #6b6b88;
+  --grey2:    #3a3a52;
+  --mono:     'IBM Plex Mono', monospace;
+  --head:     'Raleway', sans-serif;
+  --body:     'DM Sans', sans-serif;
+}
