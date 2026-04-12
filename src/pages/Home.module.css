@@ -194,7 +194,6 @@
   position: fixed; inset: 0; z-index: 999;
   background: rgba(0,0,0,0.6);
   display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(8px);
   cursor: pointer;
 }
 
@@ -207,8 +206,6 @@
 
   /* glassmorphism */
   background: rgba(28,28,28,0.6);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(255,255,255,0.08);
 
   /* inner glow */
@@ -378,3 +375,16 @@
     margin: 0 auto;
   }
 }
+
+[data-theme="light"] .countdownNum { color: #18181B; }
+[data-theme="light"] .countdownSep { color: #E11D48; }
+[data-theme="light"] .raceName { color: #18181B; }
+[data-theme="light"] .raceSubtitle { color: #71717A; }
+[data-theme="light"] .sessionCard {
+  background: rgba(0,0,0,0.04);
+  border-color: rgba(0,0,0,0.08);
+}
+[data-theme="light"] .sessionCard:hover {
+  background: rgba(0,0,0,0.07);
+}
+[data-theme="light"] .scrollHint { color: #71717A; }

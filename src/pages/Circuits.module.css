@@ -1,5 +1,5 @@
 .main {
-  padding: 5.5rem 4rem 4rem;
+  padding: 8rem 4rem 4rem;
   margin: 0 auto;
   position: relative; z-index: 1;
 }
@@ -25,7 +25,7 @@
   color: var(--accent); text-transform: uppercase; margin-bottom: 0.5rem;
 }
 .title {
-  font-family: var(--head); font-size: clamp(3rem, 7vw, 6rem);
+  font-family: var(--head); font-size: clamp(2rem, 4vw, 6rem);
   font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em;
   line-height: 0.9; margin-bottom: 0.8rem;
 }
@@ -132,12 +132,10 @@
   position: fixed; inset: 0; z-index: 999;
   background: rgba(0,0,0,0.75);
   display: flex; align-items: center; justify-content: center;
-  backdrop-filter: blur(8px); cursor: pointer;
   padding: 2rem;
 }
 .modal {
   background: rgba(22,22,22,0.95);
-  backdrop-filter: blur(24px);
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 16px; overflow: hidden;
   max-width: 560px; width: 100%;

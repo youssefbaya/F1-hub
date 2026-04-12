@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import styles from './Circuits.module.css'
 
-const BASE = 'https://api.jolpi.ca/ergast/f1'
-
 const CIRCUIT_DETAILS = {
   'albert_park':      { laps: 58, length: 5.278, corners: 16, drs: 4, lapRecord: { time: '1:20.235', driver: 'Charles Leclerc', year: 2022 }, firstGP: 1996 },
   'bahrain':          { laps: 57, length: 5.412, corners: 15, drs: 3, lapRecord: { time: '1:31.447', driver: 'Pedro de la Rosa', year: 2005 }, firstGP: 2004 },
@@ -41,31 +39,46 @@ const CIRCUIT_DETAILS = {
   'le_mans':          { laps: 385, length: 13.626, corners: 38, drs: 0, lapRecord: { time: '3:14.791', driver: 'Kamui Kobayashi', year: 2017 }, firstGP: null, isGT: true },
 }
 
-const GT_CIRCUITS = [
-  {
-    circuitId: 'nurburgring_nordschleife',
-    circuitName: 'Nürburgring Nordschleife',
-    url: 'https://en.wikipedia.org/wiki/Nürburgring',
-    Location: { locality: 'Nürburg', country: 'Germany', lat: '50.3356', long: '6.9475' }
-  },
-  {
-    circuitId: 'nurburgring_gp',
-    circuitName: 'Nürburgring GP Circuit',
-    url: 'https://en.wikipedia.org/wiki/Nürburgring',
-    Location: { locality: 'Nürburg', country: 'Germany', lat: '50.3356', long: '6.9475' }
-  },
-  {
-    circuitId: 'le_mans',
-    circuitName: 'Circuit de la Sarthe',
-    url: 'https://en.wikipedia.org/wiki/Circuit_de_la_Sarthe',
-    Location: { locality: 'Le Mans', country: 'France', lat: '47.9497', long: '0.2311' }
-  },
+// hardcoded circuit list — no API calls needed!
+const ALL_CIRCUITS = [
+  { circuitId: 'albert_park',   circuitName: 'Albert Park Circuit',            url: 'https://en.wikipedia.org/wiki/Albert_Park_Circuit',          Location: { locality: 'Melbourne',     country: 'Australia' } },
+  { circuitId: 'bahrain',       circuitName: 'Bahrain International Circuit',   url: 'https://en.wikipedia.org/wiki/Bahrain_International_Circuit', Location: { locality: 'Sakhir',        country: 'Bahrain' } },
+  { circuitId: 'jeddah',        circuitName: 'Jeddah Corniche Circuit',         url: 'https://en.wikipedia.org/wiki/Jeddah_Street_Circuit',        Location: { locality: 'Jeddah',        country: 'Saudi Arabia' } },
+  { circuitId: 'shanghai',      circuitName: 'Shanghai International Circuit',  url: 'https://en.wikipedia.org/wiki/Shanghai_International_Circuit',Location: { locality: 'Shanghai',      country: 'China' } },
+  { circuitId: 'miami',         circuitName: 'Miami International Autodrome',   url: 'https://en.wikipedia.org/wiki/Miami_International_Autodrome', Location: { locality: 'Miami',         country: 'USA' } },
+  { circuitId: 'imola',         circuitName: 'Autodromo Enzo e Dino Ferrari',   url: 'https://en.wikipedia.org/wiki/Autodromo_Enzo_e_Dino_Ferrari', Location: { locality: 'Imola',         country: 'Italy' } },
+  { circuitId: 'monaco',        circuitName: 'Circuit de Monaco',               url: 'https://en.wikipedia.org/wiki/Circuit_de_Monaco',            Location: { locality: 'Monte-Carlo',   country: 'Monaco' } },
+  { circuitId: 'villeneuve',    circuitName: 'Circuit Gilles Villeneuve',        url: 'https://en.wikipedia.org/wiki/Circuit_Gilles_Villeneuve',    Location: { locality: 'Montreal',      country: 'Canada' } },
+  { circuitId: 'catalunya',     circuitName: 'Circuit de Barcelona-Catalunya',  url: 'https://en.wikipedia.org/wiki/Circuit_de_Barcelona-Catalunya',Location: { locality: 'Montmeló',      country: 'Spain' } },
+  { circuitId: 'red_bull_ring', circuitName: 'Red Bull Ring',                   url: 'https://en.wikipedia.org/wiki/Red_Bull_Ring',                Location: { locality: 'Spielberg',     country: 'Austria' } },
+  { circuitId: 'silverstone',   circuitName: 'Silverstone Circuit',             url: 'https://en.wikipedia.org/wiki/Silverstone_Circuit',          Location: { locality: 'Silverstone',   country: 'UK' } },
+  { circuitId: 'hungaroring',   circuitName: 'Hungaroring',                     url: 'https://en.wikipedia.org/wiki/Hungaroring',                  Location: { locality: 'Budapest',      country: 'Hungary' } },
+  { circuitId: 'spa',           circuitName: 'Circuit de Spa-Francorchamps',    url: 'https://en.wikipedia.org/wiki/Circuit_de_Spa-Francorchamps', Location: { locality: 'Spa',           country: 'Belgium' } },
+  { circuitId: 'zandvoort',     circuitName: 'Circuit Zandvoort',               url: 'https://en.wikipedia.org/wiki/Circuit_Zandvoort',            Location: { locality: 'Zandvoort',     country: 'Netherlands' } },
+  { circuitId: 'monza',         circuitName: 'Autodromo Nazionale di Monza',    url: 'https://en.wikipedia.org/wiki/Autodromo_Nazionale_Monza',    Location: { locality: 'Monza',         country: 'Italy' } },
+  { circuitId: 'baku',          circuitName: 'Baku City Circuit',               url: 'https://en.wikipedia.org/wiki/Baku_City_Circuit',            Location: { locality: 'Baku',          country: 'Azerbaijan' } },
+  { circuitId: 'marina_bay',    circuitName: 'Marina Bay Street Circuit',       url: 'https://en.wikipedia.org/wiki/Marina_Bay_Street_Circuit',    Location: { locality: 'Singapore',     country: 'Singapore' } },
+  { circuitId: 'suzuka',        circuitName: 'Suzuka International Racing Course', url: 'https://en.wikipedia.org/wiki/Suzuka_Circuit',            Location: { locality: 'Suzuka',        country: 'Japan' } },
+  { circuitId: 'losail',        circuitName: 'Lusail International Circuit',    url: 'https://en.wikipedia.org/wiki/Lusail_International_Circuit', Location: { locality: 'Lusail',        country: 'Qatar' } },
+  { circuitId: 'cota',          circuitName: 'Circuit of the Americas',         url: 'https://en.wikipedia.org/wiki/Circuit_of_the_Americas',      Location: { locality: 'Austin',        country: 'USA' } },
+  { circuitId: 'rodriguez',     circuitName: 'Autodromo Hermanos Rodriguez',    url: 'https://en.wikipedia.org/wiki/Autodromo_Hermanos_Rodriguez', Location: { locality: 'Mexico City',   country: 'Mexico' } },
+  { circuitId: 'interlagos',    circuitName: 'Autodromo José Carlos Pace',      url: 'https://en.wikipedia.org/wiki/Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace', Location: { locality: 'São Paulo', country: 'Brazil' } },
+  { circuitId: 'vegas',         circuitName: 'Las Vegas Strip Circuit',         url: 'https://en.wikipedia.org/wiki/Las_Vegas_Street_Circuit',     Location: { locality: 'Las Vegas',     country: 'USA' } },
+  { circuitId: 'yas_marina',    circuitName: 'Yas Marina Circuit',              url: 'https://en.wikipedia.org/wiki/Yas_Marina_Circuit',           Location: { locality: 'Abu Dhabi',     country: 'UAE' } },
+  { circuitId: 'portimao',      circuitName: 'Autodromo Internacional do Algarve', url: 'https://en.wikipedia.org/wiki/Algarve_International_Circuit', Location: { locality: 'Portimão', country: 'Portugal' } },
+  { circuitId: 'mugello',       circuitName: 'Autodromo Internazionale del Mugello', url: 'https://en.wikipedia.org/wiki/Mugello_Circuit',         Location: { locality: 'Mugello',       country: 'Italy' } },
+  { circuitId: 'istanbul',      circuitName: 'Istanbul Park',                   url: 'https://en.wikipedia.org/wiki/Istanbul_Park',               Location: { locality: 'Istanbul',      country: 'Turkey' } },
+  { circuitId: 'sochi',         circuitName: 'Sochi Autodrom',                  url: 'https://en.wikipedia.org/wiki/Sochi_Autodrom',              Location: { locality: 'Sochi',         country: 'Russia' } },
+  { circuitId: 'paul_ricard',   circuitName: 'Circuit Paul Ricard',             url: 'https://en.wikipedia.org/wiki/Circuit_Paul_Ricard',          Location: { locality: 'Le Castellet',  country: 'France' } },
+  { circuitId: 'nurburgring',   circuitName: 'Nürburgring',                     url: 'https://en.wikipedia.org/wiki/N%C3%BCrburgring',             Location: { locality: 'Nürburg',       country: 'Germany' } },
+  { circuitId: 'bahrain_outer', circuitName: 'Bahrain International Circuit (Outer)', url: 'https://en.wikipedia.org/wiki/Bahrain_International_Circuit', Location: { locality: 'Sakhir', country: 'Bahrain' } },
+  // GT / Endurance
+  { circuitId: 'nurburgring_nordschleife', circuitName: 'Nürburgring Nordschleife', url: 'https://en.wikipedia.org/wiki/N%C3%BCrburgring', Location: { locality: 'Nürburg', country: 'Germany' } },
+  { circuitId: 'nurburgring_gp',           circuitName: 'Nürburgring GP Circuit',   url: 'https://en.wikipedia.org/wiki/N%C3%BCrburgring', Location: { locality: 'Nürburg', country: 'Germany' } },
+  { circuitId: 'le_mans',                  circuitName: 'Circuit de la Sarthe',      url: 'https://en.wikipedia.org/wiki/Circuit_de_la_Sarthe', Location: { locality: 'Le Mans', country: 'France' } },
 ]
 
-function getImgSrc(id) {
-  return `/circuits/${id}.avif`
-}
-
+function getImgSrc(id) { return `/circuits/${id}.avif` }
 function handleImgError(e, id) {
   const jpg = `/circuits/${id}.jpg`
   if (!e.target.src.endsWith('.jpg')) {
@@ -77,33 +90,11 @@ function handleImgError(e, id) {
 }
 
 function Circuits() {
-  const [circuits, setCircuits] = useState([])
-  const [loading, setLoading] = useState(true)
   const [selected, setSelected] = useState(null)
   const [zoomed, setZoomed] = useState(false)
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('all')
 
-  useEffect(() => {
-    const years = Array.from({ length: 17 }, (_, i) => 2010 + i)
-    Promise.all(
-      years.map(year =>
-        fetch(`${BASE}/${year}/circuits.json?limit=30`)
-          .then(r => r.json())
-          .then(d => d.MRData?.CircuitTable?.Circuits || [])
-          .catch(() => [])
-      )
-    ).then(results => {
-      const all = results.flat()
-      const unique = Array.from(
-        new Map(all.map(c => [c.circuitId, c])).values()
-      ).sort((a, b) => a.circuitName.localeCompare(b.circuitName))
-      setCircuits([...unique, ...GT_CIRCUITS])
-      setLoading(false)
-    })
-  }, [])
-
-  // hide navbar when modal open
   useEffect(() => {
     const nav = document.querySelector('nav')
     if (selected) {
@@ -119,12 +110,9 @@ function Circuits() {
     }
   }, [selected])
 
-  const closeModal = () => {
-    setSelected(null)
-    setZoomed(false)
-  }
+  const closeModal = () => { setSelected(null); setZoomed(false) }
 
-  const filtered = circuits.filter(c => {
+  const filtered = ALL_CIRCUITS.filter(c => {
     const matchesSearch =
       c.circuitName.toLowerCase().includes(search.toLowerCase()) ||
       c.Location.country.toLowerCase().includes(search.toLowerCase()) ||
@@ -135,21 +123,8 @@ function Circuits() {
     return matchesSearch
   })
 
-  if (loading) return (
-    <div className={styles.loader}>
-      <motion.div
-        className={styles.loaderBar}
-        initial={{ width: 0 }}
-        animate={{ width: '60vw' }}
-        transition={{ duration: 1.2, ease: 'easeInOut' }}
-      />
-      <p className={styles.loaderText}>Loading circuits...</p>
-    </div>
-  )
-
   return (
     <main className={styles.main}>
-
       <motion.div
         className={styles.header}
         initial={{ opacity: 0, y: 30 }}
@@ -158,7 +133,7 @@ function Circuits() {
       >
         <p className={styles.eyebrow}>Formula 1 · 2010 — 2026</p>
         <h1 className={styles.title}>Race <em>Circuits</em></h1>
-        <p className={styles.subtitle}>{circuits.length} circuits across 17 seasons</p>
+        <p className={styles.subtitle}>{ALL_CIRCUITS.length} circuits across modern F1 history</p>
         <div className={styles.controls}>
           <div className={styles.searchWrap}>
             <span className={styles.searchIcon}>⌕</span>
@@ -260,7 +235,6 @@ function Circuits() {
             >
               <button className={styles.modalClose} onClick={closeModal}>✕</button>
 
-              {/* clickable image with zoom */}
               <div
                 className={`${styles.modalTrack} ${zoomed ? styles.modalTrackZoomed : ''}`}
                 onClick={() => setZoomed(z => !z)}
@@ -290,12 +264,12 @@ function Circuits() {
                     <>
                       <div className={styles.modalStats}>
                         {[
-                          { label: 'Race Laps', val: d.laps },
-                          { label: 'Length', val: `${d.length}km` },
-                          { label: 'Distance', val: `${(d.laps * d.length).toFixed(1)}km` },
-                          { label: 'Corners', val: d.corners },
-                          { label: 'DRS Zones', val: d.drs },
-                          { label: 'First GP', val: d.firstGP || 'N/A' },
+                          { label: 'Race Laps',  val: d.laps },
+                          { label: 'Length',     val: `${d.length}km` },
+                          { label: 'Distance',   val: `${(d.laps * d.length).toFixed(1)}km` },
+                          { label: 'Corners',    val: d.corners },
+                          { label: 'DRS Zones',  val: d.drs },
+                          { label: 'First GP',   val: d.firstGP || 'N/A' },
                         ].map(s => (
                           <div key={s.label} className={styles.modalStat}>
                             <span className={styles.modalStatVal}>{s.val}</span>
@@ -330,7 +304,6 @@ function Circuits() {
           </motion.div>
         )}
       </AnimatePresence>
-
     </main>
   )
 }

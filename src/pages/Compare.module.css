@@ -1,6 +1,6 @@
 .main {
-  padding: 5.5rem 4rem 4rem;
-  max-width: 1000px;
+  padding: 8rem 4rem 4rem;
+  max-width: 900px;
   margin: 0 auto;
   position: relative; z-index: 1;
 }
@@ -11,7 +11,7 @@
   color: var(--accent); text-transform: uppercase; margin-bottom: 0.5rem;
 }
 .title {
-  font-family: var(--head); font-size: clamp(2.5rem, 6vw, 5rem);
+  font-family: var(--head); font-size: clamp(2rem, 4vw, 6rem);
   font-weight: 900; text-transform: uppercase;
   letter-spacing: 0.02em; line-height: 0.9; color: var(--white);
 }
@@ -19,18 +19,15 @@
 /* selectors */
 .selectors {
   display: grid; grid-template-columns: 1fr auto 1fr;
-  align-items: center; gap: 1rem; margin-bottom: 2rem;
+  align-items: center; gap: 1rem; margin-bottom: 1.5rem;
 }
-.vsBlock {
-  display: flex; align-items: center; justify-content: center;
-  width: 60px;
-}
+.vsBlock { display: flex; align-items: center; justify-content: center; width: 60px; }
 .vs {
   font-family: var(--head); font-size: 1.5rem; font-weight: 900;
   color: var(--accent); letter-spacing: 0.1em;
 }
 
-/* selector button */
+/* selector */
 .selector { position: relative; }
 .selectorBtn {
   width: 100%; display: flex; align-items: center; gap: 12px;
@@ -66,7 +63,6 @@
 .selectorDropdown {
   position: absolute; top: calc(100% + 6px); left: 0; right: 0;
   background: rgba(14,14,14,0.98);
-  backdrop-filter: blur(20px);
   border: 1px solid rgba(255,255,255,0.08);
   border-top: 2px solid var(--accent);
   border-radius: 0 0 8px 8px;
@@ -101,34 +97,39 @@
 }
 .optTeam { font-family: var(--mono); font-size: 8px; letter-spacing: 0.08em; text-transform: uppercase; }
 
-/* driver cards */
-.driverCards {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: 1rem; margin-bottom: 2rem;
+/* year filter */
+.yearFilter {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1.2rem;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px;
 }
-.driverCard {
-  background: var(--surface); border: 1px solid;
-  border-radius: 8px; overflow: hidden; cursor: pointer;
+.yearFilterLabel {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--grey); margin-right: 0.5rem;
+}
+.yearGroup { display: flex; align-items: center; gap: 8px; }
+.yearLabel {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--grey);
+}
+.yearSelect {
+  background: var(--surface2); border: 1px solid var(--line);
+  color: var(--white); font-family: var(--mono); font-size: 12px;
+  padding: 5px 8px; border-radius: 4px; cursor: pointer;
+  outline: none; transition: border-color 0.2s;
+}
+.yearSelect:hover { border-color: var(--accent); }
+.resetBtn {
+  margin-left: auto;
+  background: none; border: 1px solid var(--line);
+  color: var(--grey); font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 5px 12px; border-radius: 4px; cursor: pointer;
   transition: all 0.2s;
 }
-.driverCard:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
-.driverCardTop {
-  height: 220px; position: relative; overflow: hidden;
-  background: var(--surface2); border-bottom: 2px solid;
-}
-.driverCardPhoto {
-  width: 100%; height: 100%; object-fit: cover;
-  object-position: center top;
-  transform: scale(1.15); transform-origin: center 15%;
-  transition: transform 0.3s ease;
-}
-.driverCard:hover .driverCardPhoto { transform: scale(1.22) translateY(-4px); }
-.driverCardBody { padding: 0.8rem 1rem; }
-.driverCardName {
-  font-family: var(--head); font-size: 1rem; font-weight: 900;
-  text-transform: uppercase; letter-spacing: 0.04em; color: var(--white);
-}
-.driverCardTeam { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+.resetBtn:hover { border-color: var(--accent); color: var(--accent); }
 
 /* stats */
 .statsSection {
@@ -141,8 +142,12 @@
   border-bottom: 1px solid var(--line);
   background: var(--surface2);
 }
-.statsHeader span:first-child { font-family: var(--head); font-size: 1.2rem; font-weight: 900; text-align: left; }
-.statsHeader span:last-child { font-family: var(--head); font-size: 1.2rem; font-weight: 900; text-align: right; }
+.statsHeader span:first-child {
+  font-family: var(--head); font-size: 1.2rem; font-weight: 900; text-align: left;
+}
+.statsHeader span:last-child {
+  font-family: var(--head); font-size: 1.2rem; font-weight: 900; text-align: right;
+}
 .statsHeaderLabel {
   font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
   text-transform: uppercase; color: var(--grey); text-align: center;
@@ -152,39 +157,44 @@
 
 /* stat row */
 .statRow {
-  display: grid; grid-template-columns: 1fr auto 1fr;
+  display: grid; grid-template-columns: 1fr 140px 1fr;
   align-items: center; gap: 1rem;
-  padding: 0.7rem 1.5rem;
+  padding: 0.6rem 1.5rem;
   border-bottom: 1px solid rgba(255,255,255,0.03);
 }
 .statRow:last-child { border-bottom: none; }
+
 .statLeft {
-  display: flex; align-items: center; gap: 8px; justify-content: flex-end;
-  flex-direction: row-reverse;
+  display: flex; align-items: center; gap: 8px;
+  justify-content: flex-end;
 }
-.statRight { display: flex; align-items: center; gap: 8px; }
+.statRight {
+  display: flex; align-items: center; gap: 8px;
+  justify-content: flex-start;
+}
 .statLabel {
   font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--grey); white-space: nowrap;
-  text-align: center; min-width: 100px;
+  text-transform: uppercase; color: var(--grey);
+  text-align: center;
 }
 .statVal {
   font-family: var(--head); font-size: 1.1rem; font-weight: 900;
-  min-width: 30px; text-align: center; transition: color 0.3s;
+  min-width: 36px; text-align: center; transition: color 0.3s;
+  flex-shrink: 0;
 }
 .statBarLeft {
-  height: 4px; border-radius: 2px; min-width: 4px; max-width: 200px;
-  border-radius: 0 2px 2px 0;
+  height: 4px; border-radius: 2px 0 0 2px;
+  min-width: 4px; max-width: 180px; flex-shrink: 0;
 }
 .statBarRight {
-  height: 4px; border-radius: 2px; min-width: 4px; max-width: 200px;
-  border-radius: 2px 0 0 2px;
+  height: 4px; border-radius: 0 2px 2px 0;
+  min-width: 4px; max-width: 180px; flex-shrink: 0;
 }
 
 /* loading */
 .loadingState {
   display: flex; flex-direction: column; align-items: center;
-  gap: 1rem; padding: 3rem;
+  gap: 1rem; padding: 4rem;
 }
 .loadingBar {
   height: 2px; background: var(--accent); border-radius: 2px;
@@ -196,9 +206,50 @@
 
 @media (max-width: 768px) {
   .main { padding: 5rem 1.5rem 3rem; }
-  .selectors { grid-template-columns: 1fr; }
+  .selectors { grid-template-columns: 1fr; gap: 0.5rem; }
   .vsBlock { display: none; }
-  .driverCards { grid-template-columns: 1fr; }
-  .statLabel { min-width: 80px; font-size: 8px; }
+  .yearFilter { flex-wrap: wrap; }
+  .statRow { grid-template-columns: 1fr 100px 1fr; gap: 0.5rem; padding: 0.6rem 1rem; }
+  .statLabel { font-size: 8px; }
   .statVal { font-size: 0.9rem; }
 }
+
+.viewToggle {
+  display: flex; gap: 8px; margin-bottom: 1rem;
+  justify-content: flex-end;
+}
+.viewBtn {
+  background: var(--surface); border: 1px solid var(--line);
+  color: var(--grey); font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 4px; cursor: pointer;
+  transition: all 0.2s;
+}
+.viewBtn:hover { border-color: var(--accent); color: var(--white); }
+.viewBtnActive {
+  background: var(--accent); border-color: var(--accent);
+  color: #fff !important;
+}
+.radarWrap {
+  padding: 1.5rem;
+  background: var(--surface);
+}
+
+.radarLegend {
+  display: flex; justify-content: center; gap: 2rem;
+  padding: 1rem; border-top: 1px solid var(--line);
+}
+.viewToggle {
+  display: flex; gap: 8px; padding: 0.8rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+}
+.viewBtn {
+  background: var(--surface2); border: 1px solid var(--line);
+  color: var(--grey); font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  padding: 6px 14px; border-radius: 4px; cursor: pointer;
+  transition: all 0.2s;
+}
+.viewBtn:hover { border-color: var(--accent); color: var(--white); }
+.viewBtnActive { background: var(--accent); border-color: var(--accent); color: #fff !important; }
+.radarWrap { padding: 1.5rem; }

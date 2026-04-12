@@ -108,21 +108,28 @@ const HARDCODED_DRIVERS = {
         }]
       }
     ],
-    bestRaceFinish: 8
+    bestRaceFinish: 8,
+    poles: 0, podiums: 0, fastestLaps: 0, racesTotal: 4, dnfs: 0,
   }
 }
 
 async function fetchDriverData(driverId) {
   if (HARDCODED_DRIVERS[driverId]) {
-  const { getDriverStandings } = await import('../services/ergast.js')
-  const currentStandings = await getDriverStandings()
-  return { 
-    driver: HARDCODED_DRIVERS[driverId].driver,
-    seasons: HARDCODED_DRIVERS[driverId].seasons,
-    bestRaceFinish: HARDCODED_DRIVERS[driverId].bestRaceFinish,
-    currentStandings 
+    const { getDriverStandings } = await import('../services/ergast.js')
+    const currentStandings = await getDriverStandings()
+    return {
+      driver: HARDCODED_DRIVERS[driverId].driver,
+      seasons: HARDCODED_DRIVERS[driverId].seasons,
+      bestRaceFinish: HARDCODED_DRIVERS[driverId].bestRaceFinish,
+      poles: HARDCODED_DRIVERS[driverId].poles,
+      podiums: HARDCODED_DRIVERS[driverId].podiums,
+      fastestLaps: HARDCODED_DRIVERS[driverId].fastestLaps,
+      racesTotal: HARDCODED_DRIVERS[driverId].racesTotal,
+      dnfs: HARDCODED_DRIVERS[driverId].dnfs,
+      currentStandings,
+    }
   }
-}
+
   const infoRes = await fetch(`${BASE}/drivers/${driverId}.json`).then(r => r.json())
   const driver = infoRes.MRData?.DriverTable?.Drivers?.[0]
   if (!driver) return { driver: null, seasons: [], currentStandings: [] }
@@ -130,29 +137,50 @@ async function fetchDriverData(driverId) {
   const ergastId = driver.driverId
   const debutYear = DEBUT_YEARS[ergastId] || DEBUT_YEARS[driverId] || 2015
   const currentYear = new Date().getFullYear()
-  const years = Array.from(
-    { length: currentYear - debutYear + 1 },
-    (_, i) => debutYear + i
-  )
+  const years = Array.from({ length: currentYear - debutYear + 1 }, (_, i) => debutYear + i)
 
-  const results = await Promise.all(
-    years.map(year =>
+  // fetch standings, results and qualifying in parallel year by year
+  const [standingsResults, resultsArr, qualiArr] = await Promise.all([
+    Promise.all(years.map(year =>
       fetch(`${BASE}/${year}/drivers/${ergastId}/driverStandings.json`)
-        .then(r => r.ok ? r.json() : null)
-        .catch(() => null)
-    )
-  )
+        .then(r => r.ok ? r.json() : null).catch(() => null)
+    )),
+    Promise.all(years.map(year =>
+      fetch(`${BASE}/${year}/drivers/${ergastId}/results.json?limit=30`)
+        .then(r => r.ok ? r.json() : null).catch(() => null)
+    )),
+    Promise.all(years.map(year =>
+      fetch(`${BASE}/${year}/drivers/${ergastId}/qualifying.json?limit=30`)
+        .then(r => r.ok ? r.json() : null).catch(() => null)
+    )),
+  ])
 
-  const seasons = results
+  const seasons = standingsResults
     .filter(Boolean)
     .map(d => d.MRData?.StandingsTable?.StandingsLists?.[0])
     .filter(Boolean)
 
+  const allRaces = resultsArr.filter(Boolean)
+    .flatMap(d => d.MRData?.RaceTable?.Races || [])
+
+  const allQuali = qualiArr.filter(Boolean)
+    .flatMap(d => d.MRData?.RaceTable?.Races || [])
+
+  const podiums = allRaces.filter(r => ['1','2','3'].includes(r.Results?.[0]?.position)).length
+  const fastestLaps = allRaces.filter(r => r.Results?.[0]?.FastestLap?.rank === '1').length
+  const dnfs = allRaces.filter(r => {
+    const status = r.Results?.[0]?.status || ''
+    return status !== 'Finished' && !status.includes('+') && !status.includes('Lap')
+  }).length
+  const racesTotal = allRaces.length
+  const poles = allQuali.filter(r => r.QualifyingResults?.[0]?.position === '1').length
+
   const { getDriverStandings } = await import('../services/ergast.js')
   const currentStandings = await getDriverStandings()
 
-  return { driver, seasons, currentStandings }
+  return { driver, seasons, currentStandings, podiums, poles, fastestLaps, racesTotal, dnfs }
 }
+
 function DriverProfile() {
   const { driverId } = useParams()
   const navigate = useNavigate()
@@ -189,20 +217,20 @@ function DriverProfile() {
 
   const { driver, seasons, currentStandings } = data
   const currentDriver = currentStandings.find(d => d.Driver.driverId === driverId)
-const hardcoded = data.seasons?.[0]?.DriverStandings?.[0]
-const currentTeam = currentDriver?.Constructors?.[0]?.name || hardcoded?.Constructors?.[0]?.name || 'N/A'
-const currentPoints = currentDriver?.points || hardcoded?.points || '0'
-const currentPosition = currentDriver?.position || hardcoded?.position || 'N/A'
+  const hardcoded = data.seasons?.[0]?.DriverStandings?.[0]
+  const currentTeam = currentDriver?.Constructors?.[0]?.name || hardcoded?.Constructors?.[0]?.name || 'N/A'
+  const currentPoints = currentDriver?.points || hardcoded?.points || '0'
+  const currentPosition = currentDriver?.position || hardcoded?.position || 'N/A'
   const totalWins = seasons.reduce((sum, s) => sum + parseInt(s.DriverStandings?.[0]?.wins || 0), 0)
   const currentYear = new Date().getFullYear()
   const championships = seasons.filter(s =>
-  s.DriverStandings?.[0]?.position === '1' && parseInt(s.season) < currentYear
-).length
+    s.DriverStandings?.[0]?.position === '1' && parseInt(s.season) < currentYear
+  ).length
   const totalSeasons = seasons.length
   const bestFinish = data.bestRaceFinish || seasons.reduce((best, s) => {
-  const pos = parseInt(s.DriverStandings?.[0]?.position || 99)
-  return pos < best ? pos : best
-}, 99)
+    const pos = parseInt(s.DriverStandings?.[0]?.position || 99)
+    return pos < best ? pos : best
+  }, 99)
   const age = driver.dateOfBirth
     ? Math.floor((new Date() - new Date(driver.dateOfBirth)) / (365.25 * 24 * 60 * 60 * 1000))
     : null
@@ -211,11 +239,15 @@ const currentPosition = currentDriver?.position || hardcoded?.position || 'N/A'
 
   const stats = [
     { label: 'Championships', value: championships, highlight: championships > 0 },
-    { label: 'Career Wins', value: totalWins },
-    { label: 'Seasons', value: totalSeasons },
-    { label: 'Best Finish', value: `P${bestFinish}` },
+    { label: 'Career Wins',   value: totalWins },
+    { label: 'Podiums',       value: data.podiums ?? '—' },
+    { label: 'Pole Positions',value: data.poles ?? '—' },
+    { label: 'Fastest Laps',  value: data.fastestLaps ?? '—' },
+    { label: 'Total Races',   value: data.racesTotal ?? '—' },
+    { label: 'Seasons',       value: totalSeasons },
+    { label: 'Best Finish',   value: `P${bestFinish}` },
     { label: '2026 Position', value: `P${currentPosition}` },
-    { label: '2026 Points', value: currentPoints },
+    { label: '2026 Points',   value: currentPoints },
   ]
 
   return (
@@ -297,14 +329,8 @@ const currentPosition = currentDriver?.position || hardcoded?.position || 'N/A'
               src={`/drivers/${DRIVER_IMAGES[driverId] || driverId}.avif`}
               alt={`${driver.givenName} ${driver.familyName}`}
               className={styles.driverPhotoImg}
-              onError={e => {
-                e.target.style.display = 'none'
-                e.target.nextSibling.style.display = 'flex'
-              }}
+              onError={e => { e.target.style.display = 'none' }}
             />
-            <div className={styles.driverPhotoFallback} style={{ display: 'none', borderColor: teamColor }}>
-              <span style={{ color: teamColor }}>{driver.code}</span>
-            </div>
           </div>
           <div className={styles.bigNumber} style={{ color: teamColor }}>
             {driver.permanentNumber}
@@ -324,7 +350,7 @@ const currentPosition = currentDriver?.position || hardcoded?.position || 'N/A'
             className={`${styles.statCard} ${s.highlight ? styles.statHighlight : ''}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 + i * 0.07 }}
+            transition={{ delay: 0.3 + i * 0.05 }}
             whileHover={{ y: -4, scale: 1.02 }}
             style={s.highlight ? { borderColor: `${teamColor}50`, background: `${teamColor}10` } : {}}
           >
@@ -365,12 +391,16 @@ const currentPosition = currentDriver?.position || hardcoded?.position || 'N/A'
           <div className={styles.infoCard}>
             <h3 className={styles.infoTitle}>Driver Info</h3>
             {[
-              { label: 'Full name', val: `${driver.givenName} ${driver.familyName}` },
-              { label: 'Nationality', val: driverInfo?.nationality || driver.nationality },
-              { label: 'Date of birth', val: driver.dateOfBirth ? new Date(driver.dateOfBirth).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'N/A' },
+              { label: 'Full name',        val: `${driver.givenName} ${driver.familyName}` },
+              { label: 'Nationality',      val: driverInfo?.nationality || driver.nationality },
+              { label: 'Date of birth',    val: driver.dateOfBirth ? new Date(driver.dateOfBirth).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'N/A' },
               { label: 'Permanent number', val: `#${driver.permanentNumber}` },
-              { label: 'Current team', val: currentTeam },
-              { label: '2026 position', val: `P${currentPosition}` },
+              { label: 'Current team',     val: currentTeam },
+              { label: '2026 position',    val: `P${currentPosition}` },
+              { label: 'Total races',      val: data.racesTotal ?? '—' },
+              { label: 'Pole positions',   val: data.poles ?? '—' },
+              { label: 'Fastest laps',     val: data.fastestLaps ?? '—' },
+              { label: 'Podiums',          val: data.podiums ?? '—' },
             ].map(r => (
               <div key={r.label} className={styles.infoRow}>
                 <span className={styles.infoLabel}>{r.label}</span>
@@ -408,6 +438,15 @@ const currentPosition = currentDriver?.position || hardcoded?.position || 'N/A'
                   <p className={styles.highlightSub}>Across {totalSeasons} seasons</p>
                 </div>
               </div>
+              {data.podiums > 0 && (
+                <div className={styles.highlight}>
+                  <span className={styles.highlightIcon}>🥇</span>
+                  <div>
+                    <p className={styles.highlightVal}>{data.podiums} Podiums</p>
+                    <p className={styles.highlightSub}>{data.poles} pole positions</p>
+                  </div>
+                </div>
+              )}
               <div className={styles.highlight}>
                 <span className={styles.highlightIcon}>📅</span>
                 <div>

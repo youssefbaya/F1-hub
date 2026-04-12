@@ -47,10 +47,10 @@ const DRIVER_IMAGES = {
 }
 
 const ALL_DRIVERS = [
-  { id: 'norris',         name: 'Lando Norris',      code: 'NOR', number: 1,  team: 'McLaren' },
-  { id: 'piastri',        name: 'Oscar Piastri',      code: 'PIA', number: 81, team: 'McLaren' },
   { id: 'max_verstappen', name: 'Max Verstappen',     code: 'VER', number: 3,  team: 'Red Bull' },
   { id: 'hadjar',         name: 'Isack Hadjar',       code: 'HAD', number: 6,  team: 'Red Bull' },
+  { id: 'norris',         name: 'Lando Norris',      code: 'NOR', number: 1,  team: 'McLaren' },
+  { id: 'piastri',        name: 'Oscar Piastri',      code: 'PIA', number: 81, team: 'McLaren' },
   { id: 'leclerc',        name: 'Charles Leclerc',    code: 'LEC', number: 16, team: 'Ferrari' },
   { id: 'hamilton',       name: 'Lewis Hamilton',     code: 'HAM', number: 44, team: 'Ferrari' },
   { id: 'russell',        name: 'George Russell',     code: 'RUS', number: 63, team: 'Mercedes' },
@@ -119,6 +119,7 @@ const NAV_LINKS = [
   { path: '/calendar', label: 'Calendar', num: '04', dropdown: null },
   { path: '/circuits', label: 'Circuits', num: '05', dropdown: 'circuits' },
   { path: '/teams',    label: 'Teams',    num: '06', dropdown: 'teams' },
+  { path: '/max', label: 'Max', num: '07', dropdown: null },
 ]
 
 function DriverCard({ driver }) {
@@ -170,7 +171,7 @@ function TeamCard({ team }) {
   )
 }
 
-function Navbar({ toggleTheme, theme }) {
+function Navbar({ toggleTheme, theme, onSearchOpen }) {
   const location = useLocation()
   const [scrolled, setScrolled] = useState(false)
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -402,6 +403,9 @@ function Navbar({ toggleTheme, theme }) {
 
         {/* right side */}
         <div className={styles.navRight}>
+          <button className={styles.searchBtn} onClick={onSearchOpen} title="Search (/)">
+  ⌕
+</button>
           <button
             className={styles.themeToggle}
             onClick={toggleTheme}

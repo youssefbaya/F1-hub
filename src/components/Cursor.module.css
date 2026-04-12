@@ -75,3 +75,10 @@
   transform: scale(1.4);
   transform-origin: center 15%;
 }
+
+.dot {
+  will-change: transform;
+}
+.ring {
+  will-change: transform;
+}

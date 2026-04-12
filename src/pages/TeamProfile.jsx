@@ -330,10 +330,10 @@ function TeamProfile() {
             >
               <div className={styles.driverCardTop} style={{ borderColor: team.color }}>
                 <img
-                  src={`/drivers/${driver.img}.avif`}
+                  src={`/drivers/hq/${driver.img}.png`}
+                  onError={e => { e.target.src = `/drivers/${driver.img}.avif` }}
                   alt={driver.name}
                   className={styles.driverPhoto}
-                  onError={e => { e.target.style.display = 'none' }}
                 />
                 <div className={styles.driverNumber} style={{ color: team.color }}>
                   {driver.number}

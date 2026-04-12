@@ -2,6 +2,31 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { getCurrentSeason } from '../services/ergast'
 import styles from './Calendar.module.css'
+import { useNavigate } from 'react-router-dom'
+
+const COUNTRY_FLAGS = {
+  'Australia':      'au', 'China':          'cn', 'Japan':          'jp',
+  'Bahrain':        'bh', 'Saudi Arabia':   'sa', 'USA':            'us',
+  'United States':  'us', 'Italy':          'it', 'Monaco':         'mc',
+  'Canada':         'ca', 'Spain':          'es', 'Austria':        'at',
+  'UK':             'gb', 'Great Britain':  'gb', 'Hungary':        'hu',
+  'Belgium':        'be', 'Netherlands':    'nl', 'Singapore':      'sg',
+  'Qatar':          'qa', 'Mexico':         'mx', 'Brazil':         'br',
+  'UAE':            'ae', 'Abu Dhabi':      'ae', 'Azerbaijan':     'az',
+  'Las Vegas':      'us', 'Miami':          'us',
+}
+
+function formatLocalTime(date, time) {
+  if (!date || !time) return { date: '--', time: '--:--', tz: '' }
+  const utcStr = `${date}T${time}`
+  const dt = new Date(utcStr)
+  const localDate = dt.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })
+  const localTime = dt.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
+  const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
+  const offset = -dt.getTimezoneOffset() / 60
+  const tzLabel = `UTC${offset >= 0 ? '+' : ''}${offset}`
+  return { date: localDate, time: localTime, tz: tzLabel }
+}
 
 function Calendar() {
   const [races, setRaces] = useState([])
@@ -14,6 +39,9 @@ function Calendar() {
       try {
         const data = await getCurrentSeason()
         setRaces(data)
+        // auto expand next race
+        const next = data.find(r => new Date(r.date) >= today)
+        if (next) setExpandedRace(next.round)
       } catch(e) {
         console.error(e)
       } finally {
@@ -34,6 +62,8 @@ function Calendar() {
   const completedRaces = races.filter(r => getRaceStatus(r) === 'completed')
   const progress = races.length > 0 ? (completedRaces.length / races.length) * 100 : 0
 
+  const navigate = useNavigate()
+
   const toggleRace = (round) => {
     setExpandedRace(expandedRace === round ? null : round)
   }
@@ -50,6 +80,12 @@ function Calendar() {
     </div>
   )
 
+  // get user timezone label once
+  const userTz = (() => {
+    const offset = -new Date().getTimezoneOffset() / 60
+    return `UTC${offset >= 0 ? '+' : ''}${offset}`
+  })()
+
   return (
     <main className={styles.main}>
 
@@ -60,7 +96,7 @@ function Calendar() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <p className={styles.eyebrow}>Formula 1 · 2025</p>
+        <p className={styles.eyebrow}>Formula 1 · 2026</p>
         <h1 className={styles.title}>Race <em>Calendar</em></h1>
         <div className={styles.seasonProgress}>
           <div className={styles.progressInfo}>
@@ -79,12 +115,28 @@ function Calendar() {
         </div>
       </motion.div>
 
+      {/* timezone notice */}
+      <div className={styles.tzNotice}>
+        <span className={styles.tzIcon}>🕐</span>
+        <span>All times shown in your local timezone — <strong>{userTz}</strong></span>
+      </div>
+
       {/* race list */}
       <div className={styles.raceList}>
         {races.map((race, i) => {
           const status = getRaceStatus(race)
           const isExpanded = expandedRace === race.round
           const raceDate = new Date(race.date)
+          const flagCode = COUNTRY_FLAGS[race.Circuit.Location.country] || 'un'
+
+          const sessions = [
+            race.FirstPractice  && { name: 'FP1',        ...formatLocalTime(race.FirstPractice.date,  race.FirstPractice.time),  isRace: false },
+            race.SecondPractice && { name: race.Sprint ? 'Sprint Quali' : 'FP2', ...formatLocalTime(race.SecondPractice.date, race.SecondPractice.time), isRace: false },
+            race.ThirdPractice  && { name: 'FP3',        ...formatLocalTime(race.ThirdPractice.date,  race.ThirdPractice.time),  isRace: false },
+            race.Sprint         && { name: 'Sprint',     ...formatLocalTime(race.Sprint.date,         race.Sprint.time),         isRace: false },
+            race.Qualifying     && { name: 'Qualifying', ...formatLocalTime(race.Qualifying.date,     race.Qualifying.time),     isRace: false },
+            { name: 'Race', ...formatLocalTime(race.date, race.time), isRace: true },
+          ].filter(Boolean)
 
           return (
             <motion.div
@@ -93,7 +145,13 @@ function Calendar() {
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.04, duration: 0.5 }}
-              onClick={() => toggleRace(race.round)}
+              onClick={() => {
+  if (status === 'completed') {
+    navigate(`/race/${race.season}/${race.round}`)
+  } else {
+    toggleRace(race.round)
+  }
+}}
             >
               <div className={styles.raceMain}>
                 <div className={styles.raceLeft}>
@@ -105,8 +163,15 @@ function Calendar() {
                 </div>
 
                 <div className={styles.raceCenter}>
-                  <span className={styles.raceCountry}>{race.Circuit.Location.country}</span>
-                  <span className={styles.raceLocality}>{race.Circuit.Location.locality}</span>
+                  <img
+                    src={`https://flagcdn.com/24x18/${flagCode}.png`}
+                    alt={race.Circuit.Location.country}
+                    className={styles.raceFlag}
+                  />
+                  <div>
+                    <span className={styles.raceCountry}>{race.Circuit.Location.country}</span>
+                    <span className={styles.raceLocality}>{race.Circuit.Location.locality}</span>
+                  </div>
                 </div>
 
                 <div className={styles.raceRight}>
@@ -118,10 +183,16 @@ function Calendar() {
                   </span>
                 </div>
 
-                <span className={`${styles.expandIcon} ${isExpanded ? styles.expandIconOpen : ''}`}>▾</span>
+                <span
+  className={`${styles.expandIcon} ${isExpanded ? styles.expandIconOpen : ''}`}
+  onClick={e => {
+    e.stopPropagation()
+    toggleRace(race.round)
+  }}
+>▾</span>
               </div>
 
-              {/* expanded session schedule */}
+              {/* expanded sessions */}
               <motion.div
                 className={styles.sessions}
                 initial={false}
@@ -130,46 +201,16 @@ function Calendar() {
                 style={{ overflow: 'hidden' }}
               >
                 <div className={styles.sessionsInner}>
-                  {race.FirstPractice && (
-                    <div className={styles.session}>
-                      <span className={styles.sessionName}>FP1</span>
-                      <span className={styles.sessionDate}>{new Date(race.FirstPractice.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
-                      <span className={styles.sessionTime}>{race.FirstPractice.time?.slice(0, 5) || '--:--'}</span>
+                  {sessions.map(s => (
+                    <div key={s.name} className={`${styles.session} ${s.isRace ? styles.sessionRace : ''}`}>
+                      <span className={styles.sessionName}>{s.name}</span>
+                      <span className={styles.sessionDate}>{s.date}</span>
+                      <div className={styles.sessionTimeWrap}>
+                        <span className={styles.sessionTime}>{s.time}</span>
+                        <span className={styles.sessionTz}>{s.tz}</span>
+                      </div>
                     </div>
-                  )}
-                  {race.SecondPractice && (
-                    <div className={styles.session}>
-                      <span className={styles.sessionName}>FP2</span>
-                      <span className={styles.sessionDate}>{new Date(race.SecondPractice.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
-                      <span className={styles.sessionTime}>{race.SecondPractice.time?.slice(0, 5) || '--:--'}</span>
-                    </div>
-                  )}
-                  {race.ThirdPractice && (
-                    <div className={styles.session}>
-                      <span className={styles.sessionName}>FP3</span>
-                      <span className={styles.sessionDate}>{new Date(race.ThirdPractice.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
-                      <span className={styles.sessionTime}>{race.ThirdPractice.time?.slice(0, 5) || '--:--'}</span>
-                    </div>
-                  )}
-                  {race.Sprint && (
-                    <div className={styles.session}>
-                      <span className={styles.sessionName}>Sprint</span>
-                      <span className={styles.sessionDate}>{new Date(race.Sprint.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
-                      <span className={styles.sessionTime}>{race.Sprint.time?.slice(0, 5) || '--:--'}</span>
-                    </div>
-                  )}
-                  {race.Qualifying && (
-                    <div className={styles.session}>
-                      <span className={styles.sessionName}>Qualifying</span>
-                      <span className={styles.sessionDate}>{new Date(race.Qualifying.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
-                      <span className={styles.sessionTime}>{race.Qualifying.time?.slice(0, 5) || '--:--'}</span>
-                    </div>
-                  )}
-                  <div className={`${styles.session} ${styles.sessionRace}`}>
-                    <span className={styles.sessionName}>Race</span>
-                    <span className={styles.sessionDate}>{raceDate.toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' })}</span>
-                    <span className={styles.sessionTime}>{race.time?.slice(0, 5) || '--:--'}</span>
-                  </div>
+                  ))}
                 </div>
               </motion.div>
             </motion.div>

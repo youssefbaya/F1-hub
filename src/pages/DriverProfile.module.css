@@ -107,8 +107,6 @@
   display: flex; align-items: center; justify-content: center;
   border-radius: 50%;
   background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.15);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
   z-index: 2;
@@ -116,8 +114,10 @@
 }
 /* stat grid */
 .statsGrid {
-  display: grid; grid-template-columns: repeat(6, 1fr);
-  gap: 8px; margin-bottom: 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-bottom: 2rem;
 }
 .statCard {
   background: var(--surface); border: 1px solid var(--line);
@@ -238,7 +238,6 @@
   font-family: var(--head); font-size: 1.2rem; font-weight: 900;
   line-height: 1; 
   background: rgba(0,0,0,0.45);
-  backdrop-filter: blur(8px);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 6px;
   padding: 4px 8px;
