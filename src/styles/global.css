@@ -44,3 +44,12 @@ html {
   flex-shrink: 0; border-radius: 2px;
   object-fit: cover;
 }
+
+[data-theme="light"] body::before {
+  opacity: 0.02;
+}
+[data-theme="light"] body::after {
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(168,50,40,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 100% 100%, rgba(168,50,40,0.03) 0%, transparent 50%);
+}

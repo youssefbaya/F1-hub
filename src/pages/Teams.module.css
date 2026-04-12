@@ -1,0 +1,190 @@
+.main {
+  padding: 5.5rem 3rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.header { margin-bottom: 2.5rem; }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.title {
+  font-family: var(--head);
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 0.9;
+  color: var(--white);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.card {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--team);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.card:hover {
+  border-color: var(--team);
+  box-shadow: 0 0 0 1px var(--team), 0 12px 40px rgba(0,0,0,0.5), 0 0 40px color-mix(in srgb, var(--team) 20%, transparent);
+  background: var(--surface2);
+}
+
+/* top glow from team colour */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 120px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--team) 15%, transparent) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.3s ease;
+}
+.card:hover::before {
+  background: linear-gradient(180deg, color-mix(in srgb, var(--team) 25%, transparent) 0%, transparent 100%);
+}
+
+.top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.2rem 1.2rem 0.4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.name {
+  font-family: var(--head);
+  font-size: 1.3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  margin-bottom: 0.6rem;
+}
+
+.drivers {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.driver {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+.driver:hover { opacity: 0.75; }
+
+.driverCircle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--surface2);
+  flex-shrink: 0;
+  border: 1.5px solid var(--team);
+}
+
+.driverPhoto {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  transform: scale(1.6);
+  transform-origin: center 15%;
+}
+
+.driverName {
+  font-family: var(--body);
+  font-size: 11px;
+  color: var(--grey);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.driverName strong {
+  font-weight: 700;
+  color: var(--white);
+  text-transform: uppercase;
+}
+
+.logo {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  background: var(--team-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.logoImg {
+  max-width: 65%;
+  max-height: 65%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+}
+
+.car {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+  min-height: 100px;
+  margin-top: -10px;
+}
+
+.carImg {
+  width: 85%;
+  max-height: 105px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+  transition: transform 0.4s ease;
+}
+
+.card:hover .carImg {
+  transform: scale(1.04) translateX(-8px);
+}
+
+@media (max-width: 900px) {
+  .main { padding: 5rem 1.5rem 3rem; }
+  .grid { grid-template-columns: 1fr; }
+}

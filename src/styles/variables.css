@@ -18,3 +18,17 @@
   --head:     'Raleway', sans-serif;
   --body:     'DM Sans', sans-serif;
 }
+
+[data-theme="light"] {
+  --bg:        #f5f0e8;
+  --surface:   #ede8dc;
+  --surface2:  #e5dfd1;
+  --line:      rgba(0,0,0,0.08);
+  --accent:    #a83228;
+  --accent-s:  #8b2820;
+  --accent-g:  rgba(168,50,40,0.1);
+  --accent-g2: rgba(168,50,40,0.05);
+  --white:     #1a1a1a;
+  --grey:      #6b6560;
+  --grey2:     #b5afa6;
+}

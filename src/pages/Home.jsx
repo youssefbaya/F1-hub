@@ -42,15 +42,21 @@ function Home() {
   }, [])
 
   useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
-    const handleScroll = () => {
-      const index = Math.round(container.scrollTop / window.innerHeight)
-      setActiveSection(index)
+  const container = containerRef.current
+  if (!container) return
+  const handleScroll = () => {
+    const index = Math.round(container.scrollTop / window.innerHeight)
+    setActiveSection(index)
+    // tell navbar about scroll
+    if (container.scrollTop > 20) {
+      document.body.classList.add('scrolled')
+    } else {
+      document.body.classList.remove('scrolled')
     }
-    container.addEventListener('scroll', handleScroll, { passive: true })
-    return () => container.removeEventListener('scroll', handleScroll)
-  }, [loading])
+  }
+  container.addEventListener('scroll', handleScroll, { passive: true })
+  return () => container.removeEventListener('scroll', handleScroll)
+}, [loading])
 
   const scrollToSection = (i) => {
     const container = containerRef.current

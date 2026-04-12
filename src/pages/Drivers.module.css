@@ -1,0 +1,87 @@
+.main {
+  padding: 5.5rem 4rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative; z-index: 1;
+}
+
+.header { margin-bottom: 2.5rem; }
+.eyebrow {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
+  color: var(--accent); text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.title {
+  font-family: var(--head); font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em;
+  line-height: 0.9;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; overflow: hidden; cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  border-color: var(--team-color);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.cardTop {
+  height: 180px; position: relative; overflow: hidden;
+  background: var(--surface2);
+  border-bottom: 2px solid transparent;
+  display: flex; align-items: center; justify-content: center;
+}
+.cardPhoto {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center top;
+  transform: scale(1.2);
+  transform-origin: center 20%;
+}
+.cardFallback {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono); font-size: 2rem; font-weight: 700;
+}
+.cardNumber {
+  position: absolute; bottom: 8px; right: 10px;
+  font-family: var(--head); font-size: 1.4rem; font-weight: 900;
+  line-height: 1; text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+
+.cardBody { padding: 0.8rem 1rem; }
+.cardName {
+  font-family: var(--head); font-size: 0.9rem; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--white); margin-bottom: 3px;
+}
+.cardTeam {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .main { padding: 5rem 1.5rem 3rem; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+}
+
+.cardNumber {
+  position: absolute; bottom: 10px; right: 10px;
+  font-family: var(--head); font-size: 1.1rem; font-weight: 900;
+  line-height: 1;
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+  z-index: 2;
+}

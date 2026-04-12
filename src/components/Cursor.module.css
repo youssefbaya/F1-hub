@@ -10,7 +10,6 @@
   background: var(--accent);
   pointer-events: none;
   z-index: 99999;
-  transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
   box-shadow: 0 0 6px rgba(225,6,0,0.6);
   will-change: transform;
 }
@@ -31,9 +30,6 @@
   border: 1.5px solid rgba(225,6,0,0.5);
   pointer-events: none;
   z-index: 99998;
-  transition: width 0.25s ease, height 0.25s ease,
-              border-color 0.25s ease, border-width 0.25s ease,
-              opacity 0.25s ease;
   will-change: transform;
 }
 .ringHover {
@@ -55,5 +51,27 @@
   pointer-events: none;
   z-index: 99997;
   will-change: transform, opacity;
-  transition: opacity 0.1s ease;
+}
+
+.maxCursor {
+  position: fixed; top: 0; left: 0;
+  width: 40px; height: 40px;
+  border-radius: 50%; overflow: hidden;
+  pointer-events: none; z-index: 99999;
+  will-change: transform;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+.maxCursor img {
+  display: block;
+  border: none !important;
+  outline: none !important;
+}
+.maxImg {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 10%;
+  transform: scale(1.4);
+  transform-origin: center 15%;
 }

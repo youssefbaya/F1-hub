@@ -9,22 +9,40 @@ export default function Cursor() {
   const ring = useRef({ x: -100, y: -100 })
   const trail = useRef(Array(6).fill({ x: -100, y: -100 }))
   const rafRef = useRef(null)
+  const typedRef = useRef('')
+  const maxModeRef = useRef(false)
   const [hovering, setHovering] = useState(false)
   const [clicking, setClicking] = useState(false)
+  const [maxMode, setMaxMode] = useState(false)
 
+  // max easter egg
+  useEffect(() => {
+    const handleKey = (e) => {
+      typedRef.current += e.key.toLowerCase()
+      if (typedRef.current.includes('max')) {
+        setMaxMode(true)
+        maxModeRef.current = true
+        typedRef.current = ''
+        setTimeout(() => {
+          setMaxMode(false)
+          maxModeRef.current = false
+        }, 10000)
+      }
+      if (typedRef.current.length > 10) {
+        typedRef.current = typedRef.current.slice(-10)
+      }
+    }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [])
+
+  // cursor animation
   useEffect(() => {
     const onMove = (e) => {
       mouse.current = { x: e.clientX, y: e.clientY }
     }
-
     const onDown = () => setClicking(true)
     const onUp = () => setClicking(false)
-    window.addEventListener('mousedown', onDown)
-    window.addEventListener('mouseup', onUp)
-
-    window.removeEventListener('mousedown', onDown)
-    window.removeEventListener('mouseup', onUp)
-
     const onEnter = (e) => {
       if (e.target.closest('a, button, [role="button"], input, [onClick]')) {
         setHovering(true)
@@ -44,30 +62,19 @@ export default function Cursor() {
 
     const animate = () => {
       const { x, y } = mouse.current
+      const isMax = maxModeRef.current
 
-      // dot follows instantly
       if (dotRef.current) {
-        dotRef.current.style.transform = `translate(${x - 4}px, ${y - 4}px)`
+        const offset = isMax ? 20 : 4
+        dotRef.current.style.transform = `translate(${x - offset}px, ${y - offset}px)`
+        dotRef.current.style.opacity = isMax ? '1' : '1'
       }
 
-      // ring follows with lerp delay
       ring.current.x += (x - ring.current.x) * 0.12
       ring.current.y += (y - ring.current.y) * 0.12
       if (ringRef.current) {
         ringRef.current.style.transform = `translate(${ring.current.x - 18}px, ${ring.current.y - 18}px)`
       }
-
-      // trail follows ring with staggered delay
-      trail.current = [
-        { x, y },
-        ...trail.current.slice(0, 5)
-      ]
-      trailRefs.current.forEach((el, i) => {
-        if (!el) return
-        const t = trail.current[i] || { x: -100, y: -100 }
-        el.style.transform = `translate(${t.x - 3}px, ${t.y - 3}px)`
-        el.style.opacity = `${(0.18 - i * 0.03)}`
-      })
 
       rafRef.current = requestAnimationFrame(animate)
     }
@@ -86,26 +93,23 @@ export default function Cursor() {
 
   return (
     <>
-      {/* trail dots */}
-      {Array(6).fill(0).map((_, i) => (
+      {!maxMode && (
         <div
-          key={i}
-          ref={el => trailRefs.current[i] = el}
-          className={styles.trail}
+          ref={ringRef}
+          className={`${styles.ring} ${hovering ? styles.ringHover : ''} ${clicking ? styles.ringClick : ''}`}
         />
-      ))}
+      )}
 
-      {/* outer ring */}
-      <div
-        ref={ringRef}
-        className={`${styles.ring} ${hovering ? styles.ringHover : ''} ${clicking ? styles.ringClick : ''}`}
-      />
-
-      {/* center dot */}
-      <div
-        ref={dotRef}
-        className={`${styles.dot} ${hovering ? styles.dotHover : ''} ${clicking ? styles.dotClick : ''}`}
-      />
+      {maxMode ? (
+        <div ref={dotRef} className={styles.maxCursor}>
+          <img src="/max.png" alt="Max" className={styles.maxImg} />
+        </div>
+      ) : (
+        <div
+          ref={dotRef}
+          className={`${styles.dot} ${hovering ? styles.dotHover : ''} ${clicking ? styles.dotClick : ''}`}
+        />
+      )}
     </>
   )
 }
