@@ -19,6 +19,11 @@ export default function Cursor() {
 
     const onDown = () => setClicking(true)
     const onUp = () => setClicking(false)
+    window.addEventListener('mousedown', onDown)
+    window.addEventListener('mouseup', onUp)
+
+    window.removeEventListener('mousedown', onDown)
+    window.removeEventListener('mouseup', onUp)
 
     const onEnter = (e) => {
       if (e.target.closest('a, button, [role="button"], input, [onClick]')) {

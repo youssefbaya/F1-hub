@@ -14,33 +14,32 @@ const TEAM_COLORS = {
   'Haas F1 Team':   '#B6BABD',
   'RB F1 Team':     '#6692FF',
   'Williams':       '#64C4FF',
-  'Sauber':         '#52E252',
   'Cadillac':       '#333333',
 }
 
 const ALL_DRIVERS = [
-  { id: 'max_verstappen',        name: 'Max Verstappen',    code: 'VER', number: 3,  team: 'Red Bull' },
-  { id: 'isack_hadjar',          name: 'Isack Hadjar',      code: 'HAD', number: 6,  team: 'Red Bull' },
-  { id: 'lando_norris',          name: 'Lando Norris',      code: 'NOR', number: 1,  team: 'McLaren' },
-  { id: 'oscar_piastri',         name: 'Oscar Piastri',     code: 'PIA', number: 81, team: 'McLaren' },
-  { id: 'charles_leclerc',       name: 'Charles Leclerc',   code: 'LEC', number: 16, team: 'Ferrari' },
-  { id: 'lewis_hamilton',        name: 'Lewis Hamilton',    code: 'HAM', number: 44, team: 'Ferrari' },
-  { id: 'george_russell',        name: 'George Russell',    code: 'RUS', number: 63, team: 'Mercedes' },
-  { id: 'andrea_kimi_antonelli', name: 'Kimi Antonelli',    code: 'ANT', number: 12, team: 'Mercedes' },
-  { id: 'fernando_alonso',       name: 'Fernando Alonso',   code: 'ALO', number: 14, team: 'Aston Martin' },
-  { id: 'lance_stroll',          name: 'Lance Stroll',      code: 'STR', number: 18, team: 'Aston Martin' },
-  { id: 'pierre_gasly',          name: 'Pierre Gasly',      code: 'GAS', number: 10, team: 'Alpine' },
-  { id: 'franco_colapinto',      name: 'Franco Colapinto',  code: 'COL', number: 43, team: 'Alpine' },
-  { id: 'esteban_ocon',          name: 'Esteban Ocon',      code: 'OCO', number: 31, team: 'Haas F1 Team' },
-  { id: 'oliver_bearman',        name: 'Oliver Bearman',    code: 'BEA', number: 87, team: 'Haas F1 Team' },
-  { id: 'liam_lawson',           name: 'Liam Lawson',       code: 'LAW', number: 30, team: 'Racing Bulls' },
-  { id: 'arvid_lindblad',        name: 'Arvid Lindblad',    code: 'LIN', number: 41, team: 'Racing Bulls' },
-  { id: 'alexander_albon',       name: 'Alexander Albon',   code: 'ALB', number: 23, team: 'Williams' },
-  { id: 'carlos_sainz',          name: 'Carlos Sainz',      code: 'SAI', number: 55, team: 'Williams' },
-  { id: 'nico_hulkenberg',       name: 'Nico Hülkenberg',   code: 'HUL', number: 27, team: 'Audi' },
-  { id: 'gabriel_bortoleto',     name: 'Gabriel Bortoleto', code: 'BOR', number: 5,  team: 'Audi' },
-  { id: 'valtteri_bottas',       name: 'Valtteri Bottas',   code: 'BOT', number: 77, team: 'Cadillac' },
-  { id: 'sergio_perez',          name: 'Sergio Perez',      code: 'PER', number: 11, team: 'Cadillac' },
+  { id: 'max_verstappen', name: 'Max Verstappen',    code: 'VER', number: 3,  team: 'Red Bull' },
+  { id: 'hadjar',       name: 'Isack Hadjar',        code: 'HAD', number: 6,  team: 'Red Bull' },
+  { id: 'norris',       name: 'Lando Norris',       code: 'NOR', number: 1,  team: 'McLaren' },
+  { id: 'piastri',      name: 'Oscar Piastri',       code: 'PIA', number: 81, team: 'McLaren' },
+  { id: 'leclerc',      name: 'Charles Leclerc',     code: 'LEC', number: 16, team: 'Ferrari' },
+  { id: 'hamilton',     name: 'Lewis Hamilton',      code: 'HAM', number: 44, team: 'Ferrari' },
+  { id: 'russell',      name: 'George Russell',      code: 'RUS', number: 63, team: 'Mercedes' },
+  { id: 'antonelli',    name: 'Kimi Antonelli',      code: 'ANT', number: 12, team: 'Mercedes' },
+  { id: 'alonso',       name: 'Fernando Alonso',     code: 'ALO', number: 14, team: 'Aston Martin' },
+  { id: 'stroll',       name: 'Lance Stroll',        code: 'STR', number: 18, team: 'Aston Martin' },
+  { id: 'gasly',        name: 'Pierre Gasly',        code: 'GAS', number: 10, team: 'Alpine' },
+  { id: 'colapinto',    name: 'Franco Colapinto',    code: 'COL', number: 43, team: 'Alpine' },
+  { id: 'ocon',         name: 'Esteban Ocon',        code: 'OCO', number: 31, team: 'Haas F1 Team' },
+  { id: 'bearman',      name: 'Oliver Bearman',      code: 'BEA', number: 87, team: 'Haas F1 Team' },
+  { id: 'lawson',       name: 'Liam Lawson',         code: 'LAW', number: 30, team: 'Racing Bulls' },
+  { id: 'lindblad',     name: 'Arvid Lindblad',      code: 'LIN', number: 41, team: 'Racing Bulls' },
+  { id: 'albon',        name: 'Alexander Albon',     code: 'ALB', number: 23, team: 'Williams' },
+  { id: 'sainz',        name: 'Carlos Sainz',        code: 'SAI', number: 55, team: 'Williams' },
+  { id: 'hulkenberg',   name: 'Nico Hülkenberg',     code: 'HUL', number: 27, team: 'Audi' },
+  { id: 'bortoleto',    name: 'Gabriel Bortoleto',   code: 'BOR', number: 5,  team: 'Audi' },
+  { id: 'bottas',       name: 'Valtteri Bottas',     code: 'BOT', number: 77, team: 'Cadillac' },
+  { id: 'perez',        name: 'Sergio Perez',        code: 'PER', number: 11, team: 'Cadillac' },
 ]
 
 const ALL_TEAMS = [
@@ -137,10 +136,10 @@ function Navbar() {
   const location = useLocation()
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [hoveredLink, setHoveredLink] = useState(null)
   const [glitchLogo, setGlitchLogo] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(null)
   const closeTimer = useRef(null)
+ const [liveSession, setLiveSession] = useState(null)
 
   const NAV_LINKS = [
     { path: '/', label: 'Home', dropdown: null },
@@ -160,6 +159,30 @@ function Navbar() {
     setOpenDropdown(null)
     setMenuOpen(false)
   }, [location.pathname])
+
+  useEffect(() => {
+  async function checkLive() {
+  try {
+    const res = await fetch('https://api.openf1.org/v1/sessions?session_key=latest')
+    if (!res.ok) return
+    const data = await res.json()
+    if (!data.length) return
+    const session = data[0]
+    const now = new Date()
+    const start = new Date(session.date_start)
+    const end = new Date(session.date_end)
+
+    if (now >= start && now <= end && session.meeting_name) {
+       setLiveSession(session)
+    } else {
+       setLiveSession(null)
+    }
+  } catch(e) {}
+}
+  checkLive()
+  const interval = setInterval(checkLive, 300000)
+  return () => clearInterval(interval)
+}, [])
 
   const handleLogoHover = () => {
     setGlitchLogo(true)
@@ -191,7 +214,7 @@ function Navbar() {
     closeTimer.current = setTimeout(() => {
       setOpenDropdown(null)
       setHoveredLink(null)
-    }, 150)
+    }, 300)
   }
 
   const handleDropdownEnter = () => clearTimeout(closeTimer.current)
@@ -199,8 +222,31 @@ function Navbar() {
     closeTimer.current = setTimeout(() => {
       setOpenDropdown(null)
       setHoveredLink(null)
-    }, 150)
+    }, 300)
   }
+
+useEffect(() => {
+  async function checkLive() {
+    try {
+      const res = await fetch('https://api.openf1.org/v1/sessions?session_key=latest')
+      if (!res.ok) return
+      const data = await res.json()
+      if (!data.length) return
+      const session = data[0]
+      const now = new Date()
+      const start = new Date(session.date_start)
+      const end = new Date(session.date_end)
+      if (now >= start && now <= end) {
+        setLiveSession(session)
+      } else {
+        setLiveSession(null)
+      }
+    } catch(e) {}
+  }
+  checkLive()
+  const interval = setInterval(checkLive, 60000) // check every minute
+  return () => clearInterval(interval)
+}, [])
 
   const renderDropdown = (type) => {
     if (type === 'drivers') return (
@@ -294,12 +340,6 @@ function Navbar() {
                   className={`${styles.link} ${isActive ? styles.active : ''}`}
                 >
                   <span className={styles.linkInner}>
-                    {hoveredLink === (l.dropdown || l.path) && (
-                      <>
-                        <span className={styles.linkGlitch1}>{l.label}</span>
-                        <span className={styles.linkGlitch2}>{l.label}</span>
-                      </>
-                    )}
                     {l.label}
                     {l.dropdown && (
                       <span className={`${styles.chevron} ${openDropdown === l.dropdown ? styles.chevronOpen : ''}`}>›</span>
@@ -336,12 +376,17 @@ function Navbar() {
 
         <div className={styles.navRight}>
           <div className={styles.liveWrap}>
-            <div className={styles.liveIndicator}>
-              <span className={styles.liveDot} />
-              <span className={styles.liveText}>Live</span>
-            </div>
-            <div className={styles.liveTooltip}>No session currently live</div>
+             <div className={`${styles.liveIndicator} ${liveSession ? styles.liveIndicatorActive : ''}`} onClick={() => console.log('liveSession:', liveSession)}>
+            <span className={`${styles.liveDot} ${liveSession ? styles.liveDotActive : ''}`} />
+            <span className={styles.liveText}>{liveSession ? 'Live' : 'Offline'}</span>
           </div>
+          <div className={styles.liveTooltip}>
+         {liveSession
+         ? `🔴 ${liveSession.session_name} — ${liveSession.meeting_name}`
+         : 'No session currently live'
+         }
+         </div>
+         </div>
           <button
             className={styles.hamburger}
             onClick={() => setMenuOpen(!menuOpen)}
@@ -388,5 +433,6 @@ function Navbar() {
       </AnimatePresence>
     </>
   )
+  
 }
 export default Navbar

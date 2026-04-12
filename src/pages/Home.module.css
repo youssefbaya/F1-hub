@@ -2,17 +2,15 @@
 .container {
   height: 100vh;
   overflow-y: scroll;
-  scroll-snap-type: y mandatory;
   scroll-behavior: smooth;
 }
 
 .fullSection {
-  height: 100vh;
-  scroll-snap-align: start;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 6rem 4rem 4rem;
+  padding: 5rem 4rem 2rem;
   position: relative;
   overflow: hidden;
 }
@@ -358,4 +356,10 @@
   text-transform: uppercase; color: var(--grey2);
   text-align: center; margin-top: 1.5rem;
   position: relative; z-index: 1;
+}
+
+.raceFlagImg {
+  border-radius: 4px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  width: 64px; height: 48px; object-fit: cover;
 }

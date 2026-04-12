@@ -3,6 +3,7 @@ import CountdownTimer from '../components/CountdownTimer'
 import { getNextRace, getDriverStandings, getConstructorStandings, getLastRaceResults } from '../services/ergast'
 import styles from './Home.module.css'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 function Home() {
   const [nextRace, setNextRace] = useState(null)
@@ -142,7 +143,24 @@ function Home() {
       },
     ].filter(Boolean)
   }
-
+const getCountryCode = (country) => {
+  const codes = {
+    'USA': 'us', 'United States': 'us',
+    'UK': 'gb', 'Great Britain': 'gb',
+    'UAE': 'ae', 'Abu Dhabi': 'ae',
+    'Italy': 'it', 'Germany': 'de',
+    'France': 'fr', 'Spain': 'es',
+    'Japan': 'jp', 'Australia': 'au',
+    'Bahrain': 'bh', 'Saudi Arabia': 'sa',
+    'China': 'cn', 'Monaco': 'mc',
+    'Canada': 'ca', 'Austria': 'at',
+    'Hungary': 'hu', 'Belgium': 'be',
+    'Netherlands': 'nl', 'Singapore': 'sg',
+    'Mexico': 'mx', 'Brazil': 'br',
+    'Qatar': 'qa', 'Azerbaijan': 'az',
+  }
+  return codes[country] || 'un'
+}
   const sessions = buildSessions(nextRace)
 
   return (
@@ -166,13 +184,19 @@ function Home() {
           style={{ opacity: heroOpacity, y: heroY }}
         >
           <motion.div
-            className={styles.raceFlag}
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
+             className={styles.raceFlag}
+             initial={{ scale: 0.8, opacity: 0 }}
+             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 }}
-          >
-            🏁
-          </motion.div>
+        >
+       {nextRace?.Circuit?.Location?.country && (
+    <img
+      src={`https://flagcdn.com/64x48/${getCountryCode(nextRace.Circuit.Location.country)}.png`}
+      alt={nextRace.Circuit.Location.country}
+      className={styles.raceFlagImg}
+    />
+  )}
+</motion.div>
           <motion.p
             className={styles.eyebrow}
             initial={{ opacity: 0, y: 20 }}
@@ -354,7 +378,13 @@ function Home() {
                 whileHover={{ x: 6 }}
               >
                 <span className={styles.standingsPos}>{d.position}</span>
-                <span className={styles.standingsName}>{d.Driver.givenName} {d.Driver.familyName}</span>
+                <Link
+  to={`/drivers/${d.Driver.driverId}`}
+  className={styles.standingsName}
+  style={{ textDecoration: 'none', color: 'inherit' }}
+>
+  {d.Driver.givenName} {d.Driver.familyName}
+</Link>
                 <span className={styles.standingsTeam}>{d.Constructors[0].name}</span>
                 <div className={styles.standingsBarWrap}>
                   <motion.div

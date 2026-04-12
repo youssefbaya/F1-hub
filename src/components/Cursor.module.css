@@ -20,7 +20,7 @@
   box-shadow: 0 0 8px rgba(255,255,255,0.4);
 }
 .dotClick {
-  transform: scale(0.6) !important;
+  transform: scale(0.6);
   background: var(--white);
 }
 

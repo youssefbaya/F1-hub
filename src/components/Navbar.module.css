@@ -99,12 +99,12 @@
   display: flex; align-items: stretch;
 }
 .link {
-  font-family: var(--head);
+  font-family: var(--body);
   font-size: 0.85rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--grey); text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: rgba(255,255,255,0.75); text-decoration: none;
   display: flex; align-items: center;
   padding: 0 1.1rem;
   position: relative;
@@ -135,23 +135,6 @@
 }
 .chevronOpen { transform: rotate(-90deg); color: var(--accent); }
 
-/* glitch on hover */
-.linkGlitch1, .linkGlitch2 {
-  position: absolute; top: 0; left: 0;
-  pointer-events: none; white-space: nowrap;
-}
-.linkGlitch1 { color: #ff003c; animation: linkG1 0.25s steps(3) forwards; }
-.linkGlitch2 { color: #00eeff; animation: linkG2 0.25s steps(3) forwards; }
-@keyframes linkG1 {
-  0%   { transform: translate(-2px, 0); opacity: 0.7; }
-  50%  { transform: translate(2px, -1px); opacity: 0.5; }
-  100% { transform: translate(0,0); opacity: 0; }
-}
-@keyframes linkG2 {
-  0%   { transform: translate(2px, 1px); opacity: 0.7; }
-  50%  { transform: translate(-2px, 0); opacity: 0.5; }
-  100% { transform: translate(0,0); opacity: 0; }
-}
 
 .activeLine {
   position: absolute; bottom: 0; left: 0; right: 0;
@@ -215,10 +198,24 @@
   background: rgba(225,6,0,0.15);
   border-color: rgba(225,6,0,0.6);
 }
+.liveIndicator {
+  display: flex; align-items: center; gap: 6px;
+  padding: 5px 10px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 3px;
+  cursor: default; transition: all 0.2s;
+}
 .liveDot {
   width: 6px; height: 6px; border-radius: 50%;
-  background: var(--accent); box-shadow: 0 0 6px var(--accent);
-  animation: pulse 2s ease infinite;
+  background: var(--grey);
+  box-shadow: none;
+  animation: none;
+}
+.liveDotActive {
+  background: var(--accent) !important;
+  box-shadow: 0 0 6px var(--accent) !important;
+  animation: pulseFast 0.6s ease infinite !important;
 }
 .liveWrap:hover .liveDot { animation: pulseFast 0.6s ease infinite; }
 @keyframes pulse {
@@ -231,7 +228,12 @@
 }
 .liveText {
   font-family: var(--mono); font-size: 9px;
-  letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent);
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--grey);
+  transition: color 0.2s;
+}
+.liveIndicatorActive .liveText {
+  color: var(--accent);
 }
 .liveTooltip {
   position: absolute; top: calc(100% + 10px); left: 50%;
@@ -429,3 +431,4 @@
   font-family: var(--mono); font-size: 9px;
   letter-spacing: 0.08em; color: var(--grey); display: block;
 }
+

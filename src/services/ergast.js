@@ -1,43 +1,163 @@
 const BASE = 'https://api.jolpi.ca/ergast/f1'
+const OPENF1 = 'https://api.openf1.org/v1'
 
-export async function getCurrentSeason() {
-  const res = await fetch(`${BASE}/current.json`)
-  const data = await res.json()
-  return data.MRData.RaceTable.Races
+// fallback hardcoded standings in case API fails
+const FALLBACK_STANDINGS = [
+  { position: '1', points: '72', wins: '2', Driver: { driverId: 'antonelli', givenName: 'Kimi', familyName: 'Antonelli', permanentNumber: '12', code: 'ANT' }, Constructors: [{ name: 'Mercedes' }] },
+  { position: '2', points: '63', wins: '1', Driver: { driverId: 'russell', givenName: 'George', familyName: 'Russell', permanentNumber: '63', code: 'RUS' }, Constructors: [{ name: 'Mercedes' }] },
+  { position: '3', points: '49', wins: '0', Driver: { driverId: 'leclerc', givenName: 'Charles', familyName: 'Leclerc', permanentNumber: '16', code: 'LEC' }, Constructors: [{ name: 'Ferrari' }] },
+  { position: '4', points: '41', wins: '0', Driver: { driverId: 'hamilton', givenName: 'Lewis', familyName: 'Hamilton', permanentNumber: '44', code: 'HAM' }, Constructors: [{ name: 'Ferrari' }] },
+  { position: '5', points: '25', wins: '0', Driver: { driverId: 'norris', givenName: 'Lando', familyName: 'Norris', permanentNumber: '1', code: 'NOR' }, Constructors: [{ name: 'McLaren' }] },
+  { position: '6', points: '21', wins: '0', Driver: { driverId: 'piastri', givenName: 'Oscar', familyName: 'Piastri', permanentNumber: '81', code: 'PIA' }, Constructors: [{ name: 'McLaren' }] },
+  { position: '7', points: '17', wins: '0', Driver: { driverId: 'bearman', givenName: 'Oliver', familyName: 'Bearman', permanentNumber: '87', code: 'BEA' }, Constructors: [{ name: 'Haas F1 Team' }] },
+  { position: '8', points: '15', wins: '0', Driver: { driverId: 'gasly', givenName: 'Pierre', familyName: 'Gasly', permanentNumber: '10', code: 'GAS' }, Constructors: [{ name: 'Alpine F1 Team' }] },
+  { position: '9', points: '12', wins: '0', Driver: { driverId: 'max_verstappen', givenName: 'Max', familyName: 'Verstappen', permanentNumber: '3', code: 'VER' }, Constructors: [{ name: 'Red Bull' }] },
+  { position: '10', points: '10', wins: '0', Driver: { driverId: 'lawson', givenName: 'Liam', familyName: 'Lawson', permanentNumber: '30', code: 'LAW' }, Constructors: [{ name: 'Racing Bulls' }] },
+  { position: '11', points: '4', wins: '0', Driver: { driverId: 'lindblad', givenName: 'Arvid', familyName: 'Lindblad', permanentNumber: '41', code: 'LIN' }, Constructors: [{ name: 'Racing Bulls' }] },
+  { position: '12', points: '4', wins: '0', Driver: { driverId: 'hadjar', givenName: 'Isack', familyName: 'Hadjar', permanentNumber: '6', code: 'HAD' }, Constructors: [{ name: 'Red Bull' }] },
+  { position: '13', points: '2', wins: '0', Driver: { driverId: 'sainz', givenName: 'Carlos', familyName: 'Sainz', permanentNumber: '55', code: 'SAI' }, Constructors: [{ name: 'Williams' }] },
+  { position: '14', points: '2', wins: '0', Driver: { driverId: 'albon', givenName: 'Alexander', familyName: 'Albon', permanentNumber: '23', code: 'ALB' }, Constructors: [{ name: 'Williams' }] },
+  { position: '15', points: '0', wins: '0', Driver: { driverId: 'alonso', givenName: 'Fernando', familyName: 'Alonso', permanentNumber: '14', code: 'ALO' }, Constructors: [{ name: 'Aston Martin' }] },
+  { position: '16', points: '0', wins: '0', Driver: { driverId: 'stroll', givenName: 'Lance', familyName: 'Stroll', permanentNumber: '18', code: 'STR' }, Constructors: [{ name: 'Aston Martin' }] },
+  { position: '17', points: '0', wins: '0', Driver: { driverId: 'ocon', givenName: 'Esteban', familyName: 'Ocon', permanentNumber: '31', code: 'OCO' }, Constructors: [{ name: 'Haas F1 Team' }] },
+  { position: '18', points: '0', wins: '0', Driver: { driverId: 'colapinto', givenName: 'Franco', familyName: 'Colapinto', permanentNumber: '43', code: 'COL' }, Constructors: [{ name: 'Alpine F1 Team' }] },
+  { position: '19', points: '0', wins: '0', Driver: { driverId: 'hulkenberg', givenName: 'Nico', familyName: 'Hülkenberg', permanentNumber: '27', code: 'HUL' }, Constructors: [{ name: 'Audi' }] },
+  { position: '20', points: '0', wins: '0', Driver: { driverId: 'bortoleto', givenName: 'Gabriel', familyName: 'Bortoleto', permanentNumber: '5', code: 'BOR' }, Constructors: [{ name: 'Audi' }] },
+  { position: '21', points: '0', wins: '0', Driver: { driverId: 'bottas', givenName: 'Valtteri', familyName: 'Bottas', permanentNumber: '77', code: 'BOT' }, Constructors: [{ name: 'Cadillac' }] },
+  { position: '22', points: '0', wins: '0', Driver: { driverId: 'perez', givenName: 'Sergio', familyName: 'Perez', permanentNumber: '11', code: 'PER' }, Constructors: [{ name: 'Cadillac' }] },
+]
+
+// map openf1 team names to our standard names
+const TEAM_NAME_MAP = {
+  'Mercedes': 'Mercedes',
+  'Ferrari': 'Ferrari',
+  'Red Bull Racing': 'Red Bull',
+  'McLaren': 'McLaren',
+  'Aston Martin': 'Aston Martin',
+  'Alpine': 'Alpine F1 Team',
+  'Haas F1 Team': 'Haas F1 Team',
+  'RB': 'Racing Bulls',
+  'Williams': 'Williams',
+  'Audi': 'Audi',
+  'Cadillac': 'Cadillac',
 }
 
-export async function getNextRace() {
-  const res = await fetch(`${BASE}/current/next.json`)
-  const data = await res.json()
-  return data.MRData.RaceTable.Races[0]
+// map openf1 driver names to ergast driverIds
+const NAME_TO_ERGAST_ID = {
+  'Verstappen': 'max_verstappen',
+  'Hamilton': 'hamilton',
+  'Leclerc': 'leclerc',
+  'Norris': 'norris',
+  'Piastri': 'piastri',
+  'Russell': 'russell',
+  'Antonelli': 'antonelli',
+  'Alonso': 'alonso',
+  'Stroll': 'stroll',
+  'Gasly': 'gasly',
+  'Colapinto': 'colapinto',
+  'Ocon': 'ocon',
+  'Bearman': 'bearman',
+  'Lawson': 'lawson',
+  'Lindblad': 'lindblad',
+  'Albon': 'albon',
+  'Sainz': 'sainz',
+  'Hülkenberg': 'hulkenberg',
+  'Hulkenberg': 'hulkenberg',
+  'Bortoleto': 'bortoleto',
+  'Bottas': 'bottas',
+  'Pérez': 'perez',
+  'Perez': 'perez',
+  'Hadjar': 'hadjar',
 }
 
 export async function getDriverStandings() {
-  const res = await fetch(`${BASE}/current/driverStandings.json`)
-  const data = await res.json()
-  return data.MRData.StandingsTable.StandingsLists[0].DriverStandings
+  try {
+    // try jolpica first
+    const res = await fetch(`${BASE}/current/driverStandings.json`)
+    if (res.ok) {
+      const data = await res.json()
+      const standings = data.MRData?.StandingsTable?.StandingsLists?.[0]?.DriverStandings
+      if (standings && standings.length > 0) return standings
+    }
+  } catch(e) {}
+
+  try {
+    // try openf1 as fallback — get latest session drivers
+    const sessionRes = await fetch(`${OPENF1}/sessions?year=2026&session_name=Race&limit=1`)
+    if (!sessionRes.ok) throw new Error('no session')
+    const sessions = await sessionRes.json()
+    if (!sessions.length) throw new Error('no sessions')
+
+    const sessionKey = sessions[sessions.length - 1].session_key
+    const driversRes = await fetch(`${OPENF1}/drivers?session_key=${sessionKey}`)
+    if (!driversRes.ok) throw new Error('no drivers')
+    const drivers = await driversRes.json()
+
+    // convert openf1 format to ergast format
+    return drivers
+      .sort((a, b) => (a.driver_number || 99) - (b.driver_number || 99))
+      .map((d, i) => ({
+        position: String(i + 1),
+        points: '0',
+        wins: '0',
+        Driver: {
+          driverId: NAME_TO_ERGAST_ID[d.last_name] || d.last_name?.toLowerCase() || 'unknown',
+          givenName: d.first_name || '',
+          familyName: d.last_name || '',
+          permanentNumber: String(d.driver_number || ''),
+          code: d.name_acronym || '',
+        },
+        Constructors: [{ name: TEAM_NAME_MAP[d.team_name] || d.team_name || 'Unknown' }],
+      }))
+  } catch(e) {}
+
+  // final fallback — hardcoded
+  return FALLBACK_STANDINGS
 }
 
 export async function getConstructorStandings() {
-  const res = await fetch(`${BASE}/current/constructorStandings.json`)
-  const data = await res.json()
-  return data.MRData.StandingsTable.StandingsLists[0].ConstructorStandings
+  try {
+    const res = await fetch(`${BASE}/current/constructorStandings.json`)
+    if (res.ok) {
+      const data = await res.json()
+      const standings = data.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings
+      if (standings && standings.length > 0) return standings
+    }
+  } catch(e) {}
+  return []
+}
+
+export async function getNextRace() {
+  try {
+    const res = await fetch(`${BASE}/current/next.json`)
+    if (res.ok) {
+      const data = await res.json()
+      return data.MRData.RaceTable.Races[0]
+    }
+  } catch(e) {}
+  return null
 }
 
 export async function getLastRaceResults() {
-  const res = await fetch(`${BASE}/current/last/results.json`)
-  const data = await res.json()
-  return data.MRData.RaceTable.Races[0]
+  try {
+    const res = await fetch(`${BASE}/current/last/results.json`)
+    if (res.ok) {
+      const data = await res.json()
+      return data.MRData.RaceTable.Races[0]
+    }
+  } catch(e) {}
+  return null
 }
 
-export async function getDriverInfo(driverId) {
-  const res = await fetch(`${BASE}/drivers/${driverId}.json`)
-  const data = await res.json()
-  return data.MRData.DriverTable.Drivers[0]
+export async function getCurrentSeason() {
+  try {
+    const res = await fetch(`${BASE}/current/races.json?limit=30`)
+    if (res.ok) {
+      const data = await res.json()
+      return data.MRData.RaceTable.Races
+    }
+  } catch(e) {}
+  return []
 }
 
-export async function getDriverSeasons(driverId) {
-  const res = await fetch(`${BASE}/drivers/${driverId}/seasons.json`)
-  const data = await res.json()
-  return data.MRData.SeasonTable.Seasons
-}
+export { FALLBACK_STANDINGS as CURRENT_2026_STANDINGS }
