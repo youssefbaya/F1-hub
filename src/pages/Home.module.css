@@ -1,32 +1,25 @@
+/* container uses CSS scroll snap — no JS wheel hijacking */
 .container {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-}
-
-.sectionsWrap {
-  position: relative;
-  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
 }
 
 .fullSection {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  min-height: 100vh;
+  height: 100vh;
+  scroll-snap-align: start;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 6rem 4rem 4rem;
-  pointer-events: none;
-}
-.fullSection[style*="opacity: 1"],
-.fullSection:first-child {
-  pointer-events: auto;
+  position: relative;
+  overflow: hidden;
 }
 
 /* loader */
 .loader {
-  min-height: 100vh;
+  height: 100vh;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center; gap: 1.5rem;
 }
@@ -66,7 +59,7 @@
 }
 .heroContent {
   display: flex; flex-direction: column;
-  align-items: center; text-align: center; gap: 1.2rem;
+  align-items: center; text-align: center; gap: 0.8rem;
   position: relative; z-index: 1; max-width: 800px;
 }
 .raceFlag { font-size: 3rem; }
@@ -83,23 +76,59 @@
   color: var(--grey); text-transform: uppercase;
 }
 .sessions {
-  display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; margin-top: 0.5rem;
+  display: flex; gap: 0.6rem; flex-wrap: wrap;
+  justify-content: center; margin-top: 0.5rem;
 }
 .session {
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  padding: 0.6rem 1rem;
-  background: var(--surface); border: 1px solid var(--line); border-radius: 4px;
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
-  color: var(--grey); text-transform: uppercase; transition: all 0.2s;
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 0.7rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  min-width: 100px;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  cursor: default;
 }
-.session:hover { border-color: var(--accent); color: var(--white); }
-.session span:first-child { color: var(--white); font-size: 11px; font-weight: 500; }
-.raceSession { border-color: rgba(225,6,0,0.3); }
-.raceSession span:first-child { color: var(--accent); }
-.scrollHint {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
-  color: var(--grey); text-transform: uppercase; margin-top: 1rem;
+.session:hover {
+  transform: scale(1.08);
+  border-color: var(--grey2);
+  background: var(--surface2);
+  z-index: 10;
+  position: relative;
 }
+.sessionLabel {
+  font-size: 9px; letter-spacing: 0.15em;
+  color: var(--grey); font-weight: 500;
+}
+.sessionDate {
+  font-size: 11px; color: var(--grey);
+}
+.sessionTime {
+  font-size: 14px; color: var(--white);
+  font-weight: 500; letter-spacing: 0.05em;
+}
+.sessionTz {
+  font-size: 8px; color: var(--grey2); letter-spacing: 0.1em;
+}
+
+/* all session types same grey — only race is red */
+.practice {}
+.sprintQuali {}
+.sprint {}
+.quali {}
+
+.race {
+  border-color: rgba(225,6,0,0.3);
+  background: rgba(225,6,0,0.06);
+}
+.race .sessionLabel { color: var(--accent); }
+.race .sessionTime  { color: var(--accent); }
+.race:hover { border-color: var(--accent); }
+
+.pastSession { opacity: 0.35; }
+.pastSession:hover { opacity: 0.7; }
 
 /* sections */
 .sectionInner { width: 100%; max-width: 900px; }
@@ -129,17 +158,204 @@
 .podiumTeam { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--grey); text-transform: uppercase; margin-top: 0.2rem; }
 .podiumTime { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 0.5rem; }
 
-/* standings */
-.standingsTable { display: flex; flex-direction: column; gap: 2px; }
+/* standings — scrollable, won't conflict with page scroll */
+.standingsTable {
+  display: flex; flex-direction: column; gap: 2px;
+  max-height: 58vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 6px;
+  overscroll-behavior: contain;
+}
+.standingsTable::-webkit-scrollbar { width: 6px; }
+.standingsTable::-webkit-scrollbar-track { background: var(--surface2); border-radius: 4px; }
+.standingsTable::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+.standingsTable::-webkit-scrollbar-thumb:hover { background: var(--white); }
+
 .standingsRow {
   display: grid; grid-template-columns: 32px 1fr 1fr 120px 60px;
   align-items: center; gap: 1rem; padding: 0.8rem 1.2rem;
   background: var(--surface); border-radius: 4px;
   cursor: default; transition: background 0.2s;
 }
+.standingsRow:hover { background: var(--surface2); }
 .standingsPos { font-family: var(--mono); font-size: 12px; color: var(--accent); }
 .standingsName { font-size: 14px; font-weight: 500; color: var(--white); }
 .standingsTeam { font-family: var(--mono); font-size: 10px; color: var(--grey); }
 .standingsBarWrap { height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
 .standingsBar { height: 100%; background: var(--accent); border-radius: 2px; }
 .standingsPts { font-family: var(--mono); font-size: 12px; color: var(--white); text-align: right; }
+
+.sprintSession {
+  border-color: rgba(255,165,0,0.4);
+  background: rgba(255,165,0,0.06);
+}
+.sprintSession span:first-child { color: orange; }
+
+.modalOverlay {
+  position: fixed; inset: 0; z-index: 999;
+  background: rgba(0,0,0,0.6);
+  display: flex; align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.modalCard {
+  position: relative; cursor: default;
+  max-width: 460px; width: 90%;
+  border-radius: 16px;
+  padding: 2.5rem;
+  overflow: hidden;
+
+  /* glassmorphism */
+  background: rgba(28,28,28,0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  /* inner glow */
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.05),
+    0 20px 60px rgba(0,0,0,0.5),
+    inset 0 1px 0 rgba(255,255,255,0.1);
+
+  transition: box-shadow 0.2s;
+}
+
+/* gradient border overlay */
+.modalCard::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 16px;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(225,6,0,0.5) 0%,
+    rgba(255,255,255,0.1) 40%,
+    rgba(225,6,0,0.2) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* spotlight that follows cursor */
+.modalCard::after {
+  content: '';
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(225,6,0,0.08) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: left 0.1s ease, top 0.1s ease;
+  left: var(--mx, 50%);
+  top: var(--my, 50%);
+}
+
+/* race type border colours */
+.modalCard.race::before {
+  background: linear-gradient(
+    135deg,
+    rgba(225,6,0,0.7) 0%,
+    rgba(255,255,255,0.1) 50%,
+    rgba(225,6,0,0.3) 100%
+  );
+}
+.modalCard.sprint::before {
+  background: linear-gradient(
+    135deg,
+    rgba(255,165,0,0.7) 0%,
+    rgba(255,255,255,0.1) 50%,
+    rgba(255,165,0,0.3) 100%
+  );
+}
+.modalCard.quali::before {
+  background: linear-gradient(
+    135deg,
+    rgba(255,220,0,0.7) 0%,
+    rgba(255,255,255,0.1) 50%,
+    rgba(255,220,0,0.3) 100%
+  );
+}
+.modalCard.sprintQuali::before {
+  background: linear-gradient(
+    135deg,
+    rgba(255,165,0,0.7) 0%,
+    rgba(255,255,255,0.1) 50%,
+    rgba(255,165,0,0.3) 100%
+  );
+}
+
+.modalClose {
+  position: absolute; top: 1rem; right: 1rem;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  color: var(--grey); font-size: 0.85rem;
+  cursor: pointer; transition: all 0.2s;
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 2;
+}
+.modalClose:hover {
+  background: rgba(225,6,0,0.15);
+  border-color: rgba(225,6,0,0.4);
+  color: var(--white);
+}
+
+.modalEyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
+  position: relative; z-index: 1;
+}
+
+.modalTitle {
+  font-family: var(--head); font-size: 2.5rem;
+  font-weight: 900; text-transform: uppercase;
+  letter-spacing: 0.02em; margin-bottom: 2rem;
+  line-height: 1; position: relative; z-index: 1;
+  overflow: hidden;
+}
+
+/* shimmer on title */
+.modalTitle::after {
+  content: '';
+  position: absolute; top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,0.15),
+    transparent
+  );
+  animation: shimmer 0.8s ease forwards;
+}
+@keyframes shimmer {
+  from { left: -60%; }
+  to   { left: 150%; }
+}
+
+.modalDetails {
+  display: flex; flex-direction: column; gap: 0.8rem;
+  position: relative; z-index: 1;
+}
+.modalRow {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.modalRow:last-child { border-bottom: none; }
+.modalLabel {
+  font-family: var(--mono); font-size: 10px;
+  letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey);
+}
+.modalValue { font-size: 14px; font-weight: 500; color: var(--white); }
+.modalHint {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--grey2);
+  text-align: center; margin-top: 1.5rem;
+  position: relative; z-index: 1;
+}

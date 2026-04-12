@@ -1,0 +1,59 @@
+/* hide default cursor everywhere */
+*, *::before, *::after {
+  cursor: none !important;
+}
+
+.dot {
+  position: fixed; top: 0; left: 0;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 99999;
+  transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+  box-shadow: 0 0 6px rgba(225,6,0,0.6);
+  will-change: transform;
+}
+.dotHover {
+  width: 6px; height: 6px;
+  background: var(--white);
+  box-shadow: 0 0 8px rgba(255,255,255,0.4);
+}
+.dotClick {
+  transform: scale(0.6) !important;
+  background: var(--white);
+}
+
+.ring {
+  position: fixed; top: 0; left: 0;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(225,6,0,0.5);
+  pointer-events: none;
+  z-index: 99998;
+  transition: width 0.25s ease, height 0.25s ease,
+              border-color 0.25s ease, border-width 0.25s ease,
+              opacity 0.25s ease;
+  will-change: transform;
+}
+.ringHover {
+  width: 44px; height: 44px;
+  border-color: rgba(225,6,0,0.9);
+  border-width: 2px;
+}
+.ringClick {
+  width: 28px; height: 28px;
+  border-color: var(--white);
+  opacity: 0.8;
+}
+
+.trail {
+  position: fixed; top: 0; left: 0;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  pointer-events: none;
+  z-index: 99997;
+  will-change: transform, opacity;
+  transition: opacity 0.1s ease;
+}

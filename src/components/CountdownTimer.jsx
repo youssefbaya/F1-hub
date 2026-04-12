@@ -28,15 +28,17 @@ function CountdownTimer({ targetDate }) {
   ]
 
   return (
-    <div className={styles.timer}>
-      {units.map((u, i) => (
-        <div key={u.label} className={styles.unit}>
+  <div className={styles.timer}>
+    {units.map((u, i) => (
+      <div key={u.label} style={{ display: 'flex', alignItems: 'center' }}>
+        <div className={styles.unit}>
           <span className={styles.value}>{String(u.value).padStart(2, '0')}</span>
           <span className={styles.label}>{u.label}</span>
-          {i < units.length - 1 && <span className={styles.sep}>:</span>}
         </div>
-      ))}
-    </div>
-  )
+        {i < units.length - 1 && <span className={styles.sep}>:</span>}
+      </div>
+    ))}
+  </div>
+)
 }
 export default CountdownTimer

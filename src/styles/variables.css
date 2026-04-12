@@ -1,7 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&display=swap');
+
 :root {
-  --bg:       #0a0a0f;
-  --surface:  #111118;
-  --surface2: #1a1a24;
+  --mono: 'Share Tech Mono', monospace;
+  --head: 'Russo One', sans-serif;
+  --body: 'Barlow', sans-serif;
+  --bg:        #0f0f0f;
+  --surface:   #1c1c1c;
+  --surface2:  #242424;
   --line:     rgba(255,255,255,0.06);
   --accent:   #e10600;
   --accent-s: #b30500;
