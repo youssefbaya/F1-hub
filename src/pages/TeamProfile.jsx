@@ -27,7 +27,7 @@ const TEAM_DATA = {
     base: 'Milton Keynes, United Kingdom',
     founded: 2005,
     championships: 6,
-    color: '#1a1f5e', colorDark: '#0d1030',
+    color: '#303691ff', colorDark: '#181c47ff',
     constructorId: 'red_bull',
     bestFinish: 'P1 — 2023 Constructors',
     firstWin: '2009 Chinese Grand Prix',

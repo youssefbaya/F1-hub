@@ -9,6 +9,7 @@ import Circuits from './pages/Circuits'
 import DriverProfile from './pages/DriverProfile'
 import Cursor from './components/Cursor'
 import TeamProfile from './pages/TeamProfile'
+import Compare from './pages/Compare'
 
 function App() {
   const [theme, setTheme] = useState(() => {
@@ -34,6 +35,7 @@ function App() {
         <Route path="/teams" element={<Teams />} />
         <Route path="/circuits" element={<Circuits />} />
         <Route path="/teams/:teamId" element={<TeamProfile />} />
+        <Route path="/compare" element={<Compare />} />
       </Routes>
     </>
   )

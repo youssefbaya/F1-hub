@@ -115,9 +115,10 @@ const ALL_CIRCUITS = [
 const NAV_LINKS = [
   { path: '/',         label: 'Home',     num: '01', dropdown: null },
   { path: '/drivers',  label: 'Drivers',  num: '02', dropdown: 'drivers' },
-  { path: '/calendar', label: 'Calendar', num: '03', dropdown: null },
-  { path: '/circuits', label: 'Circuits', num: '04', dropdown: 'circuits' },
-  { path: '/teams',    label: 'Teams',    num: '05', dropdown: 'teams' },
+  { path: '/compare',  label: 'Compare',  num: '03', dropdown: null },
+  { path: '/calendar', label: 'Calendar', num: '04', dropdown: null },
+  { path: '/circuits', label: 'Circuits', num: '05', dropdown: 'circuits' },
+  { path: '/teams',    label: 'Teams',    num: '06', dropdown: 'teams' },
 ]
 
 function DriverCard({ driver }) {
