@@ -439,33 +439,39 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className={styles.mobileMenu}
-            initial={{ clipPath: 'inset(0 0 100% 0)' }}
-            animate={{ clipPath: 'inset(0 0 0% 0)' }}
-            exit={{ clipPath: 'inset(0 0 100% 0)' }}
-            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            <span className={styles.menuBgNum}>F1</span>
-            {NAV_LINKS.map((l, i) => (
-              <motion.div
-                key={l.path}
-                initial={{ opacity: 0, x: -40 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -40 }}
-                transition={{ delay: i * 0.08 + 0.1 }}
-              >
-                <Link
-                  to={l.path}
-                  className={`${styles.mobileLink} ${location.pathname === l.path ? styles.mobileLinkActive : ''}`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  <span className={styles.mobileLinkNum}>{l.num}</span>
-                  <span className={styles.mobileLinkLabel}>{l.label}</span>
-                  <span className={styles.mobileLinkArrow}>→</span>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
+  className={styles.mobileMenu}
+  initial={{ x: '100%' }}
+  animate={{ x: 0 }}
+  exit={{ x: '100%' }}
+  transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+>
+  <div className={styles.mobileMenuTop}>
+    <span className={styles.mobileMenuTitle}>Menu</span>
+  </div>
+  <div className={styles.mobileLinks}>
+    {NAV_LINKS.map((l, i) => (
+      <motion.div
+        key={l.path}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ delay: i * 0.06 + 0.1 }}
+      >
+        <Link
+          to={l.path}
+          className={`${styles.mobileLink} ${location.pathname === l.path ? styles.mobileLinkActive : ''}`}
+          onClick={() => setMenuOpen(false)}
+        >
+          <span className={styles.mobileLinkLabel}>{l.label}</span>
+          <span className={styles.mobileLinkNum}>{l.num}</span>
+        </Link>
+      </motion.div>
+    ))}
+  </div>
+  <div className={styles.mobileMenuBottom}>
+    <span className={styles.mobileMenuFooter}>F1 HUB · 2026</span>
+  </div>
+</motion.div>
         )}
       </AnimatePresence>
     </>
