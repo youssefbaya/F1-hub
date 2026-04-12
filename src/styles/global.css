@@ -53,3 +53,24 @@ html {
     radial-gradient(ellipse 80% 50% at 50% 0%, rgba(168,50,40,0.04) 0%, transparent 60%),
     radial-gradient(ellipse 50% 40% at 100% 100%, rgba(168,50,40,0.03) 0%, transparent 50%);
 }
+
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  body { overflow-x: hidden; }
+}
+
+/* restore default cursor on mobile */
+@media (pointer: coarse) {
+  *, *::before, *::after {
+    cursor: auto !important;
+  }
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}

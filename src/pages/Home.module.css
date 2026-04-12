@@ -368,3 +368,13 @@
   font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
   color: var(--grey); text-transform: uppercase; margin-top: 2.5rem;
 }
+
+@media (min-width: 1600px) {
+  .heroContent {
+    max-width: 900px;
+  }
+  .standingsWrap {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+}

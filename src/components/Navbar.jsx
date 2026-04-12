@@ -148,7 +148,7 @@ function DriverCard({ driver }) {
 
 function TeamCard({ team }) {
   return (
-    <Link to="/teams" className={styles.teamCard}>
+    <Link to={`/teams/${team.id}`} className={styles.teamCard}>
       <div className={styles.teamCardBar} style={{ background: team.color }} />
       <div className={styles.teamCardImg}>
         <img

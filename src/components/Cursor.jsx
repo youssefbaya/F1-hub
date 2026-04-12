@@ -1,3 +1,5 @@
+
+
 import { useEffect, useRef, useState } from 'react'
 import styles from './Cursor.module.css'
 
@@ -15,7 +17,9 @@ export default function Cursor() {
   const [clicking, setClicking] = useState(false)
   const [maxMode, setMaxMode] = useState(false)
 
-  // max easter egg
+  const isMobile = window.matchMedia('(pointer: coarse)').matches
+  if (isMobile) return null
+
   useEffect(() => {
     const handleKey = (e) => {
       typedRef.current += e.key.toLowerCase()

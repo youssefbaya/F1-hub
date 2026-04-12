@@ -1,6 +1,5 @@
 .main {
   padding: 5.5rem 4rem 4rem;
-  max-width: 1200px;
   margin: 0 auto;
   position: relative; z-index: 1;
 }
@@ -18,7 +17,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 12px;
 }
 

@@ -8,6 +8,7 @@ import Teams from './pages/Teams'
 import Circuits from './pages/Circuits'
 import DriverProfile from './pages/DriverProfile'
 import Cursor from './components/Cursor'
+import TeamProfile from './pages/TeamProfile'
 
 function App() {
   const [theme, setTheme] = useState(() => {
@@ -32,6 +33,7 @@ function App() {
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/teams" element={<Teams />} />
         <Route path="/circuits" element={<Circuits />} />
+        <Route path="/teams/:teamId" element={<TeamProfile />} />
       </Routes>
     </>
   )

@@ -1,0 +1,225 @@
+.main {
+  padding: 5rem 4rem 4rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative; z-index: 1;
+}
+
+.loader {
+  height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 1.5rem;
+}
+.loaderBar { height: 2px; border-radius: 2px; }
+.loaderText {
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey);
+}
+
+.backBtn {
+  background: none; border: none; cursor: pointer;
+  font-family: var(--mono); font-size: 11px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--grey); padding: 0; margin-bottom: 2rem;
+  transition: color 0.2s;
+}
+.backBtn:hover { color: var(--team); }
+
+/* hero */
+.hero {
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: center; gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--team);
+  border-radius: 10px;
+  position: relative; overflow: hidden;
+}
+.heroGlow {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--team) 15%, transparent) 0%, transparent 60%);
+}
+.heroLeft { position: relative; z-index: 1; }
+.eyebrow {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
+  color: var(--grey); text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.teamName {
+  font-family: var(--head); font-size: clamp(1.5rem, 3vw, 2.5rem);
+  font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em;
+  color: var(--white); margin-bottom: 1.5rem; line-height: 1;
+}
+.heroStats { display: flex; gap: 2rem; flex-wrap: wrap; }
+.heroStat { display: flex; flex-direction: column; gap: 4px; }
+.heroStatVal {
+  font-family: var(--head); font-size: 2rem; font-weight: 900;
+  line-height: 1; text-transform: uppercase;
+}
+.heroStatLabel {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--grey);
+}
+.heroRight { position: relative; z-index: 1; }
+.logoCircle {
+  width: 90px; height: 90px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.logoImg {
+  max-width: 65%; max-height: 65%;
+  width: auto; height: auto; object-fit: contain;
+}
+
+/* car */
+.carSection {
+  margin-bottom: 2rem;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 10px; padding: 2rem;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 160px;
+  position: relative; overflow: hidden;
+}
+.carSection::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--team) 8%, transparent), transparent);
+  pointer-events: none;
+}
+.carImg {
+  max-height: 160px; width: 90%;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 20px rgba(0,0,0,0.5));
+  position: relative; z-index: 1;
+  transition: transform 0.4s ease;
+}
+.carSection:hover .carImg { transform: scale(1.03); }
+
+/* sections */
+.section { margin-bottom: 2rem; }
+.sectionTitle {
+  font-family: var(--head); font-size: 1rem; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--team);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--team);
+  opacity: 0.9;
+}
+
+/* drivers grid — square cards */
+.driversGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.driverCard {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; overflow: hidden; cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  aspect-ratio: 1;
+  display: flex; flex-direction: column;
+}
+.driverCard:hover {
+  border-color: var(--team);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+.driverCardTop {
+  flex: 1;
+  position: relative; overflow: hidden;
+  background: var(--surface2);
+  border-bottom: 2px solid var(--team);
+}
+.driverPhoto {
+  width: 100%; height: 100%; object-fit: cover;
+  object-position: center top;
+  transform: scale(1.15); transform-origin: center 15%;
+  transition: transform 0.3s ease;
+}
+.driverCard:hover .driverPhoto { transform: scale(1.22) translateY(-4px); transform-origin: center 10%; }
+.driverNumber {
+  position: absolute; bottom: 8px; right: 10px;
+  font-family: var(--head); font-size: 1.1rem; font-weight: 900;
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  z-index: 2;
+}
+.driverCardBody { padding: 0.8rem 1rem; }
+.driverName {
+  font-family: var(--head); font-size: 0.9rem; font-weight: 900;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--white); margin-bottom: 3px;
+}
+.driverTeam { font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; }
+
+/* two column layout for info + history */
+.twoCol {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin-bottom: 2rem;
+}
+
+/* info */
+.infoGrid {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; overflow: hidden;
+}
+.infoRow {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.7rem 1.2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.infoRow:last-child { border-bottom: none; }
+.infoLabel {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--grey);
+}
+.infoVal { font-size: 13px; font-weight: 500; color: var(--white); }
+
+/* history highlights */
+.historyGrid {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 8px; overflow: hidden;
+}
+.historyRow {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0.7rem 1.2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.historyRow:last-child { border-bottom: none; }
+.historyLabel {
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--grey);
+}
+.historyVal { font-size: 13px; font-weight: 500; color: var(--white); }
+.historyHighlight { color: var(--team) !important; font-weight: 700; }
+
+/* results */
+.resultsTable { display: flex; flex-direction: column; gap: 2px; }
+.resultsHeader {
+  display: grid; grid-template-columns: 1fr 1fr 60px 60px;
+  gap: 1rem; padding: 0.5rem 1.2rem;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--grey);
+}
+.resultRow {
+  display: grid; grid-template-columns: 1fr 1fr 60px 60px;
+  align-items: center; gap: 1rem; padding: 0.7rem 1.2rem;
+  background: var(--surface); border-radius: 4px;
+  transition: background 0.2s;
+}
+.resultRow:hover { background: var(--surface2); }
+.resultRace { font-size: 13px; color: var(--grey); }
+.resultDriver { font-size: 13px; color: var(--white); font-weight: 500; }
+.resultPos { font-family: var(--mono); font-size: 12px; font-weight: 700; }
+.resultPts { font-family: var(--mono); font-size: 12px; color: var(--white); }
+
+@media (max-width: 768px) {
+  .main { padding: 5rem 1.5rem 3rem; }
+  .hero { grid-template-columns: 1fr; }
+  .logoCircle { display: none; }
+  .driversGrid { grid-template-columns: 1fr; }
+  .twoCol { grid-template-columns: 1fr; }
+  .resultsHeader { grid-template-columns: 1fr 1fr 50px 50px; }
+  .resultRow { grid-template-columns: 1fr 1fr 50px 50px; }
+}

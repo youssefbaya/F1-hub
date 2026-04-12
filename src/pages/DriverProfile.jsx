@@ -85,7 +85,44 @@ const DEBUT_YEARS = {
   'hadjar': 2025, 'verstappen': 2015,
 }
 
+const HARDCODED_DRIVERS = {
+  'lindblad': {
+    driver: {
+      driverId: 'lindblad',
+      givenName: 'Arvid',
+      familyName: 'Lindblad',
+      dateOfBirth: '2006-06-25',
+      nationality: 'British',
+      permanentNumber: '41',
+      code: 'LIN',
+      url: 'https://en.wikipedia.org/wiki/Arvid_Lindblad'
+    },
+    seasons: [
+      {
+        season: '2026',
+        DriverStandings: [{
+          position: '11',
+          wins: '0',
+          points: '4',
+          Constructors: [{ name: 'Racing Bulls' }]
+        }]
+      }
+    ],
+    bestRaceFinish: 8
+  }
+}
+
 async function fetchDriverData(driverId) {
+  if (HARDCODED_DRIVERS[driverId]) {
+  const { getDriverStandings } = await import('../services/ergast.js')
+  const currentStandings = await getDriverStandings()
+  return { 
+    driver: HARDCODED_DRIVERS[driverId].driver,
+    seasons: HARDCODED_DRIVERS[driverId].seasons,
+    bestRaceFinish: HARDCODED_DRIVERS[driverId].bestRaceFinish,
+    currentStandings 
+  }
+}
   const infoRes = await fetch(`${BASE}/drivers/${driverId}.json`).then(r => r.json())
   const driver = infoRes.MRData?.DriverTable?.Drivers?.[0]
   if (!driver) return { driver: null, seasons: [], currentStandings: [] }
@@ -152,19 +189,20 @@ function DriverProfile() {
 
   const { driver, seasons, currentStandings } = data
   const currentDriver = currentStandings.find(d => d.Driver.driverId === driverId)
-  const currentTeam = currentDriver?.Constructors?.[0]?.name || 'N/A'
-  const currentPoints = currentDriver?.points || '0'
-  const currentPosition = currentDriver?.position || 'N/A'
+const hardcoded = data.seasons?.[0]?.DriverStandings?.[0]
+const currentTeam = currentDriver?.Constructors?.[0]?.name || hardcoded?.Constructors?.[0]?.name || 'N/A'
+const currentPoints = currentDriver?.points || hardcoded?.points || '0'
+const currentPosition = currentDriver?.position || hardcoded?.position || 'N/A'
   const totalWins = seasons.reduce((sum, s) => sum + parseInt(s.DriverStandings?.[0]?.wins || 0), 0)
   const currentYear = new Date().getFullYear()
   const championships = seasons.filter(s =>
   s.DriverStandings?.[0]?.position === '1' && parseInt(s.season) < currentYear
 ).length
   const totalSeasons = seasons.length
-  const bestFinish = seasons.reduce((best, s) => {
-    const pos = parseInt(s.DriverStandings?.[0]?.position || 99)
-    return pos < best ? pos : best
-  }, 99)
+  const bestFinish = data.bestRaceFinish || seasons.reduce((best, s) => {
+  const pos = parseInt(s.DriverStandings?.[0]?.position || 99)
+  return pos < best ? pos : best
+}, 99)
   const age = driver.dateOfBirth
     ? Math.floor((new Date() - new Date(driver.dateOfBirth)) / (365.25 * 24 * 60 * 60 * 1000))
     : null
