@@ -349,3 +349,35 @@
   transition: all 0.2s; display: flex; align-items: center;
 }
 .searchBtn:hover { border-color: var(--accent); color: var(--white); }
+
+.dropdown_extras { width: 280px; }
+.extrasList { padding: 8px; }
+.extrasItem {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 6px; text-decoration: none;
+  transition: background 0.15s;
+}
+.extrasItem:hover { background: rgba(255,255,255,0.05); }
+.extrasIcon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--surface2); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+}
+.extrasName {
+  font-family: var(--head); font-size: 0.8rem; font-weight: 900;
+  text-transform: uppercase; color: var(--white); display: block;
+}
+.extrasSub {
+  font-family: var(--mono); font-size: 9px; color: var(--grey);
+  letter-spacing: 0.06em; display: block; margin-top: 1px;
+}
+
+.logoImg {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  filter: brightness(1);
+  transition: opacity 0.2s;
+}
+.logo:hover .logoImg { opacity: 0.85; }

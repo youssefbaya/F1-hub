@@ -117,16 +117,11 @@ async function fetchDriverData(driverId) {
   if (HARDCODED_DRIVERS[driverId]) {
     const { getDriverStandings } = await import('../services/ergast.js')
     const currentStandings = await getDriverStandings()
-    return {
+    return { 
       driver: HARDCODED_DRIVERS[driverId].driver,
       seasons: HARDCODED_DRIVERS[driverId].seasons,
       bestRaceFinish: HARDCODED_DRIVERS[driverId].bestRaceFinish,
-      poles: HARDCODED_DRIVERS[driverId].poles,
-      podiums: HARDCODED_DRIVERS[driverId].podiums,
-      fastestLaps: HARDCODED_DRIVERS[driverId].fastestLaps,
-      racesTotal: HARDCODED_DRIVERS[driverId].racesTotal,
-      dnfs: HARDCODED_DRIVERS[driverId].dnfs,
-      currentStandings,
+      currentStandings 
     }
   }
 
@@ -139,7 +134,6 @@ async function fetchDriverData(driverId) {
   const currentYear = new Date().getFullYear()
   const years = Array.from({ length: currentYear - debutYear + 1 }, (_, i) => debutYear + i)
 
-  // fetch standings, results and qualifying in parallel year by year
   const [standingsResults, resultsArr, qualiArr] = await Promise.all([
     Promise.all(years.map(year =>
       fetch(`${BASE}/${year}/drivers/${ergastId}/driverStandings.json`)
@@ -155,10 +149,8 @@ async function fetchDriverData(driverId) {
     )),
   ])
 
-  const seasons = standingsResults
-    .filter(Boolean)
-    .map(d => d.MRData?.StandingsTable?.StandingsLists?.[0])
-    .filter(Boolean)
+  const seasons = standingsResults.filter(Boolean)
+    .map(d => d.MRData?.StandingsTable?.StandingsLists?.[0]).filter(Boolean)
 
   const allRaces = resultsArr.filter(Boolean)
     .flatMap(d => d.MRData?.RaceTable?.Races || [])
@@ -169,8 +161,8 @@ async function fetchDriverData(driverId) {
   const podiums = allRaces.filter(r => ['1','2','3'].includes(r.Results?.[0]?.position)).length
   const fastestLaps = allRaces.filter(r => r.Results?.[0]?.FastestLap?.rank === '1').length
   const dnfs = allRaces.filter(r => {
-    const status = r.Results?.[0]?.status || ''
-    return status !== 'Finished' && !status.includes('+') && !status.includes('Lap')
+    const s = r.Results?.[0]?.status || ''
+    return s !== 'Finished' && !s.includes('+') && !s.includes('Lap')
   }).length
   const racesTotal = allRaces.length
   const poles = allQuali.filter(r => r.QualifyingResults?.[0]?.position === '1').length

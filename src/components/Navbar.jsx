@@ -112,6 +112,10 @@ const ALL_CIRCUITS = [
   { id: 'yas_marina',    name: 'Abu Dhabi',    country: 'UAE',          flagCode: 'ae' },
 ]
 
+const ALL_EXTRAS = [
+  { id: 'max',     name: 'Max Verstappen', sub: 'GT3 · Nürburgring · Records', path: '/max' },
+]
+
 const NAV_LINKS = [
   { path: '/',         label: 'Home',     num: '01', dropdown: null },
   { path: '/drivers',  label: 'Drivers',  num: '02', dropdown: 'drivers' },
@@ -119,9 +123,8 @@ const NAV_LINKS = [
   { path: '/calendar', label: 'Calendar', num: '04', dropdown: null },
   { path: '/circuits', label: 'Circuits', num: '05', dropdown: 'circuits' },
   { path: '/teams',    label: 'Teams',    num: '06', dropdown: 'teams' },
-  { path: '/max', label: 'Max', num: '07', dropdown: null },
+  { path: '/extras',   label: 'Extras',   num: '07', dropdown: 'extras' },
 ]
-
 function DriverCard({ driver }) {
   const color = TEAM_COLORS[driver.team] || '#888'
   return (
@@ -306,7 +309,7 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
         </div>
         <div className={styles.circuitList}>
           {ALL_CIRCUITS.map(c => (
-            <Link key={c.id} to="/circuits" className={styles.circuitItem}>
+            <Link key={c.id} to={`/circuits`} className={styles.circuitItem}>
               <img src={`https://flagcdn.com/24x18/${c.flagCode}.png`} alt={c.country} className={styles.circuitItemFlag} />
               <div>
                 <span className={styles.circuitItemName}>{c.name}</span>
@@ -317,6 +320,24 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
         </div>
       </div>
     )
+
+    if (type === 'extras') return (
+  <div className={styles.dropdownExtras}>
+    <div className={styles.dropdownHeader}>
+      <span>Special Pages</span>
+    </div>
+    <div className={styles.extrasList}>
+      {ALL_EXTRAS.map(e => (
+        <Link key={e.id} to={e.path} className={styles.extrasItem}>
+          <div>
+            <span className={styles.extrasName}>{e.name}</span>
+
+          </div>
+        </Link>
+      ))}
+    </div>
+  </div>
+)
     return null
   }
 
@@ -337,26 +358,20 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
         </div>
 
         {/* logo */}
-        <Link
-          to="/"
-          className={`${styles.logo} ${glitchLogo ? styles.logoGlitch : ''}`}
-          onMouseEnter={handleLogoHover}
-        >
-          <div className={styles.logoBlock}>
-            <span className={styles.logoF}>F</span>
-            <span className={styles.logoNum}>1</span>
-          </div>
-          <div className={styles.logoText}>
-            <span className={styles.logoHub}>HUB</span>
-            <span className={styles.logoSeason}>2026</span>
-          </div>
-          {glitchLogo && (
-            <>
-              <span className={styles.glitchClone1}>F1</span>
-              <span className={styles.glitchClone2}>F1</span>
-            </>
-          )}
-        </Link>
+        <Link to="/" className={styles.logo} onMouseEnter={handleLogoHover}>
+  <img
+    src="/logo.png"
+    alt="F1 Hub"
+    className={styles.logoImg}
+    onError={e => e.target.style.display = 'none'}
+  />
+  {glitchLogo && (
+    <>
+      <span className={styles.glitchClone1}>F1</span>
+      <span className={styles.glitchClone2}>F1</span>
+    </>
+  )}
+</Link>
 
         {/* nav links — timing tower style */}
         <div className={styles.links}>

@@ -1,6 +1,6 @@
 .main {
-  padding: 5rem 4rem 4rem;
-  max-width: 1000px;
+  padding: 5rem 3rem 4rem;
+  max-width: 1400px;
   margin: 0 auto;
   position: relative; z-index: 1;
 }
@@ -9,235 +9,267 @@
   background: none; border: none; cursor: pointer;
   font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
   text-transform: uppercase; color: var(--grey);
-  padding: 0; margin-bottom: 2rem; transition: color 0.2s;
+  padding: 0; margin-bottom: 1.5rem; transition: color 0.2s; display: block;
 }
 .backBtn:hover { color: #3671C6; }
 
-/* hero */
-.hero {
-  display: grid; grid-template-columns: 1fr auto;
-  align-items: center; gap: 2rem; margin-bottom: 2rem;
-  padding: 2.5rem; border-radius: 12px;
-  background: var(--surface); border: 1px solid var(--line);
+/* ── BENTO GRID ─────────────────────────────── */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: auto;
+  gap: 12px;
+}
+
+/* base card */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.4rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  border-color: rgba(54,113,198,0.4);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+}
+
+.cardLabel {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--grey); margin-bottom: 4px;
+}
+.cardTitle {
+  font-family: var(--head); font-size: 1.2rem; font-weight: 900;
+  text-transform: uppercase; color: var(--white); margin-bottom: 4px;
+}
+.cardSub {
+  font-family: var(--mono); font-size: 10px; color: var(--grey);
+  letter-spacing: 0.08em; margin-bottom: 1rem;
+}
+
+/* ── HERO CARD ──────────────────────────────── */
+.cardHero {
+  grid-column: span 2;
+  grid-row: span 1;
   border-left: 4px solid #3671C6;
-  position: relative; overflow: hidden; min-height: 220px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; min-height: 200px;
 }
 .heroGlow {
   position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(135deg, rgba(54,113,198,0.12) 0%, transparent 60%);
 }
-.heroLeft { position: relative; z-index: 1; }
-.eyebrow {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
-  color: var(--grey); text-transform: uppercase; margin-bottom: 0.8rem;
+.heroContent { position: relative; z-index: 1; flex: 1; }
+.heroEyebrow {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+  color: var(--grey); text-transform: uppercase; margin-bottom: 0.5rem;
 }
-.heroName { margin-bottom: 0.5rem; line-height: 0.9; }
+.heroName { margin-bottom: 0.4rem; line-height: 0.9; }
 .heroFirst {
-  display: block; font-family: var(--head); font-size: 2rem;
-  font-weight: 900; color: var(--grey); text-transform: uppercase; letter-spacing: 0.04em;
+  display: block; font-family: var(--head); font-size: 1.6rem;
+  font-weight: 900; color: var(--grey); text-transform: uppercase;
 }
 .heroLast {
-  display: block; font-family: var(--head); font-size: 3.5rem;
-  font-weight: 900; color: #3671C6; text-transform: uppercase; letter-spacing: 0.02em;
+  display: block; font-family: var(--head); font-size: 2.8rem;
+  font-weight: 900; color: #3671C6; text-transform: uppercase;
 }
 .heroSub {
-  font-family: var(--mono); font-size: 10px; color: var(--grey);
-  letter-spacing: 0.1em; margin-bottom: 1.5rem;
+  font-family: var(--mono); font-size: 9px; color: var(--grey);
+  letter-spacing: 0.08em; margin-bottom: 1rem;
 }
 .heroBtn {
   background: none; border: 1px solid #3671C6; color: #3671C6;
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
-  text-transform: uppercase; padding: 8px 16px; border-radius: 4px;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; padding: 6px 14px; border-radius: 4px;
   cursor: pointer; transition: all 0.2s;
 }
 .heroBtn:hover { background: #3671C6; color: #fff; }
-.heroRight { position: relative; z-index: 1; }
+.heroPhotoWrap { position: relative; z-index: 1; flex-shrink: 0; }
 .heroPhoto {
-  width: 160px; height: 160px; border-radius: 50%; overflow: hidden;
-  border: 3px solid #3671C6; background: var(--surface2);
-  box-shadow: 0 0 30px rgba(54,113,198,0.3);
-}
-.heroPhotoImg {
-  width: 100%; height: 100%; object-fit: cover;
+  width: 130px; height: 130px; border-radius: 50%; object-fit: cover;
   object-position: center top; transform: scale(1.3); transform-origin: center 15%;
+  border: 3px solid #3671C6;
+  box-shadow: 0 0 24px rgba(54,113,198,0.3);
 }
 .heroBigNum {
-  position: absolute; bottom: -8px; right: -4px;
-  font-family: var(--head); font-size: 3rem; font-weight: 900;
-  color: #3671C6; width: 52px; height: 52px;
+  position: absolute; bottom: -6px; right: -4px;
+  font-family: var(--head); font-size: 1.8rem; font-weight: 900; color: #3671C6;
+  width: 44px; height: 44px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  border-radius: 50%; background: rgba(0,0,0,0.5);
-  border: 1.5px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.6); border: 1.5px solid rgba(255,255,255,0.15);
 }
 
-/* N24 countdown */
-.n24Section {
-  margin-bottom: 2rem; padding: 2rem;
-  background: var(--surface); border: 1px solid var(--line);
-  border-radius: 12px; border-left: 4px solid #3671C6;
-  position: relative; overflow: hidden;
+/* ── COUNTDOWN ──────────────────────────────── */
+.cardCountdown {
+  grid-column: span 2;
+  border-left: 4px solid #3671C6;
 }
-.n24Section::before {
+.cardCountdown::before {
   content: '';
   position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(135deg, rgba(54,113,198,0.08) 0%, transparent 50%);
 }
-.n24Header {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  gap: 2rem; margin-bottom: 1.5rem; position: relative; z-index: 1;
-  flex-wrap: wrap;
-}
-.n24Label {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
-  color: var(--grey); text-transform: uppercase; margin-bottom: 4px;
-}
-.n24Title {
-  font-family: var(--head); font-size: 1.8rem; font-weight: 900;
-  text-transform: uppercase; color: var(--white); letter-spacing: 0.02em;
-  margin-bottom: 4px;
-}
-.n24Sub { font-family: var(--mono); font-size: 10px; color: var(--grey); letter-spacing: 0.08em; }
-.n24Car { text-align: right; }
-.n24CarLabel { font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey); }
-.n24CarVal { font-family: var(--head); font-size: 1rem; font-weight: 900; color: #3671C6; }
-.n24CarTeam { font-family: var(--mono); font-size: 10px; color: var(--white); margin-top: 2px; }
-.n24CarDrivers { font-family: var(--mono); font-size: 9px; color: var(--grey); letter-spacing: 0.06em; }
-
 .countdown {
-  display: flex; gap: 1rem; position: relative; z-index: 1;
-  flex-wrap: wrap;
+  display: flex; gap: 8px; margin-bottom: 1rem;
 }
 .countdownUnit {
-  display: flex; flex-direction: column; align-items: center; gap: 4px;
-  min-width: 80px; background: var(--surface2); border-radius: 8px;
-  padding: 1rem; border: 1px solid rgba(54,113,198,0.2);
-  flex: 1;
+  flex: 1; background: var(--surface2); border-radius: 8px;
+  padding: 0.8rem 0.5rem; display: flex; flex-direction: column;
+  align-items: center; gap: 2px;
+  border: 1px solid rgba(54,113,198,0.2);
 }
 .countdownNum {
-  font-family: var(--head); font-size: 2.5rem; font-weight: 900;
+  font-family: var(--head); font-size: 1.8rem; font-weight: 900;
   color: #3671C6; line-height: 1;
 }
 .countdownLabel {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--grey);
-}
-
-/* sections */
-.section { margin-bottom: 2rem; }
-.sectionTitle {
-  font-family: var(--head); font-size: 1rem; font-weight: 900;
-  text-transform: uppercase; letter-spacing: 0.1em;
-  color: #3671C6; margin-bottom: 1rem;
-  padding-bottom: 0.5rem; border-bottom: 1px solid #3671C6;
-}
-
-/* GT3 timeline */
-.gt3Timeline { display: flex; flex-direction: column; gap: 0; }
-.gt3Card {
-  display: flex; gap: 0; position: relative;
-}
-.gt3Left {
-  display: flex; flex-direction: column; align-items: center;
-  width: 24px; flex-shrink: 0; padding-top: 4px;
-}
-.gt3Dot {
-  width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; z-index: 1;
-}
-.gt3Line {
-  width: 2px; flex: 1; background: var(--line); margin-top: 4px;
-}
-.gt3Card:last-child .gt3Line { display: none; }
-.gt3Content {
-  flex: 1; padding: 0 0 2rem 1rem;
-  background: var(--surface); border: 1px solid var(--line);
-  border-left: 3px solid var(--rc);
-  border-radius: 8px; padding: 1.2rem;
-  margin-bottom: 12px; margin-left: 12px;
-  transition: border-color 0.2s;
-}
-.gt3Upcoming { opacity: 0.8; }
-.gt3Top {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  margin-bottom: 1rem; gap: 1rem;
-}
-.gt3Event {
-  font-family: var(--head); font-size: 1rem; font-weight: 900;
-  text-transform: uppercase; color: var(--white); margin-bottom: 2px;
-}
-.gt3Date { font-family: var(--mono); font-size: 10px; color: var(--grey); letter-spacing: 0.08em; }
-.gt3ResultWrap { flex-shrink: 0; }
-.gt3Result {
-  font-family: var(--head); font-size: 0.9rem; font-weight: 900;
-  border: 1.5px solid; border-radius: 4px; padding: 4px 10px;
-}
-.gt3Details {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 6px; margin-bottom: 0.8rem;
-}
-.gt3Detail { display: flex; flex-direction: column; gap: 1px; }
-.gt3DetailLabel {
   font-family: var(--mono); font-size: 8px; letter-spacing: 0.15em;
   text-transform: uppercase; color: var(--grey);
 }
-.gt3DetailVal { font-size: 12px; color: var(--white); font-weight: 500; }
-.gt3Notes {
-  font-family: var(--mono); font-size: 10px; color: var(--grey);
-  letter-spacing: 0.05em; line-height: 1.6; border-top: 1px solid var(--line);
-  padding-top: 0.6rem; margin-top: 0.4rem;
+.n24Car {
+  display: flex; flex-direction: column; gap: 2px;
 }
 
-/* records */
-.recordsGrid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 10px;
-}
-.recordCard {
-  background: var(--surface); border: 1px solid var(--line);
-  border-radius: 8px; padding: 1.2rem;
+/* ── STAT CARDS ─────────────────────────────── */
+.cardStat {
+  grid-column: span 1;
   display: flex; flex-direction: column; gap: 4px;
-  cursor: default; transition: all 0.2s;
+  cursor: default;
 }
-.recordCard:hover {
-  border-color: #3671C6;
-  box-shadow: 0 4px 16px rgba(54,113,198,0.15);
-}
-.recordIcon { font-size: 1.2rem; }
-.recordValue {
-  font-family: var(--head); font-size: 1.8rem; font-weight: 900;
+.statIcon { font-size: 1.3rem; }
+.statValue {
+  font-family: var(--head); font-size: 2rem; font-weight: 900;
   color: #3671C6; line-height: 1;
 }
-.recordLabel {
+.statLabel {
   font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em;
   text-transform: uppercase; color: var(--white);
 }
-.recordSub { font-family: var(--mono); font-size: 9px; color: var(--grey); }
+.statSub { font-family: var(--mono); font-size: 8px; color: var(--grey); }
 
-/* fun facts */
-.factCard {
-  background: var(--surface); border: 1px solid var(--line);
-  border-left: 4px solid #3671C6; border-radius: 8px;
-  padding: 2rem; min-height: 100px;
-  display: flex; flex-direction: column; justify-content: space-between; gap: 1rem;
+/* ── GT3 ────────────────────────────────────── */
+.cardGT3 {
+  grid-column: span 3;
+}
+.gt3List { display: flex; flex-direction: column; gap: 12px; margin-top: 1rem; }
+.gt3Item {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px; background: var(--surface2); border-radius: 8px;
+  border-left: 3px solid var(--rc);
+}
+.gt3Dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px;
+}
+.gt3Info { flex: 1; }
+.gt3Top {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 4px; flex-wrap: wrap;
+}
+.gt3Event {
+  font-family: var(--head); font-size: 0.85rem; font-weight: 900;
+  text-transform: uppercase; color: var(--white);
+}
+.gt3Date { font-family: var(--mono); font-size: 9px; color: var(--grey); }
+.gt3Result {
+  font-family: var(--head); font-size: 0.8rem; font-weight: 900; margin-left: auto;
+}
+.gt3Details {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.06em;
+  color: var(--grey);
+}
+
+/* ── FUN FACTS ──────────────────────────────── */
+.cardFacts {
+  grid-column: span 1;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 160px;
 }
 .factText {
-  font-size: 15px; color: var(--white); line-height: 1.7;
-  font-style: italic;
+  font-size: 13px; color: var(--white); line-height: 1.7;
+  font-style: italic; flex: 1; margin: 0.5rem 0;
 }
-.factDots { display: flex; gap: 6px; }
+.factDots { display: flex; gap: 5px; flex-wrap: wrap; }
 .factDot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: var(--grey2); border: none; cursor: pointer;
-  transition: background 0.2s; padding: 0;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--grey2); border: none; cursor: pointer; padding: 0;
+  transition: background 0.2s;
 }
 .factDotActive { background: #3671C6; }
 
-@media (max-width: 768px) {
+/* ── HELMETS ────────────────────────────────── */
+.cardHelmets {
+  grid-column: span 2;
+}
+.helmetGrid {
+  display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1rem;
+}
+.helmetCard {
+  flex: 1; min-width: 80px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px; border-radius: 8px; border: 1px solid var(--line);
+  transition: all 0.2s; background: var(--surface2);
+}
+.helmetCard:hover { border-color: #3671C6; }
+.helmetCardActive { border-color: #3671C6; background: rgba(54,113,198,0.1); }
+.helmetImg {
+  width: 60px; height: 60px; border-radius: 8px; overflow: hidden;
+  background: var(--surface); display: flex; align-items: center; justify-content: center;
+}
+.helmetPhoto { width: 100%; height: 100%; object-fit: cover; }
+.helmetFallback { font-size: 1.8rem; }
+.helmetLabel {
+  font-family: var(--mono); font-size: 8px; letter-spacing: 0.06em;
+  color: var(--white); text-align: center; line-height: 1.3;
+}
+.helmetSub {
+  font-family: var(--mono); font-size: 7px; color: var(--grey); text-align: center;
+}
+
+/* ── CHAMPIONSHIPS ──────────────────────────── */
+.cardChamps {
+  grid-column: span 2;
+}
+.champsList { display: flex; flex-direction: column; gap: 8px; margin-top: 1rem; }
+.champItem {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 12px; background: var(--surface2); border-radius: 8px;
+  border-left: 3px solid #3671C6;
+}
+.champYear {
+  font-family: var(--head); font-size: 1.2rem; font-weight: 900;
+  color: #3671C6; min-width: 50px;
+}
+.champTeam {
+  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+  text-transform: uppercase; min-width: 70px;
+}
+.champNote {
+  font-family: var(--mono); font-size: 9px; color: var(--grey);
+  letter-spacing: 0.05em; flex: 1;
+}
+.champTrophy { font-size: 1rem; }
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 1024px) {
+  .bento { grid-template-columns: repeat(2, 1fr); }
+  .cardHero { grid-column: span 2; }
+  .cardCountdown { grid-column: span 2; }
+  .cardGT3 { grid-column: span 2; }
+  .cardHelmets { grid-column: span 2; }
+  .cardChamps { grid-column: span 2; }
+}
+
+@media (max-width: 640px) {
   .main { padding: 5rem 1.5rem 3rem; }
-  .hero { grid-template-columns: 1fr; }
-  .heroPhoto { width: 120px; height: 120px; }
-  .heroLast { font-size: 2.5rem; }
-  .n24Header { flex-direction: column; }
-  .n24Car { text-align: left; }
-  .countdownNum { font-size: 2rem; }
-  .recordsGrid { grid-template-columns: repeat(2, 1fr); }
+  .bento { grid-template-columns: 1fr; gap: 10px; }
+  .cardHero { grid-column: span 1; flex-direction: column; }
+  .cardCountdown { grid-column: span 1; }
+  .cardGT3 { grid-column: span 1; }
+  .cardHelmets { grid-column: span 1; }
+  .cardChamps { grid-column: span 1; }
+  .cardStat { grid-column: span 1; }
+  .heroPhoto { width: 100px; height: 100px; }
+  .heroLast { font-size: 2rem; }
 }
