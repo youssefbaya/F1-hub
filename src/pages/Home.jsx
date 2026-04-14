@@ -366,6 +366,7 @@ const getCountryCode = (country) => {
               </motion.div>
             ))}
           </div>
+          <p className={styles.podiumHint}>Swipe horizontally</p>
         </div>
       </section>
 
