@@ -1,6 +1,3 @@
-// api/driver/[driverId].js
-// Vercel serverless function — caches driver career data for 24 hours
-
 const BASE = 'https://api.jolpi.ca/ergast/f1'
 
 const DEBUT_YEARS = {
@@ -21,7 +18,6 @@ async function fetchJSON(url) {
 }
 
 export default async function handler(req, res) {
-  // allow CORS
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET')
 
@@ -38,30 +34,22 @@ export default async function handler(req, res) {
     const currentYear = new Date().getFullYear()
     const years = Array.from({ length: currentYear - debutYear + 1 }, (_, i) => debutYear + i)
 
-    // fetch all data in parallel
     const [standingsResults, resultsArr, qualiArr] = await Promise.all([
       Promise.all(years.map(year =>
-        fetchJSON(`${BASE}/${year}/drivers/${ergastId}/driverStandings.json`)
-          .catch(() => null)
+        fetchJSON(`${BASE}/${year}/drivers/${ergastId}/driverStandings.json`).catch(() => null)
       )),
       Promise.all(years.map(year =>
-        fetchJSON(`${BASE}/${year}/drivers/${ergastId}/results.json?limit=30`)
-          .catch(() => null)
+        fetchJSON(`${BASE}/${year}/drivers/${ergastId}/results.json?limit=30`).catch(() => null)
       )),
       Promise.all(years.map(year =>
-        fetchJSON(`${BASE}/${year}/drivers/${ergastId}/qualifying.json?limit=30`)
-          .catch(() => null)
+        fetchJSON(`${BASE}/${year}/drivers/${ergastId}/qualifying.json?limit=30`).catch(() => null)
       )),
     ])
 
     const seasons = standingsResults.filter(Boolean)
       .map(d => d.MRData?.StandingsTable?.StandingsLists?.[0]).filter(Boolean)
-
-    const allRaces = resultsArr.filter(Boolean)
-      .flatMap(d => d.MRData?.RaceTable?.Races || [])
-
-    const allQuali = qualiArr.filter(Boolean)
-      .flatMap(d => d.MRData?.RaceTable?.Races || [])
+    const allRaces = resultsArr.filter(Boolean).flatMap(d => d.MRData?.RaceTable?.Races || [])
+    const allQuali = qualiArr.filter(Boolean).flatMap(d => d.MRData?.RaceTable?.Races || [])
 
     const podiums = allRaces.filter(r => ['1','2','3'].includes(r.Results?.[0]?.position)).length
     const fastestLaps = allRaces.filter(r => r.Results?.[0]?.FastestLap?.rank === '1').length
@@ -73,13 +61,10 @@ export default async function handler(req, res) {
     const poles = allQuali.filter(r => r.QualifyingResults?.[0]?.position === '1').length
 
     const data = { driver, seasons, podiums, poles, fastestLaps, racesTotal, dnfs }
-
-    // cache for 24 hours on Vercel's CDN
     res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=3600')
     return res.status(200).json(data)
 
   } catch(e) {
-    console.error('Driver API error:', e)
     return res.status(500).json({ error: 'Failed to fetch driver data' })
   }
 }

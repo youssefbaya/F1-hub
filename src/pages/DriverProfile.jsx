@@ -126,7 +126,7 @@ async function fetchDriverData(driverId) {
   }
 
   const [driverRes, standingsRes] = await Promise.all([
-    fetch(`/api/driver/${driverId}`).then(r => r.json()).catch(() => null),
+    fetch(`/api/driver?driverId=${driverId}`).then(r => r.json()).catch(() => null),
     fetch(`/api/standings`).then(r => r.json()).catch(() => null),
   ])
 
