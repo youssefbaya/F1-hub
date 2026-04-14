@@ -11,10 +11,22 @@ const DEBUT_YEARS = {
   'hadjar': 2025, 'verstappen': 2015,
 }
 
-async function fetchJSON(url) {
-  const r = await fetch(url)
-  if (!r.ok) return null
-  return r.json()
+async function fetchJSON(url, retries = 3) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const r = await fetch(url)
+      if (r.status === 429) {
+        await new Promise(res => setTimeout(res, 1000 * (i + 1)))
+        continue
+      }
+      if (!r.ok) return null
+      return r.json()
+    } catch(e) {
+      if (i === retries - 1) return null
+      await new Promise(res => setTimeout(res, 500))
+    }
+  }
+  return null
 }
 
 export default async function handler(req, res) {
@@ -34,17 +46,27 @@ export default async function handler(req, res) {
     const currentYear = new Date().getFullYear()
     const years = Array.from({ length: currentYear - debutYear + 1 }, (_, i) => debutYear + i)
 
-    const [standingsResults, resultsArr, qualiArr] = await Promise.all([
-      Promise.all(years.map(year =>
-        fetchJSON(`${BASE}/${year}/drivers/${ergastId}/driverStandings.json`).catch(() => null)
-      )),
-      Promise.all(years.map(year =>
-        fetchJSON(`${BASE}/${year}/drivers/${ergastId}/results.json?limit=30`).catch(() => null)
-      )),
-      Promise.all(years.map(year =>
-        fetchJSON(`${BASE}/${year}/drivers/${ergastId}/qualifying.json?limit=30`).catch(() => null)
-      )),
-    ])
+    // fetch standings sequentially to avoid rate limits
+const standingsResults = []
+for (const year of years) {
+  const result = await fetchJSON(`${BASE}/${year}/drivers/${ergastId}/driverStandings.json`)
+  standingsResults.push(result)
+  await new Promise(res => setTimeout(res, 100))
+}
+
+const resultsArr = []
+for (const year of years) {
+  const result = await fetchJSON(`${BASE}/${year}/drivers/${ergastId}/results.json?limit=30`)
+  resultsArr.push(result)
+  await new Promise(res => setTimeout(res, 100))
+}
+
+const qualiArr = []
+for (const year of years) {
+  const result = await fetchJSON(`${BASE}/${year}/drivers/${ergastId}/qualifying.json?limit=30`)
+  qualiArr.push(result)
+  await new Promise(res => setTimeout(res, 100))
+}
 
     const seasons = standingsResults.filter(Boolean)
       .map(d => d.MRData?.StandingsTable?.StandingsLists?.[0]).filter(Boolean)
