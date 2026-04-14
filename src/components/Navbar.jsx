@@ -271,8 +271,8 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
     setOpenDropdown(key)
   }
   const handleLinkLeave = () => {
-    closeTimer.current = setTimeout(() => setOpenDropdown(null), 300)
-  }
+  closeTimer.current = setTimeout(() => setOpenDropdown(null), 500)
+}
   const handleDropdownEnter = () => clearTimeout(closeTimer.current)
   const handleDropdownLeave = () => {
     closeTimer.current = setTimeout(() => setOpenDropdown(null), 300)
@@ -309,7 +309,7 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
         </div>
         <div className={styles.circuitList}>
           {ALL_CIRCUITS.map(c => (
-            <Link key={c.id} to={`/circuits`} className={styles.circuitItem}>
+            <Link key={c.id} to={`/circuits?track=${c.id}`} className={styles.circuitItem}>
               <img src={`https://flagcdn.com/24x18/${c.flagCode}.png`} alt={c.country} className={styles.circuitItemFlag} />
               <div>
                 <span className={styles.circuitItemName}>{c.name}</span>

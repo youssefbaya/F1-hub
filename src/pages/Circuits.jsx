@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import styles from './Circuits.module.css'
 
@@ -39,7 +40,6 @@ const CIRCUIT_DETAILS = {
   'le_mans':          { laps: 385, length: 13.626, corners: 38, drs: 0, lapRecord: { time: '3:14.791', driver: 'Kamui Kobayashi', year: 2017 }, firstGP: null, isGT: true },
 }
 
-// hardcoded circuit list — no API calls needed!
 const ALL_CIRCUITS = [
   { circuitId: 'albert_park',   circuitName: 'Albert Park Circuit',            url: 'https://en.wikipedia.org/wiki/Albert_Park_Circuit',          Location: { locality: 'Melbourne',     country: 'Australia' } },
   { circuitId: 'bahrain',       circuitName: 'Bahrain International Circuit',   url: 'https://en.wikipedia.org/wiki/Bahrain_International_Circuit', Location: { locality: 'Sakhir',        country: 'Bahrain' } },
@@ -72,7 +72,6 @@ const ALL_CIRCUITS = [
   { circuitId: 'paul_ricard',   circuitName: 'Circuit Paul Ricard',             url: 'https://en.wikipedia.org/wiki/Circuit_Paul_Ricard',          Location: { locality: 'Le Castellet',  country: 'France' } },
   { circuitId: 'nurburgring',   circuitName: 'Nürburgring',                     url: 'https://en.wikipedia.org/wiki/N%C3%BCrburgring',             Location: { locality: 'Nürburg',       country: 'Germany' } },
   { circuitId: 'bahrain_outer', circuitName: 'Bahrain International Circuit (Outer)', url: 'https://en.wikipedia.org/wiki/Bahrain_International_Circuit', Location: { locality: 'Sakhir', country: 'Bahrain' } },
-  // GT / Endurance
   { circuitId: 'nurburgring_nordschleife', circuitName: 'Nürburgring Nordschleife', url: 'https://en.wikipedia.org/wiki/N%C3%BCrburgring', Location: { locality: 'Nürburg', country: 'Germany' } },
   { circuitId: 'nurburgring_gp',           circuitName: 'Nürburgring GP Circuit',   url: 'https://en.wikipedia.org/wiki/N%C3%BCrburgring', Location: { locality: 'Nürburg', country: 'Germany' } },
   { circuitId: 'le_mans',                  circuitName: 'Circuit de la Sarthe',      url: 'https://en.wikipedia.org/wiki/Circuit_de_la_Sarthe', Location: { locality: 'Le Mans', country: 'France' } },
@@ -94,6 +93,16 @@ function Circuits() {
   const [zoomed, setZoomed] = useState(false)
   const [search, setSearch] = useState('')
   const [filter, setFilter] = useState('all')
+  const [searchParams] = useSearchParams()
+
+  // auto-open circuit from URL param e.g. /circuits?track=monaco
+  useEffect(() => {
+    const trackId = searchParams.get('track')
+    if (trackId) {
+      const circuit = ALL_CIRCUITS.find(c => c.circuitId === trackId)
+      if (circuit) setSelected(circuit)
+    }
+  }, [searchParams])
 
   useEffect(() => {
     const nav = document.querySelector('nav')
@@ -234,7 +243,6 @@ function Circuits() {
               onClick={e => e.stopPropagation()}
             >
               <button className={styles.modalClose} onClick={closeModal}>✕</button>
-
               <div
                 className={`${styles.modalTrack} ${zoomed ? styles.modalTrackZoomed : ''}`}
                 onClick={() => setZoomed(z => !z)}
@@ -253,11 +261,9 @@ function Circuits() {
                   {zoomed ? '🔍 click to zoom out' : '🔍 click to zoom in'}
                 </div>
               </div>
-
               <div className={styles.modalContent}>
                 <p className={styles.modalEyebrow}>{selected.Location.locality}, {selected.Location.country}</p>
                 <h2 className={styles.modalTitle}>{selected.circuitName}</h2>
-
                 {CIRCUIT_DETAILS[selected.circuitId] ? (() => {
                   const d = CIRCUIT_DETAILS[selected.circuitId]
                   return (
@@ -292,7 +298,6 @@ function Circuits() {
                 })() : (
                   <p className={styles.noData}>Detailed data coming soon</p>
                 )}
-
                 {selected.url && (
                   <a href={selected.url} target="_blank" rel="noreferrer" className={styles.wikiLink}>
                     View on Wikipedia →
