@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import styles from './Compare.module.css'
-import { CURRENT_2026_STANDINGS } from '../services/ergast.js'
+
+
 
 const BASE = 'https://api.jolpi.ca/ergast/f1'
 
@@ -41,39 +42,79 @@ const DEBUT_YEARS = {
   'hadjar': 2025,
 }
 
-async function fetchCareerData(driverId, fromYear, toYear) {
-  if (driverId === 'lindblad') {
-    const s = CURRENT_2026_STANDINGS.find(d => d.Driver.driverId === 'lindblad')
-    return { wins: 0, championships: 0, seasons: 1, points: parseInt(s?.points || 0), position: parseInt(s?.position || 22), podiums: 0, poles: 0, fastestLaps: 0, dnfs: 0, racesTotal: 0 }
-  }
-  try {
-    const infoRes = await fetch(`${BASE}/drivers/${driverId}.json`).then(r => r.json())
-    const ergastId = infoRes.MRData?.DriverTable?.Drivers?.[0]?.driverId || driverId
-    const debutYear = Math.max(DEBUT_YEARS[ergastId] || 2015, fromYear)
-    const endYear = Math.min(toYear, new Date().getFullYear())
-    const years = Array.from({ length: endYear - debutYear + 1 }, (_, i) => debutYear + i)
 
-    const [standingsResults, resultsArr, qualiArr] = await Promise.all([
-      Promise.all(years.map(y => fetch(`${BASE}/${y}/drivers/${ergastId}/driverStandings.json`).then(r => r.ok ? r.json() : null).catch(() => null))),
-      Promise.all(years.map(y => fetch(`${BASE}/${y}/drivers/${ergastId}/results.json?limit=30`).then(r => r.ok ? r.json() : null).catch(() => null))),
-      Promise.all(years.map(y => fetch(`${BASE}/${y}/drivers/${ergastId}/qualifying.json?limit=30`).then(r => r.ok ? r.json() : null).catch(() => null))),
+
+async function fetchCareerData(driverId, fromYear, toYear) {
+  try {
+    const [driverRes, standingsRes] = await Promise.all([
+      fetch(`/api/driver?driverId=${driverId}`).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`/api/standings`).then(r => r.ok ? r.json() : null).catch(() => null),
     ])
 
-    const seasons = standingsResults.filter(Boolean).map(d => d.MRData?.StandingsTable?.StandingsLists?.[0]).filter(Boolean)
+    const currentStanding = standingsRes?.standings?.find(d => d.Driver.driverId === driverId)
+    const allSeasons = driverRes?.seasons || []
+
+    // filter seasons by year range
+    const filteredSeasons = allSeasons.filter(s => {
+      const year = parseInt(s.season)
+      return year >= fromYear && year <= toYear
+    })
+
+    const currentYear = new Date().getFullYear()
+
+    const wins = filteredSeasons
+      .filter(s => parseInt(s.season) < currentYear)
+      .reduce((sum, s) => sum + parseInt(s.DriverStandings?.[0]?.wins || 0), 0)
+
+    const championships = filteredSeasons
+      .filter(s => parseInt(s.season) < currentYear)
+      .filter(s => s.DriverStandings?.[0]?.position === '1').length
+
+    // for podiums/poles/fastest laps we still need Jolpica year by year
+    // but only for the filtered range — use the batch approach
+    const BASE = 'https://api.jolpi.ca/ergast/f1'
+    const ergastId = driverRes?.driver?.driverId || driverId
+    const debutYear = Math.max(parseInt(allSeasons[0]?.season || fromYear), fromYear)
+    const endYear = Math.min(toYear, currentYear)
+    const years = Array.from({ length: endYear - debutYear + 1 }, (_, i) => debutYear + i)
+
+    async function fetchBatch(urls) {
+      const results = []
+      for (let i = 0; i < urls.length; i += 3) {
+        const batch = urls.slice(i, i + 3)
+        const batchResults = await Promise.all(
+          batch.map(url => fetch(url).then(r => r.ok ? r.json() : null).catch(() => null))
+        )
+        results.push(...batchResults)
+        if (i + 3 < urls.length) await new Promise(r => setTimeout(r, 300))
+      }
+      return results
+    }
+
+    const [resultsArr, qualiArr] = await Promise.all([
+      fetchBatch(years.map(y => `${BASE}/${y}/drivers/${ergastId}/results.json?limit=30`)),
+      fetchBatch(years.map(y => `${BASE}/${y}/drivers/${ergastId}/qualifying.json?limit=30`)),
+    ])
+
     const allRaces = resultsArr.filter(Boolean).flatMap(d => d.MRData?.RaceTable?.Races || [])
     const allQuali = qualiArr.filter(Boolean).flatMap(d => d.MRData?.RaceTable?.Races || [])
-    const currentYearNow = new Date().getFullYear()
-    const currentStanding = CURRENT_2026_STANDINGS.find(d => d.Driver.driverId === driverId)
 
-    const wins = seasons.filter(s => parseInt(s.season) < currentYearNow).reduce((sum, s) => sum + parseInt(s.DriverStandings?.[0]?.wins || 0), 0)
-    const championships = seasons.filter(s => parseInt(s.season) < currentYearNow).filter(s => s.DriverStandings?.[0]?.position === '1').length
     const podiums = allRaces.filter(r => ['1','2','3'].includes(r.Results?.[0]?.position)).length
     const fastestLaps = allRaces.filter(r => r.Results?.[0]?.FastestLap?.rank === '1').length
-    const dnfs = allRaces.filter(r => { const s = r.Results?.[0]?.status || ''; return s !== 'Finished' && !s.includes('+') && !s.includes('Lap') }).length
+    const dnfs = allRaces.filter(r => {
+      const s = r.Results?.[0]?.status || ''
+      return s !== 'Finished' && !s.includes('+') && !s.includes('Lap')
+    }).length
     const racesTotal = allRaces.length
     const poles = allQuali.filter(r => r.QualifyingResults?.[0]?.position === '1').length
 
-    return { wins, championships, seasons: seasons.length, points: parseInt(currentStanding?.points || 0), position: parseInt(currentStanding?.position || 22), podiums, poles, fastestLaps, dnfs, racesTotal }
+    return {
+      wins, championships,
+      seasons: filteredSeasons.length,
+      points: parseInt(currentStanding?.points || 0),
+      position: parseInt(currentStanding?.position || 22),
+      podiums, poles, fastestLaps, dnfs, racesTotal,
+    }
   } catch(e) {
     return { wins: 0, championships: 0, seasons: 0, points: 0, position: 22, podiums: 0, poles: 0, fastestLaps: 0, dnfs: 0, racesTotal: 0 }
   }
