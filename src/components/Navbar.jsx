@@ -469,7 +469,6 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
   animate={{ x: 0 }}
   exit={{ x: '100%' }}
   transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-  onClick={() => setMenuOpen(false)}
 >
   <div className={styles.mobileMenuTop}>
     <span className={styles.mobileMenuTitle}>Menu</span>
@@ -477,7 +476,6 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
   <div className={styles.mobileLinks}>
     {NAV_LINKS.map((l, i) => (
       <motion.div
-      className={styles.mobileMenu}
         key={l.path}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
