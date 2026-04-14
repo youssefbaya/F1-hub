@@ -155,6 +155,14 @@
 .podiumDriver { font-family: var(--head); font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; }
 .podiumTeam { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--grey); text-transform: uppercase; margin-top: 0.2rem; }
 .podiumTime { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 0.5rem; }
+.podiumHint {
+  margin-top: 0.7rem;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey2);
+}
 
 /* standings — scrollable, won't conflict with page scroll */
 .standingsTable {
@@ -364,6 +372,120 @@
 .scrollHint {
   font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
   color: var(--grey); text-transform: uppercase; margin-top: 2.5rem;
+}
+
+@media (max-width: 900px) {
+  .dotNav { display: none; }
+
+  .fullSection {
+    padding: 4.5rem 1rem 1.2rem;
+  }
+
+  .sectionInner {
+    max-width: 100%;
+  }
+
+  .sectionHeader {
+    margin-bottom: 1.2rem;
+  }
+
+  .sectionTitle {
+    font-size: clamp(1.4rem, 7vw, 2rem);
+  }
+
+  .podium {
+    display: flex;
+    gap: 0.6rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding-bottom: 0.4rem;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .podium::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .podium::-webkit-scrollbar-track {
+    background: var(--surface2);
+    border-radius: 4px;
+  }
+
+  .podium::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 4px;
+  }
+
+  .podiumCard {
+    min-width: 78vw;
+    padding: 1.2rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    scroll-snap-align: start;
+  }
+
+  .podiumHint {
+    display: block;
+  }
+
+  .podiumPos {
+    font-size: 2rem;
+  }
+
+  .podiumDriver {
+    font-size: 1rem;
+  }
+
+  .standingsTable {
+    max-height: 56vh;
+    padding-right: 0;
+  }
+
+  .standingsRow {
+    grid-template-columns: 24px minmax(120px, 1fr) 84px 62px 36px;
+    gap: 0.45rem;
+    padding: 0.62rem 0.72rem;
+  }
+
+  .standingsPos,
+  .standingsPts {
+    font-size: 11px;
+  }
+
+  .standingsName {
+    font-size: 12px;
+  }
+
+  .standingsTeam {
+    font-size: 9px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .standingsBarWrap {
+    height: 2px;
+  }
+}
+
+@media (max-width: 520px) {
+  .standingsRow {
+    grid-template-columns: 22px minmax(110px, 1fr) 72px 54px 32px;
+  }
+
+  .podiumCard {
+    min-width: 84vw;
+  }
+}
+
+@media (min-width: 901px) {
+  .podiumHint {
+    display: none;
+  }
 }
 
 @media (min-width: 1600px) {
