@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import CountdownTimer from '../components/CountdownTimer'
-import { getNextRace, getDriverStandings, getConstructorStandings, getLastRaceResults } from '../services/ergast'
+import {
+  getNextRace,
+  getDriverStandings,
+  getConstructorStandings,
+  getLastRaceResults,
+} from '../services/ergast'
 import styles from './Home.module.css'
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'react-router-dom'
@@ -13,8 +18,12 @@ function Home() {
   const [loading, setLoading] = useState(true)
   const [activeSection, setActiveSection] = useState(0)
   const [selectedSession, setSelectedSession] = useState(null)
+
   const containerRef = useRef(null)
   const modalRef = useRef(null)
+  const modalRectRef = useRef(null)
+  const modalRafRef = useRef(null)
+
   const { scrollY } = useScroll({ container: containerRef })
   const heroOpacity = useTransform(scrollY, [0, 400], [1, 0])
   const heroY = useTransform(scrollY, [0, 400], [0, -60])
@@ -32,31 +41,42 @@ function Home() {
         setDriverStandings(drivers)
         setConstructorStandings(constructors)
         setLastRace(last)
-      } catch(e) {
+      } catch (e) {
         console.error(e)
       } finally {
         setLoading(false)
       }
     }
+
     fetchAll()
   }, [])
 
   useEffect(() => {
-  const container = containerRef.current
-  if (!container) return
-  const handleScroll = () => {
-    const index = Math.round(container.scrollTop / window.innerHeight)
-    setActiveSection(index)
-    // tell navbar about scroll
-    if (container.scrollTop > 20) {
-      document.body.classList.add('scrolled')
-    } else {
-      document.body.classList.remove('scrolled')
+    const container = containerRef.current
+    if (!container) return
+
+    const handleScroll = () => {
+      const index = Math.round(container.scrollTop / window.innerHeight)
+      setActiveSection(index)
+
+      if (container.scrollTop > 20) {
+        document.body.classList.add('scrolled')
+      } else {
+        document.body.classList.remove('scrolled')
+      }
     }
-  }
-  container.addEventListener('scroll', handleScroll, { passive: true })
-  return () => container.removeEventListener('scroll', handleScroll)
-}, [loading])
+
+    container.addEventListener('scroll', handleScroll, { passive: true })
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [loading])
+
+  useEffect(() => {
+    return () => {
+      if (modalRafRef.current) {
+        cancelAnimationFrame(modalRafRef.current)
+      }
+    }
+  }, [])
 
   const scrollToSection = (i) => {
     const container = containerRef.current
@@ -65,115 +85,160 @@ function Home() {
     setActiveSection(i)
   }
 
-  const handleModalMouseMove = (e) => {
+  const handleModalMouseEnter = () => {
     const card = modalRef.current
     if (!card) return
-    const rect = card.getBoundingClientRect()
+    modalRectRef.current = card.getBoundingClientRect()
+  }
+
+  const handleModalMouseMove = (e) => {
+    const card = modalRef.current
+    const rect = modalRectRef.current
+    if (!card || !rect) return
+
     const x = e.clientX - rect.left
     const y = e.clientY - rect.top
-    const cx = rect.width / 2
-    const cy = rect.height / 2
-    const rotateX = ((y - cy) / cy) * -8
-    const rotateY = ((x - cx) / cx) * 8
-    card.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
-    card.style.setProperty('--mx', `${x}px`)
-    card.style.setProperty('--my', `${y}px`)
+
+    if (modalRafRef.current) return
+
+    modalRafRef.current = requestAnimationFrame(() => {
+      const cx = rect.width / 2
+      const cy = rect.height / 2
+
+      const rotateX = ((y - cy) / cy) * -4
+      const rotateY = ((x - cx) / cx) * 4
+
+      card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`
+      card.style.setProperty('--mx', `${x}px`)
+      card.style.setProperty('--my', `${y}px`)
+
+      modalRafRef.current = null
+    })
   }
 
   const handleModalMouseLeave = () => {
     const card = modalRef.current
     if (!card) return
-    card.style.transform = 'perspective(600px) rotateX(0deg) rotateY(0deg)'
+
+    if (modalRafRef.current) {
+      cancelAnimationFrame(modalRafRef.current)
+      modalRafRef.current = null
+    }
+
+    card.style.transform = 'perspective(700px) rotateX(0deg) rotateY(0deg)'
+    card.style.setProperty('--mx', '50%')
+    card.style.setProperty('--my', '50%')
   }
 
-  if (loading) return (
-    <div className={styles.loader}>
-      <motion.div
-        className={styles.loaderBar}
-        initial={{ width: 0 }}
-        animate={{ width: '60vw' }}
-        transition={{ duration: 1.2, ease: 'easeInOut' }}
-      />
-      <motion.p
-        className={styles.loaderText}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-      >
-        Loading race data...
-      </motion.p>
-    </div>
-  )
+  if (loading) {
+    return (
+      <div className={styles.loader}>
+        <motion.div
+          className={styles.loaderBar}
+          initial={{ width: 0 }}
+          animate={{ width: '60vw' }}
+          transition={{ duration: 1.2, ease: 'easeInOut' }}
+        />
+        <motion.p
+          className={styles.loaderText}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          Loading race data...
+        </motion.p>
+      </div>
+    )
+  }
 
-  const raceDate = nextRace ? new Date(`${nextRace.date}T${nextRace.time || '00:00:00'}`) : null
+  const raceDate = nextRace
+    ? new Date(`${nextRace.date}T${nextRace.time || '00:00:00'}`)
+    : null
+
   const podium = lastRace?.Results?.slice(0, 3) || []
 
   const buildSessions = (race) => {
     if (!race) return []
+
     return [
       race.FirstPractice && {
         label: 'FP1',
         date: race.FirstPractice.date,
         time: race.FirstPractice.time,
-        type: 'practice'
+        type: 'practice',
       },
       race.SecondPractice && {
         label: race.Sprint ? 'Sprint Quali' : 'FP2',
         date: race.SecondPractice.date,
         time: race.SecondPractice.time,
-        type: race.Sprint ? 'sprintQuali' : 'practice'
+        type: race.Sprint ? 'sprintQuali' : 'practice',
       },
       race.Sprint && {
         label: 'Sprint',
         date: race.Sprint.date,
         time: race.Sprint.time,
-        type: 'sprint'
+        type: 'sprint',
       },
       race.ThirdPractice && {
         label: 'FP3',
         date: race.ThirdPractice.date,
         time: race.ThirdPractice.time,
-        type: 'practice'
+        type: 'practice',
       },
       race.Qualifying && {
         label: 'Qualifying',
         date: race.Qualifying.date,
         time: race.Qualifying.time,
-        type: 'quali'
+        type: 'quali',
       },
       race.date && {
         label: 'Race',
         date: race.date,
         time: race.time,
-        type: 'race'
+        type: 'race',
       },
     ].filter(Boolean)
   }
-const getCountryCode = (country) => {
-  const codes = {
-    'USA': 'us', 'United States': 'us',
-    'UK': 'gb', 'Great Britain': 'gb',
-    'UAE': 'ae', 'Abu Dhabi': 'ae',
-    'Italy': 'it', 'Germany': 'de',
-    'France': 'fr', 'Spain': 'es',
-    'Japan': 'jp', 'Australia': 'au',
-    'Bahrain': 'bh', 'Saudi Arabia': 'sa',
-    'China': 'cn', 'Monaco': 'mc',
-    'Canada': 'ca', 'Austria': 'at',
-    'Hungary': 'hu', 'Belgium': 'be',
-    'Netherlands': 'nl', 'Singapore': 'sg',
-    'Mexico': 'mx', 'Brazil': 'br',
-    'Qatar': 'qa', 'Azerbaijan': 'az',
+
+  const getCountryCode = (country) => {
+    const codes = {
+      USA: 'us',
+      'United States': 'us',
+      UK: 'gb',
+      'Great Britain': 'gb',
+      UAE: 'ae',
+      'Abu Dhabi': 'ae',
+      Italy: 'it',
+      Germany: 'de',
+      France: 'fr',
+      Spain: 'es',
+      Japan: 'jp',
+      Australia: 'au',
+      Bahrain: 'bh',
+      'Saudi Arabia': 'sa',
+      China: 'cn',
+      Monaco: 'mc',
+      Canada: 'ca',
+      Austria: 'at',
+      Hungary: 'hu',
+      Belgium: 'be',
+      Netherlands: 'nl',
+      Singapore: 'sg',
+      Mexico: 'mx',
+      Brazil: 'br',
+      Qatar: 'qa',
+      Azerbaijan: 'az',
+    }
+
+    return codes[country] || 'un'
   }
-  return codes[country] || 'un'
-}
+
   const sessions = buildSessions(nextRace)
 
   return (
     <div className={styles.container} ref={containerRef}>
-
       <div className={styles.dotNav}>
-        {[0, 1, 2, 3].map(i => (
+        {[0, 1, 2, 3].map((i) => (
           <button
             key={i}
             className={`${styles.dot} ${activeSection === i ? styles.dotActive : ''}`}
@@ -182,7 +247,6 @@ const getCountryCode = (country) => {
         ))}
       </div>
 
-      {/* SECTION 0 — HERO */}
       <section className={styles.fullSection}>
         <div className={styles.heroGlow} />
         <motion.div
@@ -190,19 +254,22 @@ const getCountryCode = (country) => {
           style={{ opacity: heroOpacity, y: heroY }}
         >
           <motion.div
-             className={styles.raceFlag}
-             initial={{ scale: 0.8, opacity: 0 }}
-             animate={{ scale: 1, opacity: 1 }}
+            className={styles.raceFlag}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.2 }}
-        >
-       {nextRace?.Circuit?.Location?.country && (
-    <img
-      src={`https://flagcdn.com/64x48/${getCountryCode(nextRace.Circuit.Location.country)}.png`}
-      alt={nextRace.Circuit.Location.country}
-      className={styles.raceFlagImg}
-    />
-  )}
-</motion.div>
+          >
+            {nextRace?.Circuit?.Location?.country && (
+              <img
+                src={`https://flagcdn.com/64x48/${getCountryCode(
+                  nextRace.Circuit.Location.country
+                )}.png`}
+                alt={nextRace.Circuit.Location.country}
+                className={styles.raceFlagImg}
+              />
+            )}
+          </motion.div>
+
           <motion.p
             className={styles.eyebrow}
             initial={{ opacity: 0, y: 20 }}
@@ -211,6 +278,7 @@ const getCountryCode = (country) => {
           >
             Round {nextRace?.round} · {nextRace?.Circuit?.Location?.country}
           </motion.p>
+
           <motion.h1
             className={styles.raceName}
             initial={{ opacity: 0, y: 30 }}
@@ -219,6 +287,7 @@ const getCountryCode = (country) => {
           >
             {nextRace?.raceName}
           </motion.h1>
+
           <motion.p
             className={styles.circuit}
             initial={{ opacity: 0 }}
@@ -227,6 +296,7 @@ const getCountryCode = (country) => {
           >
             {nextRace?.Circuit?.circuitName}
           </motion.p>
+
           {raceDate && (
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -247,17 +317,26 @@ const getCountryCode = (country) => {
               const localDateTime = session.time
                 ? new Date(`${session.date}T${session.time}`)
                 : new Date(session.date)
+
               const localDate = localDateTime.toLocaleDateString('en-GB', {
-                weekday: 'short', day: 'numeric', month: 'short'
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
               })
+
               const localTime = localDateTime.toLocaleTimeString('en-GB', {
-                hour: '2-digit', minute: '2-digit'
+                hour: '2-digit',
+                minute: '2-digit',
               })
+
               const isPast = localDateTime < new Date()
+
               return (
                 <div
                   key={i}
-                  className={`${styles.session} ${styles[session.type]} ${isPast ? styles.pastSession : ''}`}
+                  className={`${styles.session} ${styles[session.type]} ${
+                    isPast ? styles.pastSession : ''
+                  }`}
                   onClick={() => setSelectedSession({ ...session, localDate, localTime })}
                 >
                   <span className={styles.sessionLabel}>{session.label}</span>
@@ -281,7 +360,6 @@ const getCountryCode = (country) => {
         </motion.div>
       </section>
 
-      {/* SESSION MODAL */}
       <AnimatePresence>
         {selectedSession && (
           <motion.div
@@ -298,16 +376,21 @@ const getCountryCode = (country) => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0, y: 40 }}
               transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-              onClick={e => e.stopPropagation()}
+              onClick={(e) => e.stopPropagation()}
+              onMouseEnter={handleModalMouseEnter}
               onMouseMove={handleModalMouseMove}
               onMouseLeave={handleModalMouseLeave}
             >
               <button
                 className={styles.modalClose}
                 onClick={() => setSelectedSession(null)}
-              >✕</button>
+              >
+                ✕
+              </button>
+
               <p className={styles.modalEyebrow}>{nextRace?.raceName}</p>
               <h2 className={styles.modalTitle}>{selectedSession.label}</h2>
+
               <div className={styles.modalDetails}>
                 <div className={styles.modalRow}>
                   <span className={styles.modalLabel}>Date</span>
@@ -330,7 +413,8 @@ const getCountryCode = (country) => {
                 <div className={styles.modalRow}>
                   <span className={styles.modalLabel}>Location</span>
                   <span className={styles.modalValue}>
-                    {nextRace?.Circuit?.Location?.locality}, {nextRace?.Circuit?.Location?.country}
+                    {nextRace?.Circuit?.Location?.locality},{' '}
+                    {nextRace?.Circuit?.Location?.country}
                   </span>
                 </div>
                 <div className={styles.modalRow}>
@@ -338,19 +422,22 @@ const getCountryCode = (country) => {
                   <span className={styles.modalValue}>{nextRace?.round} of 24</span>
                 </div>
               </div>
+
               <p className={styles.modalHint}>Click outside to close</p>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* SECTION 1 — PODIUM */}
       <section className={styles.fullSection}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNum}>01</span>
-            <h2 className={styles.sectionTitle}>Last race <em>{lastRace?.raceName}</em></h2>
+            <h2 className={styles.sectionTitle}>
+              Last race <em>{lastRace?.raceName}</em>
+            </h2>
           </div>
+
           <div className={styles.podium}>
             {podium.map((result, i) => (
               <motion.div
@@ -359,24 +446,31 @@ const getCountryCode = (country) => {
                 whileHover={{ scale: 1.03, y: -4 }}
                 transition={{ type: 'spring', stiffness: 300 }}
               >
-                <span className={styles.podiumPos}>{i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}</span>
-                <p className={styles.podiumDriver}>{result.Driver.givenName} {result.Driver.familyName}</p>
+                <span className={styles.podiumPos}>
+                  {i === 0 ? '🥇' : i === 1 ? '🥈' : '🥉'}
+                </span>
+                <p className={styles.podiumDriver}>
+                  {result.Driver.givenName} {result.Driver.familyName}
+                </p>
                 <p className={styles.podiumTeam}>{result.Constructor.name}</p>
                 <p className={styles.podiumTime}>{result.Time?.time || result.status}</p>
               </motion.div>
             ))}
           </div>
+
           <p className={styles.podiumHint}>Swipe horizontally</p>
         </div>
       </section>
 
-      {/* SECTION 2 — DRIVER STANDINGS */}
       <section className={styles.fullSection}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNum}>02</span>
-            <h2 className={styles.sectionTitle}>Driver <em>standings</em></h2>
+            <h2 className={styles.sectionTitle}>
+              Driver <em>standings</em>
+            </h2>
           </div>
+
           <div className={styles.standingsTable}>
             {driverStandings.slice(0, 20).map((d, i) => (
               <motion.div
@@ -385,22 +479,32 @@ const getCountryCode = (country) => {
                 whileHover={{ x: 6 }}
               >
                 <span className={styles.standingsPos}>{d.position}</span>
+
                 <Link
-  to={`/drivers/${d.Driver.driverId}`}
-  className={styles.standingsName}
-  style={{ textDecoration: 'none', color: 'inherit' }}
->
-  {d.Driver.givenName} {d.Driver.familyName}
-</Link>
+                  to={`/drivers/${d.Driver.driverId}`}
+                  className={styles.standingsName}
+                  style={{ textDecoration: 'none', color: 'inherit' }}
+                >
+                  {d.Driver.givenName} {d.Driver.familyName}
+                </Link>
+
                 <span className={styles.standingsTeam}>{d.Constructors[0].name}</span>
+
                 <div className={styles.standingsBarWrap}>
                   <motion.div
                     className={styles.standingsBar}
                     initial={{ width: 0 }}
-                    animate={{ width: `${(d.points / driverStandings[0].points) * 100}%` }}
-                    transition={{ delay: i * 0.04 + 0.3, duration: 0.8, ease: 'easeOut' }}
+                    animate={{
+                      width: `${(d.points / driverStandings[0].points) * 100}%`,
+                    }}
+                    transition={{
+                      delay: i * 0.04 + 0.3,
+                      duration: 0.8,
+                      ease: 'easeOut',
+                    }}
                   />
                 </div>
+
                 <span className={styles.standingsPts}>{d.points}</span>
               </motion.div>
             ))}
@@ -408,13 +512,15 @@ const getCountryCode = (country) => {
         </div>
       </section>
 
-      {/* SECTION 3 — CONSTRUCTOR STANDINGS */}
       <section className={styles.fullSection}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionHeader}>
             <span className={styles.sectionNum}>03</span>
-            <h2 className={styles.sectionTitle}>Constructor <em>standings</em></h2>
+            <h2 className={styles.sectionTitle}>
+              Constructor <em>standings</em>
+            </h2>
           </div>
+
           <div className={styles.standingsTable}>
             {constructorStandings.slice(0, 11).map((c, i) => (
               <motion.div
@@ -425,22 +531,30 @@ const getCountryCode = (country) => {
                 <span className={styles.standingsPos}>{c.position}</span>
                 <span className={styles.standingsName}>{c.Constructor.name}</span>
                 <span className={styles.standingsTeam}>{c.Constructor.nationality}</span>
+
                 <div className={styles.standingsBarWrap}>
                   <motion.div
                     className={styles.standingsBar}
                     initial={{ width: 0 }}
-                    animate={{ width: `${(c.points / constructorStandings[0].points) * 100}%` }}
-                    transition={{ delay: i * 0.06 + 0.3, duration: 0.8, ease: 'easeOut' }}
+                    animate={{
+                      width: `${(c.points / constructorStandings[0].points) * 100}%`,
+                    }}
+                    transition={{
+                      delay: i * 0.06 + 0.3,
+                      duration: 0.8,
+                      ease: 'easeOut',
+                    }}
                   />
                 </div>
+
                 <span className={styles.standingsPts}>{c.points}</span>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-
     </div>
   )
 }
+
 export default Home

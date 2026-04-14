@@ -69,16 +69,17 @@ function DriverCard({ driver, standing }) {
   const flag = DRIVER_FLAGS[driver.id]
 
   const handleMouseMove = (e) => {
-    const card = e.currentTarget
-    const rect = card.getBoundingClientRect()
-    const x = (e.clientX - rect.left) / rect.width - 0.5
-    const y = (e.clientY - rect.top) / rect.height - 0.5
-    card.style.transform = `perspective(600px) rotateY(${x * 14}deg) rotateX(${-y * 14}deg) scale(1.04)`
-  }
+  const card = e.currentTarget
+  const rect = card.getBoundingClientRect()
+  const x = (e.clientX - rect.left) / rect.width - 0.5
+  const y = (e.clientY - rect.top) / rect.height - 0.5
 
-  const handleMouseLeave = (e) => {
-    e.currentTarget.style.transform = 'perspective(600px) rotateY(0deg) rotateX(0deg) scale(1)'
-  }
+  card.style.transform = `perspective(700px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg) translateY(-4px) scale(1.015)`
+}
+
+const handleMouseLeave = (e) => {
+  e.currentTarget.style.transform = 'perspective(700px) rotateY(0deg) rotateX(0deg) translateY(0) scale(1)'
+}
 
   return (
     <motion.div

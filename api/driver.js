@@ -31,7 +31,6 @@ async function fetchJSON(url, retries = 3) {
 
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader('Access-Control-Allow-Methods', 'GET')
 
   const { driverId } = req.query
   if (!driverId) return res.status(400).json({ error: 'Missing driverId' })
@@ -46,43 +45,20 @@ export default async function handler(req, res) {
     const currentYear = new Date().getFullYear()
     const years = Array.from({ length: currentYear - debutYear + 1 }, (_, i) => debutYear + i)
 
-    // fetch standings sequentially to avoid rate limits
-const standingsResults = []
-for (const year of years) {
-  const result = await fetchJSON(`${BASE}/${year}/drivers/${ergastId}/driverStandings.json`)
-  standingsResults.push(result)
-  await new Promise(res => setTimeout(res, 100))
-}
-
-const resultsArr = []
-for (const year of years) {
-  const result = await fetchJSON(`${BASE}/${year}/drivers/${ergastId}/results.json?limit=30`)
-  resultsArr.push(result)
-  await new Promise(res => setTimeout(res, 100))
-}
-
-const qualiArr = []
-for (const year of years) {
-  const result = await fetchJSON(`${BASE}/${year}/drivers/${ergastId}/qualifying.json?limit=30`)
-  qualiArr.push(result)
-  await new Promise(res => setTimeout(res, 100))
-}
+    // fetch standings only — fast enough for all drivers
+    const standingsResults = await Promise.all(
+      years.map(year =>
+        fetchJSON(`${BASE}/${year}/drivers/${ergastId}/driverStandings.json`).catch(() => null)
+      )
+    )
 
     const seasons = standingsResults.filter(Boolean)
       .map(d => d.MRData?.StandingsTable?.StandingsLists?.[0]).filter(Boolean)
-    const allRaces = resultsArr.filter(Boolean).flatMap(d => d.MRData?.RaceTable?.Races || [])
-    const allQuali = qualiArr.filter(Boolean).flatMap(d => d.MRData?.RaceTable?.Races || [])
 
-    const podiums = allRaces.filter(r => ['1','2','3'].includes(r.Results?.[0]?.position)).length
-    const fastestLaps = allRaces.filter(r => r.Results?.[0]?.FastestLap?.rank === '1').length
-    const dnfs = allRaces.filter(r => {
-      const s = r.Results?.[0]?.status || ''
-      return s !== 'Finished' && !s.includes('+') && !s.includes('Lap')
-    }).length
-    const racesTotal = allRaces.length
-    const poles = allQuali.filter(r => r.QualifyingResults?.[0]?.position === '1').length
+    // calculate wins from standings
+    const wins = seasons.reduce((sum, s) => sum + parseInt(s.DriverStandings?.[0]?.wins || 0), 0)
 
-    const data = { driver, seasons, podiums, poles, fastestLaps, racesTotal, dnfs }
+    const data = { driver, seasons, wins, podiums: 0, poles: 0, fastestLaps: 0, racesTotal: 0, dnfs: 0 }
     res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=3600')
     return res.status(200).json(data)
 

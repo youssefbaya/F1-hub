@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import styles from './Compare.module.css'
 import { CURRENT_2026_STANDINGS } from '../services/ergast.js'
@@ -227,6 +227,63 @@ function RadarChart({ data1, data2, d1, d2 }) {
   )
 }
 
+function YearSelect({ value, onChange, options }) {
+  const [open, setOpen] = useState(false)
+  const wrapperRef = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!wrapperRef.current?.contains(e.target)) {
+        setOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  return (
+    <div className={styles.yearSelectWrap} ref={wrapperRef}>
+      <button
+        type="button"
+        className={`${styles.yearSelectBtn} ${open ? styles.yearSelectBtnOpen : ''}`}
+        onClick={() => setOpen((s) => !s)}
+      >
+        <span>{value}</span>
+        <span className={`${styles.yearSelectChevron} ${open ? styles.yearSelectChevronOpen : ''}`}>
+          ▾
+        </span>
+      </button>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className={styles.yearSelectMenu}
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.16, ease: 'easeOut' }}
+          >
+            {options.map((year) => (
+              <button
+                key={year}
+                type="button"
+                className={`${styles.yearSelectOption} ${value === year ? styles.yearSelectOptionActive : ''}`}
+                onClick={() => {
+                  onChange(year)
+                  setOpen(false)
+                }}
+              >
+                {year}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 function Compare() {
   const currentYear = new Date().getFullYear()
   const [driver1Id, setDriver1Id] = useState('max_verstappen')
@@ -272,17 +329,22 @@ function Compare() {
       <div className={styles.yearFilter}>
         <span className={styles.yearFilterLabel}>Period</span>
         <div className={styles.yearGroup}>
-          <label className={styles.yearLabel}>From</label>
-          <select className={styles.yearSelect} value={fromYear} onChange={e => setFromYear(parseInt(e.target.value))}>
-            {Array.from({ length: 42 }, (_, i) => 1985 + i).map(y => <option key={y} value={y}>{y}</option>)}
-          </select>
-        </div>
-        <div className={styles.yearGroup}>
-          <label className={styles.yearLabel}>To</label>
-          <select className={styles.yearSelect} value={toYear} onChange={e => setToYear(parseInt(e.target.value))}>
-            {Array.from({ length: 42 }, (_, i) => 1985 + i).map(y => <option key={y} value={y}>{y}</option>)}
-          </select>
-        </div>
+  <label className={styles.yearLabel}>From</label>
+  <YearSelect
+    value={fromYear}
+    onChange={setFromYear}
+    options={Array.from({ length: 42 }, (_, i) => 1985 + i)}
+  />
+</div>
+
+<div className={styles.yearGroup}>
+  <label className={styles.yearLabel}>To</label>
+  <YearSelect
+    value={toYear}
+    onChange={setToYear}
+    options={Array.from({ length: 42 }, (_, i) => 1985 + i)}
+  />
+</div>
         <button className={styles.resetBtn} onClick={() => { setFromYear(2000); setToYear(currentYear) }}>Reset</button>
       </div>
 

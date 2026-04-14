@@ -52,8 +52,11 @@
 
 /* hero */
 .heroGlow {
-  position: absolute; inset: 0; pointer-events: none;
-  background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(225,6,0,0.08) 0%, transparent 70%);
+  background: radial-gradient(
+    ellipse 60% 50% at 50% 60%,
+    rgba(193, 18, 31, 0.08), /* use new red */
+    transparent 70%
+  );
 }
 .heroContent {
   display: flex; flex-direction: column;
@@ -78,37 +81,67 @@
   justify-content: center; margin-top: 0.5rem;
 }
 .session {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
-  padding: 0.7rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 1rem 1.25rem;
+  min-width: 128px;
+
+  background: rgba(20, 20, 20, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
   font-family: var(--mono);
   text-transform: uppercase;
-  min-width: 100px;
-  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
-  cursor: default;
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 .session:hover {
-  transform: scale(1.08);
-  border-color: var(--grey2);
-  background: var(--surface2);
+  transform: translateY(-3px) scale(1.03);
+  border-color: rgba(255, 255, 255, 0.14);
+  background: rgba(28, 28, 28, 0.72);
+  box-shadow:
+    0 16px 38px rgba(0, 0, 0, 0.32),
+    0 0 18px rgba(255, 156, 162, 0.08);
   z-index: 10;
   position: relative;
 }
 .sessionLabel {
-  font-size: 9px; letter-spacing: 0.15em;
-  color: var(--grey); font-weight: 500;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--grey);
+  font-weight: 500;
 }
+
 .sessionDate {
-  font-size: 11px; color: var(--grey);
+  font-size: 12px;
+  color: var(--grey);
 }
+
 .sessionTime {
-  font-size: 14px; color: var(--white);
-  font-weight: 500; letter-spacing: 0.05em;
+  font-size: 16px;
+  color: var(--white);
+  font-weight: 600;
+  letter-spacing: 0.05em;
 }
+
 .sessionTz {
-  font-size: 8px; color: var(--grey2); letter-spacing: 0.1em;
+  font-size: 9px;
+  color: var(--grey2);
+  letter-spacing: 0.1em;
 }
 
 /* all session types same grey — only race is red */
@@ -129,7 +162,10 @@
 .pastSession:hover { opacity: 0.7; }
 
 /* sections */
-.sectionInner { width: 100%; max-width: 900px; }
+.sectionInner {
+  width: 100%;
+  max-width: 920px;
+}
 .sectionHeader { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; }
 .sectionNum { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.2em; }
 .sectionTitle {
@@ -144,9 +180,33 @@
   background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
 }
 .podiumCard {
-  background: var(--surface); padding: 2rem;
-  display: flex; flex-direction: column; gap: 0.5rem;
+  background: rgba(20, 20, 20, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   cursor: default;
+
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 12px 30px rgba(0, 0, 0, 0.22);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+.podiumCard:hover {
+  background: rgba(28, 28, 28, 0.76);
+  border-color: rgba(255, 255, 255, 0.11);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 18px 38px rgba(0, 0, 0, 0.3);
 }
 .p1 { border-top: 2px solid gold; }
 .p2 { border-top: 2px solid silver; }
@@ -166,7 +226,9 @@
 
 /* standings — scrollable, won't conflict with page scroll */
 .standingsTable {
-  display: flex; flex-direction: column; gap: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   max-height: 58vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -179,17 +241,47 @@
 .standingsTable::-webkit-scrollbar-thumb:hover { background: var(--white); }
 
 .standingsRow {
-  display: grid; grid-template-columns: 32px 1fr 1fr 120px 60px;
-  align-items: center; gap: 1rem; padding: 0.8rem 1.2rem;
-  background: var(--surface); border-radius: 4px;
-  cursor: default; transition: background 0.2s;
+  display: grid;
+  grid-template-columns: 32px 1fr 1fr 120px 60px;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.2rem;
+
+  background: rgba(18, 18, 18, 0.58);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+  cursor: default;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
-.standingsRow:hover { background: var(--surface2); }
+
+.standingsRow:hover {
+  background: rgba(26, 26, 26, 0.76);
+  border-color: rgba(255, 255, 255, 0.1);
+}
 .standingsPos { font-family: var(--mono); font-size: 12px; color: var(--accent); }
 .standingsName { font-size: 14px; font-weight: 500; color: var(--white); }
 .standingsTeam { font-family: var(--mono); font-size: 10px; color: var(--grey); }
-.standingsBarWrap { height: 3px; background: var(--surface2); border-radius: 2px; overflow: hidden; }
-.standingsBar { height: 100%; background: var(--accent); border-radius: 2px; }
+.standingsBarWrap {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.standingsBar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), rgba(230, 230, 230, 0.92));
+  border-radius: 999px;
+}
 .standingsPts { font-family: var(--mono); font-size: 12px; color: var(--white); text-align: right; }
 
 .sprintSession {
@@ -199,28 +291,37 @@
 .sprintSession span:first-child { color: orange; }
 
 .modalOverlay {
-  position: fixed; inset: 0; z-index: 999;
-  background: rgba(0,0,0,0.6);
-  display: flex; align-items: center; justify-content: center;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
 .modalCard {
-  position: relative; cursor: default;
-  max-width: 460px; width: 90%;
-  border-radius: 16px;
+  position: relative;
+  cursor: default;
+  max-width: 460px;
+  width: 90%;
+  border-radius: 18px;
   padding: 2.5rem;
   overflow: hidden;
 
-  /* glassmorphism */
-  background: rgba(28,28,28,0.6);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(24, 24, 24, 0.48);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
 
-  /* inner glow */
+  border: 1px solid rgba(255, 255, 255, 0.09);
+
   box-shadow:
-    0 0 0 1px rgba(255,255,255,0.05),
-    0 20px 60px rgba(0,0,0,0.5),
-    inset 0 1px 0 rgba(255,255,255,0.1);
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 26px 70px rgba(0, 0, 0, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
   transition: box-shadow 0.2s;
 }
@@ -248,14 +349,13 @@
 .modalCard::after {
   content: '';
   position: absolute;
-  width: 300px; height: 300px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(225,6,0,0.08) 0%, transparent 70%);
-  transform: translate(-50%, -50%);
+  inset: 0;
   pointer-events: none;
-  transition: left 0.1s ease, top 0.1s ease;
-  left: var(--mx, 50%);
-  top: var(--my, 50%);
+  background: radial-gradient(
+    circle at 50% 35%,
+    rgba(193, 18, 31, 0.08) 0%,
+    transparent 55%
+  );
 }
 
 /* race type border colours */

@@ -9,20 +9,28 @@
   border-bottom: 1px solid transparent;
 }
 .nav.scrolled {
-  top: 12px; left: 24px; right: 24px;
-  height: 58px; border-radius: 14px;
-  background: rgba(14,14,14,0.3);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  border: 1px solid rgba(255,255,255,0.06);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  top: 12px;
+  left: 24px;
+  right: 24px;
+  height: 58px;
   padding: 0 1.5rem;
-}
+  border-radius: 14px;
 
+  background: rgba(14, 14, 14, 0.45);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
 /* hide progress bar and top line */
 .nav::before { display: none; }
 .progressBar { display: none; }
 .progressFill { display: none; }
+
+
 
 /* ── LOGO ─────────────────────────────────────── */
 .logo {
@@ -92,8 +100,8 @@
   color: rgba(255,255,255,0.65); letter-spacing: 0.04em;
   line-height: 1; transition: color 0.15s; white-space: nowrap;
 }
-.linkWrap:hover .linkLabel { color: var(--white); }
-.linkWrap:hover .linkNum { color: rgba(255,255,255,0.4); }
+.linkWrap:hover .linkLabel { color: var(--accent-soft); }
+.linkWrap:hover .linkNum { color: rgba(230, 57, 70, 0.7); }
 
 /* active — just colour the text */
 .active .linkLabel { color: var(--accent) !important; }
@@ -106,7 +114,7 @@
   font-size: 0.8rem; color: var(--grey);
   transition: transform 0.2s ease, color 0.2s; line-height: 1;
 }
-.chevronOpen { transform: translateY(-50%) rotate(-90deg); color: var(--accent); }
+.chevronOpen { transform: translateY(-50%) rotate(-90deg); color: var(--accent-soft); }
 
 /* ── DROPDOWN ─────────────────────────────────── */
 .dropdown {
@@ -216,9 +224,16 @@
   border: 1px solid rgba(255,255,255,0.08);
   border-radius: 2px; cursor: default; transition: all 0.2s;
 }
-.livePillActive { background: rgba(225,6,0,0.15) !important; border-color: var(--accent) !important; }
+.livePillActive {
+  background: rgba(193, 18, 31, 0.14) !important;
+  border-color: var(--accent) !important;
+}
 .liveDot { width: 5px; height: 5px; border-radius: 50%; background: var(--grey); flex-shrink: 0; }
-.liveDotActive { background: var(--accent) !important; box-shadow: 0 0 5px var(--accent) !important; animation: pulseFast 0.8s ease infinite !important; }
+.liveDotActive {
+  background: var(--accent) !important;
+  box-shadow: 0 0 8px rgba(193, 18, 31, 0.45) !important;
+  animation: pulseFast 0.8s ease infinite !important;
+}
 @keyframes pulseFast { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 .liveLabel { font-family: var(--mono); font-size: 9px; letter-spacing: 0.12em; color: var(--grey); transition: color 0.2s; white-space: nowrap; }
 .livePillActive .liveLabel { color: var(--accent); }
@@ -320,9 +335,13 @@
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 [data-theme="light"] .nav.scrolled {
-  background: rgba(250,250,250,0.92);
-  border: 1px solid rgba(0,0,0,0.08);
-  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  background: rgba(250, 250, 250, 0.68);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow:
+    0 10px 36px rgba(0, 0, 0, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 [data-theme="light"] .linkLabel { color: rgba(24,24,27,0.6); }
 [data-theme="light"] .linkNum { color: #A1A1AA; }
@@ -374,7 +393,7 @@
 }
 
 .logoImg {
-  height: 36px;
+  height: 44px;
   width: auto;
   object-fit: contain;
   filter: brightness(1);
