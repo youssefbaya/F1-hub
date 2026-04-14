@@ -123,7 +123,7 @@ const NAV_LINKS = [
   { path: '/calendar', label: 'Calendar', num: '04', dropdown: null },
   { path: '/circuits', label: 'Circuits', num: '05', dropdown: 'circuits' },
   { path: '/teams',    label: 'Teams',    num: '06', dropdown: 'teams' },
-  { path: '/extras',   label: 'Extras',   num: '07', dropdown: 'extras' },
+  { path: '/extras', label: 'Extras', num: '07', dropdown: 'extras', noLink: true },
 ]
 function DriverCard({ driver }) {
   const color = TEAM_COLORS[driver.team] || '#888'
@@ -385,16 +385,26 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
                 onMouseEnter={() => handleLinkEnter(l.dropdown || l.path)}
                 onMouseLeave={handleLinkLeave}
               >
-                <Link
-                  to={l.path}
-                  className={`${styles.link} ${isActive ? styles.active : ''}`}
-                >
-                  <span className={styles.linkNum}>{l.num}</span>
-                  <span className={styles.linkLabel}>{l.label}</span>
-                  {l.dropdown && (
-                    <span className={`${styles.chevron} ${openDropdown === l.dropdown ? styles.chevronOpen : ''}`}>›</span>
-                  )}
-                </Link>
+                {l.noLink ? (
+                  <div className={`${styles.link} ${styles.linkNoClick}`}>
+                    <span className={styles.linkNum}>{l.num}</span>
+                    <span className={styles.linkLabel}>{l.label}</span>
+                    {l.dropdown && (
+                      <span className={`${styles.chevron} ${openDropdown === l.dropdown ? styles.chevronOpen : ''}`}>›</span>
+                    )}
+                  </div>
+                ) : (
+                  <Link
+                    to={l.path}
+                    className={`${styles.link} ${isActive ? styles.active : ''}`}
+                  >
+                    <span className={styles.linkNum}>{l.num}</span>
+                    <span className={styles.linkLabel}>{l.label}</span>
+                    {l.dropdown && (
+                      <span className={`${styles.chevron} ${openDropdown === l.dropdown ? styles.chevronOpen : ''}`}>›</span>
+                    )}
+                  </Link>
+                )}
 
                 <AnimatePresence>
                   {l.dropdown && openDropdown === l.dropdown && (
@@ -472,14 +482,21 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
         exit={{ opacity: 0, y: 20 }}
         transition={{ delay: i * 0.06 + 0.1 }}
       >
-        <Link
-          to={l.path}
-          className={`${styles.mobileLink} ${location.pathname === l.path ? styles.mobileLinkActive : ''}`}
-          onClick={() => setMenuOpen(false)}
-        >
-          <span className={styles.mobileLinkLabel}>{l.label}</span>
-          <span className={styles.mobileLinkNum}>{l.num}</span>
-        </Link>
+        {l.noLink ? (
+  <div className={`${styles.mobileLink}`}>
+    <span className={styles.mobileLinkLabel}>{l.label}</span>
+    <span className={styles.mobileLinkNum}>{l.num}</span>
+  </div>
+) : (
+  <Link
+    to={l.path}
+    className={`${styles.mobileLink} ${location.pathname === l.path ? styles.mobileLinkActive : ''}`}
+    onClick={() => setMenuOpen(false)}
+  >
+    <span className={styles.mobileLinkLabel}>{l.label}</span>
+    <span className={styles.mobileLinkNum}>{l.num}</span>
+  </Link>
+)}
       </motion.div>
     ))}
   </div>

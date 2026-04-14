@@ -38,10 +38,10 @@ const GT3_RACES = [
 ]
 
 const RECORDS = [
-  { icon: '🏆', label: 'Championships', value: '4', sub: '2021 · 22 · 23 · 24' },
-  { icon: '🏁', label: 'Career Wins', value: '63+', sub: 'As of 2026' },
-  { icon: '⚡', label: 'Pole Positions', value: '40+', sub: 'Career total' },
-  { icon: '🥇', label: 'Podiums', value: '114+', sub: 'Career total' },
+  { icon: '🏆', label: 'Championships', value: '4', sub: '2021 · 2022 · 2023 · 2024' },
+  { icon: '🏁', label: 'Career Wins', value: '69+2', sub: 'As of 2026' },
+  { icon: '⚡', label: 'Pole Positions', value: '48', sub: 'Career total' },
+  { icon: '🥇', label: 'Podiums', value: '127', sub: 'Career total' },
   { icon: '📅', label: 'F1 Debut', value: '2015', sub: 'Youngest points scorer at 17' },
   { icon: '🔥', label: 'Best Season', value: '2023', sub: '19 wins from 22 races' },
   { icon: '🏎️', label: 'Fastest Laps', value: '33+', sub: 'Career total' },
@@ -53,10 +53,11 @@ const FUN_FACTS = [
   'He is the youngest F1 World Champion ever, winning his first title at 24.',
   'In 2023, he won 19 out of 22 races — the most wins in a single season ever.',
   'Max earned his GT3 licence by driving a Porsche GT4 just two weeks before his NLS debut.',
-  'He runs his own sim racing team, Team Redline, competing in online championships.',
+  'He runs his own sim racing team, Verstappen Sim Racing, competing in online championships and they also stream on Twitch!',
   'His father Jos Verstappen also raced in F1, from 1994 to 2003.',
   'The Nürburgring 24 Hours has been on his bucket list since childhood.',
   'Max won on his NLS GT3 debut in 2025 — just like he won on his F1 debut in 2016.',
+  'He is the best driver in the world, according to me, and I’m not just saying that because I’m a Max fan obviously',
 ]
 
 function useCountdown(targetDate) {

@@ -381,3 +381,7 @@
   transition: opacity 0.2s;
 }
 .logo:hover .logoImg { opacity: 0.85; }
+
+.linkNoClick {
+  cursor: default;
+}

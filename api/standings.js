@@ -1,7 +1,8 @@
-const BASE = 'https://api.jolpi.ca/ergast/f1'
-const OPENF1 = 'https://api.openf1.org/v1'
+// api/standings.js
+// Returns current driver and constructor standings, cached for 1 hour
 
-// fallback hardcoded standings in case API fails
+const BASE = 'https://api.jolpi.ca/ergast/f1'
+
 const FALLBACK_STANDINGS = [
   { position: '1', points: '72', wins: '2', Driver: { driverId: 'antonelli', givenName: 'Kimi', familyName: 'Antonelli', permanentNumber: '12', code: 'ANT' }, Constructors: [{ name: 'Mercedes' }] },
   { position: '2', points: '63', wins: '1', Driver: { driverId: 'russell', givenName: 'George', familyName: 'Russell', permanentNumber: '63', code: 'RUS' }, Constructors: [{ name: 'Mercedes' }] },
@@ -27,103 +28,23 @@ const FALLBACK_STANDINGS = [
   { position: '22', points: '0', wins: '0', Driver: { driverId: 'perez', givenName: 'Sergio', familyName: 'Perez', permanentNumber: '11', code: 'PER' }, Constructors: [{ name: 'Cadillac' }] },
 ]
 
-// map openf1 team names to our standard names
-const TEAM_NAME_MAP = {
-  'Mercedes': 'Mercedes',
-  'Ferrari': 'Ferrari',
-  'Red Bull Racing': 'Red Bull',
-  'McLaren': 'McLaren',
-  'Aston Martin': 'Aston Martin',
-  'Alpine': 'Alpine F1 Team',
-  'Haas F1 Team': 'Haas F1 Team',
-  'RB': 'Racing Bulls',
-  'Williams': 'Williams',
-  'Audi': 'Audi',
-  'Cadillac': 'Cadillac',
-}
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*')
+  res.setHeader('Access-Control-Allow-Methods', 'GET')
 
-// map openf1 driver names to ergast driverIds
-const NAME_TO_ERGAST_ID = {
-  'Verstappen': 'max_verstappen',
-  'Hamilton': 'hamilton',
-  'Leclerc': 'leclerc',
-  'Norris': 'norris',
-  'Piastri': 'piastri',
-  'Russell': 'russell',
-  'Antonelli': 'antonelli',
-  'Alonso': 'alonso',
-  'Stroll': 'stroll',
-  'Gasly': 'gasly',
-  'Colapinto': 'colapinto',
-  'Ocon': 'ocon',
-  'Bearman': 'bearman',
-  'Lawson': 'lawson',
-  'Lindblad': 'lindblad',
-  'Albon': 'albon',
-  'Sainz': 'sainz',
-  'Hülkenberg': 'hulkenberg',
-  'Hulkenberg': 'hulkenberg',
-  'Bortoleto': 'bortoleto',
-  'Bottas': 'bottas',
-  'Pérez': 'perez',
-  'Perez': 'perez',
-  'Hadjar': 'hadjar',
-}
-
-export async function getDriverStandings() {
   try {
-    const res = await fetch('/api/standings')
-    if (res.ok) {
-      const data = await res.json()
-      if (data.standings?.length > 0) return data.standings
+    const r = await fetch(`${BASE}/current/driverStandings.json`)
+    if (r.ok) {
+      const data = await r.json()
+      const standings = data.MRData?.StandingsTable?.StandingsLists?.[0]?.DriverStandings
+      if (standings?.length > 0) {
+        res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=600')
+        return res.status(200).json({ standings })
+      }
     }
   } catch(e) {}
-  return FALLBACK_STANDINGS
-}
 
-export async function getConstructorStandings() {
-  try {
-    const res = await fetch(`${BASE}/current/constructorStandings.json`)
-    if (res.ok) {
-      const data = await res.json()
-      const standings = data.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings
-      if (standings && standings.length > 0) return standings
-    }
-  } catch(e) {}
-  return []
+  // fallback
+  res.setHeader('Cache-Control', 's-maxage=3600, stale-while-revalidate=600')
+  return res.status(200).json({ standings: FALLBACK_STANDINGS })
 }
-
-export async function getNextRace() {
-  try {
-    const res = await fetch(`${BASE}/current/next.json`)
-    if (res.ok) {
-      const data = await res.json()
-      return data.MRData.RaceTable.Races[0]
-    }
-  } catch(e) {}
-  return null
-}
-
-export async function getLastRaceResults() {
-  try {
-    const res = await fetch(`${BASE}/current/last/results.json`)
-    if (res.ok) {
-      const data = await res.json()
-      return data.MRData.RaceTable.Races[0]
-    }
-  } catch(e) {}
-  return null
-}
-
-export async function getCurrentSeason() {
-  try {
-    const res = await fetch(`${BASE}/current/races.json?limit=30`)
-    if (res.ok) {
-      const data = await res.json()
-      return data.MRData.RaceTable.Races
-    }
-  } catch(e) {}
-  return []
-}
-
-export { FALLBACK_STANDINGS as CURRENT_2026_STANDINGS }
