@@ -40,10 +40,10 @@ const DRIVER_FLAGS = {
 }
 
 const DRIVERS = [
-  { id: 'norris',         name: 'Lando Norris',      code: 'NOR', number: 1,  team: 'McLaren',       color: '#FF8000' },
-  { id: 'piastri',        name: 'Oscar Piastri',      code: 'PIA', number: 81, team: 'McLaren',       color: '#FF8000' },
   { id: 'max_verstappen', name: 'Max Verstappen',     code: 'VER', number: 3,  team: 'Red Bull',      color: '#3671C6' },
   { id: 'hadjar',         name: 'Isack Hadjar',       code: 'HAD', number: 6,  team: 'Red Bull',      color: '#3671C6' },
+  { id: 'norris',         name: 'Lando Norris',      code: 'NOR', number: 1,  team: 'McLaren',       color: '#FF8000' },
+  { id: 'piastri',        name: 'Oscar Piastri',      code: 'PIA', number: 81, team: 'McLaren',       color: '#FF8000' },
   { id: 'leclerc',        name: 'Charles Leclerc',    code: 'LEC', number: 16, team: 'Ferrari',       color: '#E8002D' },
   { id: 'hamilton',       name: 'Lewis Hamilton',     code: 'HAM', number: 44, team: 'Ferrari',       color: '#E8002D' },
   { id: 'russell',        name: 'George Russell',     code: 'RUS', number: 63, team: 'Mercedes',      color: '#27F4D2' },
