@@ -6,7 +6,9 @@
 }
 
 .header {
-  margin-bottom: 2.5rem;
+  margin-top: var(--page-header-margin-top);
+  margin-bottom: var(--page-header-margin-bottom);
+  position: relative;
 }
 
 .eyebrow {
@@ -19,13 +21,12 @@
 }
 
 .title {
-  font-family: var(--head);
-  font-size: clamp(2rem, 4vw, 6rem);
-  font-weight: 900;
+  font-family: 'Jinada', sans-serif;
+  font-size: var(--page-title-size);
+  font-weight: 700;
+  letter-spacing: var(--page-title-spacing);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
   line-height: 0.9;
-  color: var(--white);
 }
 
 .grid {

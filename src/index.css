@@ -31,9 +31,13 @@ body {
     var(--bg);
 
   color: var(--white);
-  font-family: system-ui, -apple-system, sans-serif;
+  font-family: var(--body);
 
   min-height: 100vh;
+}
+
+body {
+  font-family: var(--body);
 }
 
 /* ===== TEXT ===== */

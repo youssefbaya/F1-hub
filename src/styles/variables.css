@@ -1,31 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Barlow:wght@400;500;600&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --mono: 'Share Tech Mono', monospace;
-  --head: 'Russo One', sans-serif;
-  --body: 'Barlow', sans-serif;
-  --bg:        #0f0f0f;
-  --surface:   #1c1c1c;
-  --surface2:  #242424;
-  --line:     rgba(255,255,255,0.06);
-  --accent:   #e10600;
+  --display: 'Oslla', sans-serif;
+  --head: 'Jinada', sans-serif;
+  --body: 'Lorin', sans-serif;
+  --mono: 'IBM Plex Mono', monospace;
+
+  --page-title-size: clamp(2rem, 4vw, 5rem);
+  --page-title-spacing: 0.02em;
+  --page-header-margin-top: 0.5rem;
+  --page-header-margin-bottom: 2.5rem;
+
+  --bg: #0f0f0f;
+  --surface: #1c1c1c;
+  --surface2: #242424;
+  --line: rgba(255, 255, 255, 0.06);
+  --accent: #e10600;
   --accent-s: #b30500;
-  --accent-g: rgba(225,6,0,0.12);
-  --white:    #f0f0f5;
-  --grey:     #6b6b88;
-  --grey2:    #3a3a52;
-  --mono:     'IBM Plex Mono', monospace;
-  --head:     'Raleway', sans-serif;
-  --body:     'DM Sans', sans-serif;
+  --accent-g: rgba(225, 6, 0, 0.12);
+  --white: #f0f0f5;
+  --grey: #6b6b88;
+  --grey2: #3a3a52;
 }
 
 [data-theme="light"] {
-  --bg:      #FAFAFA;
+  --bg: #FAFAFA;
   --surface: #F4F4F5;
-  --surface2:#ECECED;
-  --line:    rgba(0,0,0,0.08);
-  --accent:  #E11D48;
-  --white:   #18181B;
-  --grey:    #71717A;
-  --grey2:   #A1A1AA;
+  --surface2: #ECECED;
+  --line: rgba(0, 0, 0, 0.08);
+  --accent: #E11D48;
+  --white: #18181B;
+  --grey: #71717A;
+  --grey2: #A1A1AA;
 }

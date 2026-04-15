@@ -71,3 +71,40 @@ html {
     cursor: auto !important;
   }
 }
+
+/* === DISPLAY FONT (Oslla) === */
+@font-face {
+  font-family: 'Oslla';
+  src: url('/fonts/Oslla.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* === HEADER FONT (Jinada) === */
+@font-face {
+  font-family: 'Jinada';
+  src: url('/fonts/Jinada.woff') format('woff');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* === BODY FONT (Lorin) === */
+@font-face {
+  font-family: 'Lorin';
+  src: url('/fonts/Lorin-Light.woff2') format('woff2');
+  font-weight: 300;
+}
+
+@font-face {
+  font-family: 'Lorin';
+  src: url('/fonts/Lorin-Regular.woff2') format('woff2');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Lorin';
+  src: url('/fonts/Lorin-Bold.woff2') format('woff2');
+  font-weight: 700;
+}

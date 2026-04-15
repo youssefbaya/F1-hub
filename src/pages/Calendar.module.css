@@ -30,7 +30,9 @@
 
 /* header */
 .header {
-  margin-bottom: 3rem;
+  margin-top: var(--page-header-margin-top);
+  margin-bottom: var(--page-header-margin-bottom);
+  position: relative;
 }
 
 .eyebrow {
@@ -43,13 +45,12 @@
 }
 
 .title {
-  font-family: var(--head);
-  font-size: clamp(2rem, 4vw, 6rem);
-  font-weight: 900;
-  letter-spacing: 0.02em;
+  font-family: 'Jinada', sans-serif;
+  font-size: var(--page-title-size);
+  font-weight: 700;
+  letter-spacing: var(--page-title-spacing);
   text-transform: uppercase;
   line-height: 0.9;
-  margin-bottom: 2rem;
 }
 
 .title em {

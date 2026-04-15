@@ -71,7 +71,6 @@ const TEAM_COLORS = {
   'Haas F1 Team': '#B6BABD',
   Haas: '#B6BABD',
   'Racing Bulls': '#6692FF',
-  'RB F1 Team': '#6692FF',
   Williams: '#64C4FF',
   Audi: '#B20000',
   Sauber: '#52E252',

@@ -7,7 +7,8 @@
 }
 
 .header {
-  margin-bottom: 2.8rem;
+  margin-top: var(--page-header-margin-top);
+  margin-bottom: var(--page-header-margin-bottom);
   position: relative;
 }
 
@@ -17,18 +18,16 @@
   letter-spacing: 0.2em;
   color: var(--accent);
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
 }
 
 .title {
-  font-family: var(--head);
-  font-size: clamp(2.4rem, 4.5vw, 6rem);
-  font-weight: 900;
+  font-family: 'Jinada', sans-serif;
+  font-size: var(--page-title-size);
+  font-weight: 700;
+  letter-spacing: var(--page-title-spacing);
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  line-height: 0.92;
-  color: var(--white);
-  text-wrap: balance;
+  line-height: 0.9;
 }
 
 /* selectors */
@@ -50,15 +49,13 @@
 
 .vs {
   font-family: var(--head);
-  font-size: 1.15rem;
-  font-weight: 900;
+  font-size: 1rem;
+  font-weight: 700;
   color: var(--accent);
-  letter-spacing: 0.22em;
+  letter-spacing: 0.12em;
   opacity: 0.95;
   text-transform: uppercase;
 }
-
-
 
 /* selector */
 .selector {
@@ -127,32 +124,30 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 
 .selectorName {
-  font-family: var(--head);
-  font-size: 1rem;
-  font-weight: 900;
-  text-transform: uppercase;
+  font-family: 'Jinada', sans-serif;
+  font-weight: 800;
   color: var(--white);
-  letter-spacing: 0.055em;
-  line-height: 1;
+  font-size: 1.2rem;
+  letter-spacing: 0.06em;
 }
 
 .selectorTeam {
   font-family: var(--mono);
   font-size: 9px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   opacity: 0.9;
 }
 
 .selectorPlaceholder {
-  font-family: var(--mono);
-  font-size: 11px;
+  font-family: var(--body);
+  font-size: 0.92rem;
   color: var(--grey);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.01em;
 }
 
 .selectorChevron {
@@ -247,22 +242,22 @@
 .optInfo {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: 2px;
 }
 
 .optName {
   font-family: var(--head);
-  font-size: 0.75rem;
-  font-weight: 900;
+  font-size: 0.78rem;
+  font-weight: 700;
   text-transform: uppercase;
   color: var(--white);
-  letter-spacing: 0.04em;
+  letter-spacing: -0.01em;
 }
 
 .optTeam {
   font-family: var(--mono);
   font-size: 8px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
@@ -284,6 +279,10 @@
   box-shadow:
     0 10px 26px rgba(0, 0, 0, 0.18),
     inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+  overflow: visible;
+  position: relative;
+  z-index: 20;
 }
 
 .yearFilterLabel {
@@ -299,6 +298,8 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative;
+  z-index: 30;
 }
 
 .yearLabel {
@@ -309,22 +310,111 @@
   color: var(--grey);
 }
 
-.yearSelect {
+.yearSelectWrap {
+  position: relative;
+  z-index: 40;
+}
+
+.yearSelectBtn {
+  min-width: 88px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding: 7px 10px;
+  border-radius: 8px;
+
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.08);
   color: var(--white);
-  font-family: var(--mono);
-  font-size: 12px;
-  padding: 7px 10px;
-  border-radius: 8px;
+
+  font-family: var(--body);
+  font-size: 0.9rem;
   cursor: pointer;
-  outline: none;
-  transition: border-color 0.2s ease, background 0.2s ease;
+
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 
-.yearSelect:hover {
+.yearSelectBtn:hover {
   border-color: rgba(193, 18, 31, 0.5);
   background: rgba(255, 255, 255, 0.06);
+}
+
+.yearSelectBtnOpen {
+  border-color: rgba(193, 18, 31, 0.45);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.yearSelectChevron {
+  color: var(--grey);
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.yearSelectChevronOpen {
+  transform: rotate(180deg);
+  color: var(--white);
+}
+
+.yearSelectMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  min-width: 88px;
+  max-height: 240px;
+  overflow-y: auto;
+  z-index: 9999;
+
+  padding: 4px;
+  border-radius: 10px;
+
+  background: rgba(10, 10, 10, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.34),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.yearSelectMenu::-webkit-scrollbar {
+  width: 4px;
+}
+
+.yearSelectMenu::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg,
+      rgba(255, 123, 132, 0.9),
+      rgba(255, 123, 132, 0.9));
+  border-radius: 999px;
+}
+
+.yearSelectOption {
+  width: 100%;
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.84);
+  text-align: left;
+  cursor: pointer;
+
+  padding: 7px 10px;
+  border-radius: 7px;
+
+  font-family: var(--body);
+  font-size: 0.9rem;
+  line-height: 1;
+
+  transition: background 0.16s ease, color 0.16s ease;
+}
+
+.yearSelectOption:hover {
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--white);
+}
+
+.yearSelectOptionActive {
+  background: rgba(193, 18, 31, 0.16);
+  color: var(--white);
 }
 
 .resetBtn {
@@ -374,16 +464,18 @@
 
 .statsHeader span:first-child {
   font-family: var(--head);
-  font-size: 1.2rem;
-  font-weight: 900;
+  font-size: 1.15rem;
+  font-weight: 700;
   text-align: left;
+  letter-spacing: -0.02em;
 }
 
 .statsHeader span:last-child {
   font-family: var(--head);
-  font-size: 1.2rem;
-  font-weight: 900;
+  font-size: 1.15rem;
+  font-weight: 700;
   text-align: right;
+  letter-spacing: -0.02em;
 }
 
 .statsHeaderLabel {
@@ -393,6 +485,39 @@
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.4);
   text-align: center;
+}
+
+.viewToggle {
+  display: flex;
+  gap: 8px;
+  padding: 0.8rem 1.5rem;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.viewBtn {
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  color: var(--grey);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.viewBtn:hover {
+  border-color: var(--accent);
+  color: var(--white);
+}
+
+.viewBtnActive {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff !important;
 }
 
 .statsRows {
@@ -405,7 +530,7 @@
   grid-template-columns: 1fr 140px 1fr;
   align-items: center;
   gap: 1rem;
-  padding: 0.68rem 1.5rem;
+  padding: 0.72rem 1.5rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   transition: background 0.2s ease;
 }
@@ -445,13 +570,13 @@
 
 .statVal {
   font-family: var(--head);
-  font-size: 1.18rem;
-  font-weight: 900;
+  font-size: 1.08rem;
+  font-weight: 700;
   min-width: 44px;
   text-align: center;
   transition: color 0.3s ease;
   flex-shrink: 0;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.015em;
 }
 
 .statBarLeft {
@@ -493,6 +618,18 @@
   color: var(--grey);
 }
 
+.radarWrap {
+  padding: 1.5rem;
+}
+
+.radarLegend {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
 @media (max-width: 768px) {
   .main {
     padding: 5rem 1.5rem 3rem;
@@ -524,217 +661,4 @@
   .statVal {
     font-size: 0.9rem;
   }
-}
-
-.viewToggle {
-  display: flex;
-  gap: 8px;
-  padding: 0.7rem 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  background: rgba(255, 255, 255, 0.02);
-}
-
-.viewBtn {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--grey);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 7px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.viewBtn:hover {
-  border-color: rgba(193, 18, 31, 0.5);
-  color: var(--white);
-}
-
-.viewBtnActive {
-  background: rgba(193, 18, 31, 0.92);
-  border-color: rgba(193, 18, 31, 0.92);
-  color: #fff !important;
-}
-
-.radarWrap {
-  padding: 1.5rem;
-}
-
-.radarLegend {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  padding: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.viewToggle {
-  display: flex;
-  gap: 8px;
-  padding: 0.8rem 1.5rem;
-  border-bottom: 1px solid var(--line);
-}
-
-.viewBtn {
-  background: var(--surface2);
-  border: 1px solid var(--line);
-  color: var(--grey);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  padding: 6px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.viewBtn:hover {
-  border-color: var(--accent);
-  color: var(--white);
-}
-
-.viewBtnActive {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #fff !important;
-}
-
-.radarWrap {
-  padding: 1.5rem;
-}
-
-.yearSelectWrap {
-  position: relative;
-  z-index: 200;
-}
-
-.yearSelectBtn {
-  min-width: 88px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-
-  padding: 7px 10px;
-  border-radius: 8px;
-
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: var(--white);
-
-  font-family: var(--mono);
-  font-size: 12px;
-  cursor: pointer;
-
-  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-}
-
-.yearSelectBtn:hover {
-  border-color: rgba(193, 18, 31, 0.5);
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.yearSelectBtnOpen {
-  border-color: rgba(193, 18, 31, 0.45);
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.yearSelectChevron {
-  color: var(--grey);
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.yearSelectChevronOpen {
-  transform: rotate(180deg);
-  color: var(--white);
-}
-
-.yearSelectMenu {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  min-width: 88px;
-  max-height: 240px;
-  overflow-y: auto;
-  z-index: 999;
-
-  padding: 4px;
-  border-radius: 10px;
-
-  background: rgba(10, 10, 10, 0.94);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow:
-    0 14px 34px rgba(0, 0, 0, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03);
-}
-
-.yearSelectMenu::-webkit-scrollbar {
-  width: 4px;
-}
-
-.yearSelectMenu::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.yearSelectMenu::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg,
-      rgba(255, 123, 132, 0.9),
-      rgba(255, 123, 132, 0.9));
-  border-radius: 999px;
-}
-
-.yearSelectOption {
-  width: 100%;
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.84);
-  text-align: left;
-  cursor: pointer;
-
-  padding: 7px 10px;
-  border-radius: 7px;
-
-  font-family: var(--mono);
-  font-size: 12px;
-  line-height: 1;
-
-  transition: background 0.16s ease, color 0.16s ease;
-}
-
-.yearSelectOption:hover {
-  background: rgba(255, 255, 255, 0.045);
-  color: var(--white);
-}
-
-.yearSelectOptionActive {
-  background: rgba(193, 18, 31, 0.16);
-  color: var(--white);
-}
-
-.yearFilter {
-  overflow: visible;
-  position: relative;
-  z-index: 20;
-}
-
-.yearGroup {
-  position: relative;
-  z-index: 30;
-}
-
-.yearSelectWrap {
-  position: relative;
-  z-index: 40;
-}
-
-.yearSelectMenu {
-  position: absolute;
-  z-index: 9999;
 }

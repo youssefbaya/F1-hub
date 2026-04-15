@@ -112,21 +112,19 @@
 }
 
 .firstName {
-  font-family: var(--head);
+  font-family: 'Jinada', sans-serif;
   font-size: clamp(1.5rem, 3vw, 2.5rem);
-  font-weight: 900;
+  font-weight: 700;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
   color: var(--grey);
-  letter-spacing: 0.02em;
 }
 
 .lastName {
-  font-family: var(--head);
+  font-family: 'Jinada', sans-serif;
   font-size: clamp(2.5rem, 6vw, 5rem);
-  font-weight: 900;
-  text-transform: uppercase;
+  font-weight: 700;
   letter-spacing: 0.02em;
-  line-height: 1;
 }
 
 .driverMeta {
@@ -236,21 +234,16 @@
 }
 
 .statValue {
-  font-family: var(--head);
-  font-size: 1.8rem;
-  font-weight: 900;
-  color: var(--accent);
-  line-height: 1;
-  text-transform: uppercase;
+  font-family: 'Jinada', sans-serif;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
 }
 
 .statLabel {
-  font-family: var(--mono);
-  font-size: 8px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--grey);
-  text-align: center;
+  font-family: 'Lorin', sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.18em;
 }
 
 /* tabs */

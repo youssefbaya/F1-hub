@@ -65,22 +65,11 @@
   clip-path: polygon(0 0, 100% 0, 92% 100%, 0 100%);
 }
 
-.logoF {
-  font-family: var(--head);
-  font-size: 1.7rem;
-  font-weight: 900;
-  color: #fff;
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
+.logoF,
 .logoNum {
-  font-family: var(--head);
-  font-size: 1.7rem;
-  font-weight: 900;
-  color: #fff;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-family: 'Jinada', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 .logoText {
@@ -231,14 +220,10 @@
 }
 
 .linkLabel {
-  font-family: var(--body);
-  font-size: 16px;
+  font-family: 'Lorin', sans-serif;
+  font-size: 15px;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.65);
-  letter-spacing: 0.04em;
-  line-height: 1;
-  transition: color 0.15s;
-  white-space: nowrap;
+  letter-spacing: 0.06em;
 }
 
 .linkWrap:hover .linkLabel {

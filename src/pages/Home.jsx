@@ -471,7 +471,7 @@ function Home() {
           </div>
 
           <div className={styles.standingsTable}>
-            {driverStandings.slice(0, 20).map((d, i) => (
+            {driverStandings.slice(0, 22).map((d, i) => (
               <motion.div
                 key={d.Driver.driverId}
                 className={styles.standingsRow}

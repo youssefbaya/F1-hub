@@ -106,12 +106,18 @@
 }
 
 .raceName {
-  font-family: var(--head);
-  font-size: clamp(3rem, 7vw, 6rem);
-  font-weight: 900;
-  letter-spacing: -0.03em;
+  font-family: var(--display);
+  font-size: clamp(3.2rem, 7vw, 6.4rem);
+  font-weight: 700;
+  letter-spacing: 0.05em;
   color: var(--white);
-  line-height: 1;
+  line-height: 0.94;
+  text-transform: uppercase;
+}
+
+.value,
+.sep {
+  font-family: var(--mono);
 }
 
 .circuit {
@@ -844,3 +850,4 @@
 [data-theme="light"] .scrollHint {
   color: #71717A;
 }
+

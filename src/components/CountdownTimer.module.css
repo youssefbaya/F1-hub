@@ -13,14 +13,9 @@
 }
 
 .value {
-  font-family: var(--head);
+  font-family: 'Oslla', sans-serif;
   font-size: clamp(3rem, 6vw, 6rem);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  color: var(--white);
-  line-height: 1;
-  min-width: 2ch;
-  text-align: center;
+  letter-spacing: 0.06em;
 }
 
 .label {
@@ -33,11 +28,11 @@
 }
 
 .sep {
-  font-family: var(--head);
+  font-family: var(--mono);
   font-size: clamp(2rem, 4vw, 4rem);
-  font-weight: 900;
+  font-weight: 700;
   color: var(--accent);
   padding: 0 0.3rem;
-  margin-bottom: 1.8rem;
-  line-height: 1;
+  margin-bottom: 1.6rem;
+  line-height: 0.9;
 }

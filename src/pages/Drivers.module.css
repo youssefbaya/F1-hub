@@ -7,7 +7,9 @@
 }
 
 .header {
-  margin-bottom: 2.5rem;
+  margin-top: var(--page-header-margin-top);
+  margin-bottom: var(--page-header-margin-bottom);
+  position: relative;
 }
 
 .eyebrow {
@@ -16,17 +18,16 @@
   letter-spacing: 0.2em;
   color: var(--accent);
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.55rem;
 }
 
 .title {
-  font-family: var(--head);
-  font-size: clamp(3rem, 7vw, 6rem);
-  font-weight: 900;
+  font-family: 'Jinada', sans-serif;
+  font-size: var(--page-title-size);
+  font-weight: 700;
+  letter-spacing: var(--page-title-spacing);
   text-transform: uppercase;
-  letter-spacing: 0.02em;
   line-height: 0.9;
-  color: var(--white);
 }
 
 .grid {
@@ -130,8 +131,9 @@
   line-height: 1;
 
   font-family: var(--head);
-  font-size: 1.05rem;
-  font-weight: 900;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -180,9 +182,10 @@
 
 .overlayStatVal {
   font-family: var(--head);
-  font-size: 1.45rem;
-  font-weight: 900;
+  font-size: 1.25rem;
+  font-weight: 700;
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .overlayStatLabel {
@@ -228,12 +231,12 @@
 
 .cardName {
   font-family: var(--head);
-  font-size: 0.82rem;
-  font-weight: 900;
+  font-size: 0.8rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.035em;
+  letter-spacing: -0.01em;
   color: var(--white);
-  line-height: 1.1;
+  line-height: 1.08;
 
   white-space: nowrap;
   overflow: hidden;
@@ -246,7 +249,6 @@
   letter-spacing: 0.11em;
   text-transform: uppercase;
   opacity: 0.95;
-
   margin-top: 4px;
 }
 
