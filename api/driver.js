@@ -227,6 +227,17 @@ export default async function handler(req, res) {
       5
     )
 
+    const standingsResults = await mapWithConcurrency(
+      years,
+      async (year) => {
+        const data = await fetchJSON(
+          `${BASE}/${year}/drivers/${ergastId}/driverStandings.json`
+        )
+        return { year, data }
+      },
+      4
+    )
+
     const seasonSummariesMap = {}
     let wins = 0
     let podiums = 0
@@ -305,6 +316,39 @@ export default async function handler(req, res) {
       }
     }
 
+    for (const entry of standingsResults) {
+      const standing =
+        entry?.data?.MRData?.StandingsTable?.StandingsLists?.[0]?.DriverStandings?.[0]
+
+      if (!standing) continue
+
+      const year = String(entry.year)
+
+      if (!seasonSummariesMap[year]) {
+        seasonSummariesMap[year] = {
+          season: year,
+          team: standing?.Constructors?.[0]?.name || 'N/A',
+          championshipPosition: standing?.position
+            ? Number(standing.position)
+            : null,
+          points: standing?.points ? Number(standing.points) : 0,
+          wins: standing?.wins ? Number(standing.wins) : 0,
+          podiums: 0,
+          poles: 0,
+          fastestLaps: 0,
+          races: 0,
+          dnfs: 0,
+        }
+      } else {
+        seasonSummariesMap[year].championshipPosition = standing?.position
+          ? Number(standing.position)
+          : seasonSummariesMap[year].championshipPosition
+
+        seasonSummariesMap[year].team =
+          standing?.Constructors?.[0]?.name || seasonSummariesMap[year].team
+      }
+    }
+
     const seasonSummaries = Object.values(seasonSummariesMap).sort(
       (a, b) => Number(a.season) - Number(b.season)
     )
@@ -314,7 +358,9 @@ export default async function handler(req, res) {
     const career = {
       debutYear: years[0] || null,
       lastYear: years[years.length - 1] || null,
-      championships: 0,
+      championships: Object.values(seasonSummariesMap).filter(
+        (s) => Number(s.championshipPosition) === 1
+      ).length,
       races: racesTotal,
       wins,
       podiums,
