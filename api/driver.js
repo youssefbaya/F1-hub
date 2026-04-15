@@ -1,5 +1,35 @@
 const BASE = 'https://api.jolpi.ca/ergast/f1'
 
+const CUSTOM_DRIVERS = {
+  lindblad: {
+    driver: {
+      driverId: 'lindblad',
+      givenName: 'Arvid',
+      familyName: 'Lindblad',
+      dateOfBirth: '2007-08-08',
+      nationality: 'British',
+      code: 'LIN',
+      permanentNumber: null,
+    },
+
+    // adjust these
+    career: {
+      debutYear: 2026,
+      lastYear: 2026,
+      championships: 0,
+      races: 0,
+      wins: 0,
+      podiums: 0,
+      poles: 0,
+      fastestLaps: 0,
+      dnfs: 0,
+    },
+
+    seasons: [],
+    seasonSummaries: [],
+  },
+}
+
 async function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -63,6 +93,25 @@ export default async function handler(req, res) {
     const driver = infoRes?.MRData?.DriverTable?.Drivers?.[0]
 
     if (!driver) {
+      const custom = CUSTOM_DRIVERS[driverId]
+
+      if (custom) {
+        return res.status(200).json({
+          driver: custom.driver,
+          seasons: custom.seasons,
+          seasonSummaries: custom.seasonSummaries,
+          career: custom.career,
+          wins: custom.career.wins,
+          podiums: custom.career.podiums,
+          poles: custom.career.poles,
+          fastestLaps: custom.career.fastestLaps,
+          racesTotal: custom.career.races,
+          dnfs: custom.career.dnfs,
+          partial: false,
+          custom: true,
+        })
+      }
+
       return res.status(404).json({ error: 'Driver not found' })
     }
 
