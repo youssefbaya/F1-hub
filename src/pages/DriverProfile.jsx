@@ -130,29 +130,44 @@ function DriverProfile() {
     </div>
   )
 
-  const { driver, seasons, currentStandings, seasonSummaries = [] } = data
+  const seasonsForTable = seasonSummaries.length
+  ? seasonSummaries
+  : seasons.map((s) => {
+      const st = s.DriverStandings?.[0]
+
+      return {
+        season: s.season,
+        team: st?.Constructors?.[0]?.name || 'N/A',
+        championshipPosition: st?.position ? Number(st.position) : null,
+        points: st?.points ? Number(st.points) : 0,
+        wins: st?.wins ? Number(st.wins) : 0,
+      }
+    })
   const currentDriver = currentStandings.find(d => d.Driver.driverId === driverId)
-  const currentTeam = currentDriver?.Constructors?.[0]?.name || seasons[seasons.length - 1]?.DriverStandings?.[0]?.Constructors?.[0]?.name || 'N/A'
+  const currentTeam =
+  currentDriver?.Constructors?.[0]?.name ||
+  seasonsForTable[seasonsForTable.length - 1]?.team ||
+  seasons[seasons.length - 1]?.DriverStandings?.[0]?.Constructors?.[0]?.name ||
+  'N/A'
   const currentPoints = currentDriver?.points || '0'
   const currentPosition = currentDriver?.position || 'N/A'
   const currentYear = new Date().getFullYear()
-  const totalWins = data.wins || 0
+  const totalWins =
+  typeof data.wins === 'number'
+    ? data.wins
+    : seasonsForTable.reduce((sum, s) => sum + Number(s.wins || 0), 0)
 
 const championships =
-  data.career?.championships ||
-  seasonSummaries.filter(s => s.championshipPosition === 1).length
+  typeof data.career?.championships === 'number'
+    ? data.career.championships
+    : seasonsForTable.filter(s => Number(s.championshipPosition) === 1).length
 
-const totalSeasons = seasonSummaries.length || seasons.length
+const totalSeasons = seasonsForTable.length
 
-const bestFinish = seasonSummaries.length
-  ? seasonSummaries.reduce((best, s) => {
-      const pos = parseInt(s.championshipPosition || 99)
-      return pos < best ? pos : best
-    }, 99)
-  : seasons.reduce((best, s) => {
-      const pos = parseInt(s.DriverStandings?.[0]?.position || 99)
-      return pos < best ? pos : best
-    }, 99)
+const bestFinish = seasonsForTable.reduce((best, s) => {
+  const pos = parseInt(s.championshipPosition || 99)
+  return pos < best ? pos : best
+}, 99)
   const age = driver.dateOfBirth
     ? Math.floor((new Date() - new Date(driver.dateOfBirth)) / (365.25 * 24 * 60 * 60 * 1000))
     : null
@@ -396,8 +411,10 @@ const bestFinish = seasonSummaries.length
               <span>Wins</span>
               <span>Points</span>
             </div>
-            {[...(seasonSummaries.length ? seasonSummaries : [])].reverse().map((s, i) => {
-  const isChamp = Number(s.championshipPosition) === 1 && parseInt(s.season) < currentYear
+            {[...seasonsForTable].reverse().map((s, i) => {
+  const isChamp =
+    Number(s.championshipPosition) === 1 && parseInt(s.season) < currentYear
+
   const tColor = TEAM_COLORS[s.team] || 'var(--grey2)'
 
   return (
@@ -416,11 +433,17 @@ const bestFinish = seasonSummaries.length
       </span>
 
       <span className={styles.seasonTeam}>
-        <span className={styles.seasonTeamDot} style={{ background: tColor }} />
+        <span
+          className={styles.seasonTeamDot}
+          style={{ background: tColor }}
+        />
         {s.team || 'N/A'}
       </span>
 
-      <span className={styles.seasonPos} style={isChamp ? { color: teamColor } : {}}>
+      <span
+        className={styles.seasonPos}
+        style={isChamp ? { color: teamColor } : {}}
+      >
         P{s.championshipPosition || '?'}
       </span>
 
