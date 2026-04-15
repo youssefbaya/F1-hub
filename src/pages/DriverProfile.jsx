@@ -157,7 +157,10 @@ const bestFinish = seasonSummaries.length
     ? Math.floor((new Date() - new Date(driver.dateOfBirth)) / (365.25 * 24 * 60 * 60 * 1000))
     : null
   const teamColor = TEAM_COLORS[currentTeam] || 'var(--accent)'
-  const driverInfo = DRIVER_NATIONALITIES[driverId]
+  const driverInfo = DRIVER_NATIONALITIES[driverId] || {
+  flag: null,
+  nationality: driver.nationality,
+}
 
   const stats = [
     { label: 'Championships', value: championships, highlight: championships > 0 },
