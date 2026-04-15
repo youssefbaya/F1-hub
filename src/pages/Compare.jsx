@@ -47,76 +47,84 @@ const DEBUT_YEARS = {
 async function fetchCareerData(driverId, fromYear, toYear) {
   try {
     const [driverRes, standingsRes] = await Promise.all([
-      fetch(`/api/driver?driverId=${driverId}`).then(r => r.ok ? r.json() : null).catch(() => null),
-      fetch(`/api/standings`).then(r => r.ok ? r.json() : null).catch(() => null),
+      fetch(`/api/driver?driverId=${driverId}`)
+        .then(r => (r.ok ? r.json() : null))
+        .catch(() => null),
+      fetch(`/api/standings`)
+        .then(r => (r.ok ? r.json() : null))
+        .catch(() => null),
     ])
 
-    const currentStanding = standingsRes?.standings?.find(d => d.Driver.driverId === driverId)
-    const allSeasons = driverRes?.seasons || []
+    if (!driverRes?.driver) {
+      return {
+        championships: 0,
+        wins: 0,
+        seasons: 0,
+        points: 0,
+        position: null,
+        podiums: 0,
+        poles: 0,
+        fastestLaps: 0,
+        dnfs: 0,
+        racesTotal: 0,
+      }
+    }
 
-    // filter seasons by year range
-    const filteredSeasons = allSeasons.filter(s => {
-      const year = parseInt(s.season)
+    const currentStanding = standingsRes?.standings?.find(
+      d => d.Driver.driverId === driverId
+    )
+
+    const seasonSummaries = (driverRes.seasonSummaries || []).filter((s) => {
+      const year = Number(s.season)
       return year >= fromYear && year <= toYear
     })
 
-    const currentYear = new Date().getFullYear()
+    const championships = seasonSummaries.filter(
+      s => Number(s.championshipPosition) === 1
+    ).length
 
-    const wins = filteredSeasons
-      .filter(s => parseInt(s.season) < currentYear)
-      .reduce((sum, s) => sum + parseInt(s.DriverStandings?.[0]?.wins || 0), 0)
+    const wins = seasonSummaries.reduce((sum, s) => sum + Number(s.wins || 0), 0)
+    const podiums = seasonSummaries.reduce((sum, s) => sum + Number(s.podiums || 0), 0)
+    const poles = seasonSummaries.reduce((sum, s) => sum + Number(s.poles || 0), 0)
+    const fastestLaps = seasonSummaries.reduce((sum, s) => sum + Number(s.fastestLaps || 0), 0)
+    const dnfs = seasonSummaries.reduce((sum, s) => sum + Number(s.dnfs || 0), 0)
+    const racesTotal = seasonSummaries.reduce((sum, s) => sum + Number(s.races || 0), 0)
 
-    const championships = filteredSeasons
-      .filter(s => parseInt(s.season) < currentYear)
-      .filter(s => s.DriverStandings?.[0]?.position === '1').length
+    const points =
+      fromYear <= new Date().getFullYear() && toYear >= new Date().getFullYear()
+        ? Number(currentStanding?.points || 0)
+        : seasonSummaries.reduce((sum, s) => sum + Number(s.points || 0), 0)
 
-    // for podiums/poles/fastest laps we still need Jolpica year by year
-    // but only for the filtered range — use the batch approach
-    const BASE = 'https://api.jolpi.ca/ergast/f1'
-    const ergastId = driverRes?.driver?.driverId || driverId
-    const debutYear = Math.max(parseInt(allSeasons[0]?.season || fromYear), fromYear)
-    const endYear = Math.min(toYear, currentYear)
-    const years = Array.from({ length: endYear - debutYear + 1 }, (_, i) => debutYear + i)
-
-    async function fetchBatch(urls) {
-      const results = []
-      for (let i = 0; i < urls.length; i += 3) {
-        const batch = urls.slice(i, i + 3)
-        const batchResults = await Promise.all(
-          batch.map(url => fetch(url).then(r => r.ok ? r.json() : null).catch(() => null))
-        )
-        results.push(...batchResults)
-        if (i + 3 < urls.length) await new Promise(r => setTimeout(r, 300))
-      }
-      return results
-    }
-
-    const [resultsArr, qualiArr] = await Promise.all([
-      fetchBatch(years.map(y => `${BASE}/${y}/drivers/${ergastId}/results.json?limit=30`)),
-      fetchBatch(years.map(y => `${BASE}/${y}/drivers/${ergastId}/qualifying.json?limit=30`)),
-    ])
-
-    const allRaces = resultsArr.filter(Boolean).flatMap(d => d.MRData?.RaceTable?.Races || [])
-    const allQuali = qualiArr.filter(Boolean).flatMap(d => d.MRData?.RaceTable?.Races || [])
-
-    const podiums = allRaces.filter(r => ['1','2','3'].includes(r.Results?.[0]?.position)).length
-    const fastestLaps = allRaces.filter(r => r.Results?.[0]?.FastestLap?.rank === '1').length
-    const dnfs = allRaces.filter(r => {
-      const s = r.Results?.[0]?.status || ''
-      return s !== 'Finished' && !s.includes('+') && !s.includes('Lap')
-    }).length
-    const racesTotal = allRaces.length
-    const poles = allQuali.filter(r => r.QualifyingResults?.[0]?.position === '1').length
+    const position =
+      fromYear <= new Date().getFullYear() && toYear >= new Date().getFullYear()
+        ? Number(currentStanding?.position || 0)
+        : null
 
     return {
-      wins, championships,
-      seasons: filteredSeasons.length,
-      points: parseInt(currentStanding?.points || 0),
-      position: parseInt(currentStanding?.position || 22),
-      podiums, poles, fastestLaps, dnfs, racesTotal,
+      championships,
+      wins,
+      seasons: seasonSummaries.length,
+      points,
+      position,
+      podiums,
+      poles,
+      fastestLaps,
+      dnfs,
+      racesTotal,
     }
-  } catch(e) {
-    return { wins: 0, championships: 0, seasons: 0, points: 0, position: 22, podiums: 0, poles: 0, fastestLaps: 0, dnfs: 0, racesTotal: 0 }
+  } catch (e) {
+    return {
+      championships: 0,
+      wins: 0,
+      seasons: 0,
+      points: 0,
+      position: null,
+      podiums: 0,
+      poles: 0,
+      fastestLaps: 0,
+      dnfs: 0,
+      racesTotal: 0,
+    }
   }
 }
 
@@ -336,8 +344,22 @@ function Compare() {
   const [loading, setLoading] = useState(false)
   const [view, setView] = useState('bars')
 
-  const d1 = ALL_DRIVERS.find(d => d.id === driver1Id)
-  const d2 = ALL_DRIVERS.find(d => d.id === driver2Id)
+  const minAvailableYear = Math.min(d1?.debut || currentYear, d2?.debut || currentYear)
+const yearOptions = Array.from(
+  { length: currentYear - minAvailableYear + 1 },
+  (_, i) => minAvailableYear + i
+)
+
+useEffect(() => {
+  if (fromYear < minAvailableYear) setFromYear(minAvailableYear)
+  if (toYear < minAvailableYear) setToYear(currentYear)
+}, [minAvailableYear])
+
+useEffect(() => {
+  if (fromYear > toYear) {
+    setToYear(fromYear)
+  }
+}, [fromYear, toYear])
 
   useEffect(() => {
     if (!driver1Id || !driver2Id) return
@@ -372,21 +394,35 @@ function Compare() {
         <div className={styles.yearGroup}>
   <label className={styles.yearLabel}>From</label>
   <YearSelect
-    value={fromYear}
-    onChange={setFromYear}
-    options={Array.from({ length: 42 }, (_, i) => 1985 + i)}
-  />
+  value={fromYear}
+  onChange={(year) => {
+    setFromYear(year)
+    if (year > toYear) setToYear(year)
+  }}
+  options={yearOptions.filter(y => y <= toYear)}
+/>
 </div>
 
 <div className={styles.yearGroup}>
   <label className={styles.yearLabel}>To</label>
   <YearSelect
-    value={toYear}
-    onChange={setToYear}
-    options={Array.from({ length: 42 }, (_, i) => 1985 + i)}
-  />
+  value={toYear}
+  onChange={(year) => {
+    setToYear(year)
+    if (year < fromYear) setFromYear(year)
+  }}
+  options={yearOptions.filter(y => y >= fromYear)}
+/>
 </div>
-        <button className={styles.resetBtn} onClick={() => { setFromYear(2000); setToYear(currentYear) }}>Reset</button>
+        <button
+  className={styles.resetBtn}
+  onClick={() => {
+    setFromYear(minAvailableYear)
+    setToYear(currentYear)
+  }}
+>
+  Reset
+</button>
       </div>
 
       {data1 && data2 && d1 && d2 && (
@@ -414,8 +450,24 @@ function Compare() {
               <StatBar label="Total Races"    val1={data1.racesTotal}    val2={data2.racesTotal}    color1={d1.color} color2={d2.color} />
               <StatBar label="DNFs"           val1={data1.dnfs}          val2={data2.dnfs}          color1={d1.color} color2={d2.color} />
               <StatBar label="Seasons"        val1={data1.seasons}       val2={data2.seasons}       color1={d1.color} color2={d2.color} />
-              <StatBar label="2026 Points"    val1={data1.points}        val2={data2.points}        color1={d1.color} color2={d2.color} />
-              <StatBar label="2026 Position"  val1={23 - data1.position} val2={23 - data2.position} color1={d1.color} color2={d2.color} format={v => `P${23 - v}`} />
+              <StatBar
+  label={fromYear === toYear ? `${fromYear} Points` : 'Points in Range'}
+  val1={data1.points}
+  val2={data2.points}
+  color1={d1.color}
+  color2={d2.color}
+/>
+
+{data1.position && data2.position && fromYear <= currentYear && toYear >= currentYear && (
+  <StatBar
+    label="Current Position"
+    val1={23 - data1.position}
+    val2={23 - data2.position}
+    color1={d1.color}
+    color2={d2.color}
+    format={v => `P${23 - v}`}
+  />
+)}
             </div>
           )}
 
