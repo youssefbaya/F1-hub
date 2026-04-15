@@ -3,28 +3,28 @@ import { motion, AnimatePresence } from 'framer-motion'
 import styles from './Compare.module.css'
 
 const ALL_DRIVERS = [
-  { id: 'norris',         name: 'Lando Norris',      code: 'NOR', team: 'McLaren',      color: '#FF8000', img: 'lando_norris',         debut: 2019 },
-  { id: 'piastri',        name: 'Oscar Piastri',     code: 'PIA', team: 'McLaren',      color: '#FF8000', img: 'oscar_piastri',        debut: 2023 },
-  { id: 'max_verstappen', name: 'Max Verstappen',    code: 'VER', team: 'Red Bull',     color: '#3671C6', img: 'max_verstappen',       debut: 2015 },
-  { id: 'hadjar',         name: 'Isack Hadjar',      code: 'HAD', team: 'Red Bull',     color: '#3671C6', img: 'isack_hadjar',         debut: 2025 },
-  { id: 'leclerc',        name: 'Charles Leclerc',   code: 'LEC', team: 'Ferrari',      color: '#E8002D', img: 'charles_leclerc',      debut: 2018 },
-  { id: 'hamilton',       name: 'Lewis Hamilton',    code: 'HAM', team: 'Ferrari',      color: '#E8002D', img: 'lewis_hamilton',       debut: 2007 },
-  { id: 'russell',        name: 'George Russell',    code: 'RUS', team: 'Mercedes',     color: '#27F4D2', img: 'george_russell',       debut: 2019 },
-  { id: 'antonelli',      name: 'Kimi Antonelli',    code: 'ANT', team: 'Mercedes',     color: '#27F4D2', img: 'andrea_kimi_antonelli', debut: 2025 },
-  { id: 'alonso',         name: 'Fernando Alonso',   code: 'ALO', team: 'Aston Martin', color: '#229971', img: 'fernando_alonso',      debut: 2001 },
-  { id: 'stroll',         name: 'Lance Stroll',      code: 'STR', team: 'Aston Martin', color: '#229971', img: 'lance_stroll',         debut: 2017 },
-  { id: 'gasly',          name: 'Pierre Gasly',      code: 'GAS', team: 'Alpine',       color: '#FF87BC', img: 'pierre_gasly',         debut: 2017 },
-  { id: 'colapinto',      name: 'Franco Colapinto',  code: 'COL', team: 'Alpine',       color: '#FF87BC', img: 'franco_colapinto',     debut: 2024 },
-  { id: 'ocon',           name: 'Esteban Ocon',      code: 'OCO', team: 'Haas F1 Team', color: '#B6BABD', img: 'esteban_ocon',         debut: 2016 },
-  { id: 'bearman',        name: 'Oliver Bearman',    code: 'BEA', team: 'Haas F1 Team', color: '#B6BABD', img: 'oliver_bearman',       debut: 2025 },
-  { id: 'lawson',         name: 'Liam Lawson',       code: 'LAW', team: 'Racing Bulls', color: '#6692FF', img: 'liam_lawson',          debut: 2023 },
-  { id: 'lindblad',       name: 'Arvid Lindblad',    code: 'LIN', team: 'Racing Bulls', color: '#6692FF', img: 'arvid_lindblad',       debut: 2026 },
-  { id: 'albon',          name: 'Alexander Albon',   code: 'ALB', team: 'Williams',     color: '#64C4FF', img: 'alexander_albon',      debut: 2019 },
-  { id: 'sainz',          name: 'Carlos Sainz',      code: 'SAI', team: 'Williams',     color: '#64C4FF', img: 'carlos_sainz',         debut: 2015 },
-  { id: 'hulkenberg',     name: 'Nico Hülkenberg',   code: 'HUL', team: 'Audi',         color: '#B20000', img: 'nico_hulkenberg',      debut: 2010 },
-  { id: 'bortoleto',      name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi',         color: '#B20000', img: 'gabriel_bortoleto',    debut: 2025 },
-  { id: 'bottas',         name: 'Valtteri Bottas',   code: 'BOT', team: 'Cadillac',     color: '#C8AA6E', img: 'valtteri_bottas',      debut: 2013 },
-  { id: 'perez',          name: 'Sergio Perez',      code: 'PER', team: 'Cadillac',     color: '#C8AA6E', img: 'sergio_perez',         debut: 2011 },
+  { id: 'norris', name: 'Lando Norris', code: 'NOR', team: 'McLaren', color: '#FF8000', img: 'lando_norris', debut: 2019 },
+  { id: 'piastri', name: 'Oscar Piastri', code: 'PIA', team: 'McLaren', color: '#FF8000', img: 'oscar_piastri', debut: 2023 },
+  { id: 'max_verstappen', name: 'Max Verstappen', code: 'VER', team: 'Red Bull', color: '#3671C6', img: 'max_verstappen', debut: 2015 },
+  { id: 'hadjar', name: 'Isack Hadjar', code: 'HAD', team: 'Red Bull', color: '#3671C6', img: 'isack_hadjar', debut: 2025 },
+  { id: 'leclerc', name: 'Charles Leclerc', code: 'LEC', team: 'Ferrari', color: '#E8002D', img: 'charles_leclerc', debut: 2018 },
+  { id: 'hamilton', name: 'Lewis Hamilton', code: 'HAM', team: 'Ferrari', color: '#E8002D', img: 'lewis_hamilton', debut: 2007 },
+  { id: 'russell', name: 'George Russell', code: 'RUS', team: 'Mercedes', color: '#27F4D2', img: 'george_russell', debut: 2019 },
+  { id: 'antonelli', name: 'Kimi Antonelli', code: 'ANT', team: 'Mercedes', color: '#27F4D2', img: 'andrea_kimi_antonelli', debut: 2025 },
+  { id: 'alonso', name: 'Fernando Alonso', code: 'ALO', team: 'Aston Martin', color: '#229971', img: 'fernando_alonso', debut: 2001 },
+  { id: 'stroll', name: 'Lance Stroll', code: 'STR', team: 'Aston Martin', color: '#229971', img: 'lance_stroll', debut: 2017 },
+  { id: 'gasly', name: 'Pierre Gasly', code: 'GAS', team: 'Alpine', color: '#FF87BC', img: 'pierre_gasly', debut: 2017 },
+  { id: 'colapinto', name: 'Franco Colapinto', code: 'COL', team: 'Alpine', color: '#FF87BC', img: 'franco_colapinto', debut: 2024 },
+  { id: 'ocon', name: 'Esteban Ocon', code: 'OCO', team: 'Haas F1 Team', color: '#B6BABD', img: 'esteban_ocon', debut: 2016 },
+  { id: 'bearman', name: 'Oliver Bearman', code: 'BEA', team: 'Haas F1 Team', color: '#B6BABD', img: 'oliver_bearman', debut: 2025 },
+  { id: 'lawson', name: 'Liam Lawson', code: 'LAW', team: 'Racing Bulls', color: '#6692FF', img: 'liam_lawson', debut: 2023 },
+  { id: 'lindblad', name: 'Arvid Lindblad', code: 'LIN', team: 'Racing Bulls', color: '#6692FF', img: 'arvid_lindblad', debut: 2026 },
+  { id: 'albon', name: 'Alexander Albon', code: 'ALB', team: 'Williams', color: '#64C4FF', img: 'alexander_albon', debut: 2019 },
+  { id: 'sainz', name: 'Carlos Sainz', code: 'SAI', team: 'Williams', color: '#64C4FF', img: 'carlos_sainz', debut: 2015 },
+  { id: 'hulkenberg', name: 'Nico Hülkenberg', code: 'HUL', team: 'Audi', color: '#B20000', img: 'nico_hulkenberg', debut: 2010 },
+  { id: 'bortoleto', name: 'Gabriel Bortoleto', code: 'BOR', team: 'Audi', color: '#B20000', img: 'gabriel_bortoleto', debut: 2025 },
+  { id: 'bottas', name: 'Valtteri Bottas', code: 'BOT', team: 'Cadillac', color: '#C8AA6E', img: 'valtteri_bottas', debut: 2013 },
+  { id: 'perez', name: 'Sergio Perez', code: 'PER', team: 'Cadillac', color: '#C8AA6E', img: 'sergio_perez', debut: 2011 },
 ]
 
 const START_YEAR = 1985
@@ -52,6 +52,9 @@ async function fetchCareerData(driverId, fromYear, toYear) {
         fastestLaps: 0,
         dnfs: 0,
         racesTotal: 0,
+        winRate: 0,
+        podiumRate: 0,
+        poleRate: 0,
       }
     }
 
@@ -70,31 +73,44 @@ async function fetchCareerData(driverId, fromYear, toYear) {
     ).length
 
     const wins = seasonSummaries.reduce((sum, s) => sum + Number(s.wins || 0), 0)
-const podiums = seasonSummaries.reduce((sum, s) => sum + Number(s.podiums || 0), 0)
-const poles = seasonSummaries.reduce((sum, s) => sum + Number(s.poles || 0), 0)
-const fastestLaps = seasonSummaries.reduce((sum, s) => sum + Number(s.fastestLaps || 0), 0)
-const dnfs = seasonSummaries.reduce((sum, s) => sum + Number(s.dnfs || 0), 0)
-const racesTotal = seasonSummaries.reduce((sum, s) => sum + Number(s.races || 0), 0)
+    const podiums = seasonSummaries.reduce((sum, s) => sum + Number(s.podiums || 0), 0)
+    const poles = seasonSummaries.reduce((sum, s) => sum + Number(s.poles || 0), 0)
+    const fastestLaps = seasonSummaries.reduce((sum, s) => sum + Number(s.fastestLaps || 0), 0)
+    const dnfs = seasonSummaries.reduce((sum, s) => sum + Number(s.dnfs || 0), 0)
 
-return {
-  championships,
-  wins,
-  seasons: seasonSummaries.length,
-  points:
-    fromYear <= currentYear && toYear >= currentYear
-      ? Number(currentStanding?.points || 0)
-      : seasonSummaries.reduce((sum, s) => sum + Number(s.points || 0), 0),
-  position:
-    fromYear <= currentYear && toYear >= currentYear
-      ? Number(currentStanding?.position || 0)
-      : null,
-  podiums,
-  poles,
-  fastestLaps,
-  dnfs,
-  racesTotal,
-  winRate: racesTotal > 0 ? (wins / racesTotal) * 100 : 0,
-}
+    const racesTotal = seasonSummaries.reduce((sum, s) => {
+      const races = Number(s.races || 0)
+      return sum + races
+    }, 0)
+
+    const safeRacesTotal = racesTotal > 0 ? racesTotal : 0
+    const hasBrokenRaceCount = safeRacesTotal < wins || safeRacesTotal < podiums || safeRacesTotal < poles
+
+    const winRate = !hasBrokenRaceCount && safeRacesTotal > 0 ? (wins / safeRacesTotal) * 100 : 0
+    const podiumRate = !hasBrokenRaceCount && safeRacesTotal > 0 ? (podiums / safeRacesTotal) * 100 : 0
+    const poleRate = !hasBrokenRaceCount && safeRacesTotal > 0 ? (poles / safeRacesTotal) * 100 : 0
+
+    return {
+      championships,
+      wins,
+      seasons: seasonSummaries.length,
+      points:
+        fromYear <= currentYear && toYear >= currentYear
+          ? Number(currentStanding?.points || 0)
+          : seasonSummaries.reduce((sum, s) => sum + Number(s.points || 0), 0),
+      position:
+        fromYear <= currentYear && toYear >= currentYear
+          ? Number(currentStanding?.position || 0)
+          : null,
+      podiums,
+      poles,
+      fastestLaps,
+      dnfs,
+      racesTotal: safeRacesTotal,
+      winRate,
+      podiumRate,
+      poleRate,
+    }
   } catch (e) {
     return {
       championships: 0,
@@ -107,6 +123,9 @@ return {
       fastestLaps: 0,
       dnfs: 0,
       racesTotal: 0,
+      winRate: 0,
+      podiumRate: 0,
+      poleRate: 0,
     }
   }
 }
@@ -235,13 +254,13 @@ function RadarChart({ data1, data2, d1, d2 }) {
   const r = 130
 
   const stats = [
-  { label: 'Championships', v1: data1.championships, v2: data2.championships },
-  { label: 'Wins', v1: data1.wins, v2: data2.wins },
-  { label: 'Podiums', v1: data1.podiums, v2: data2.podiums },
-  { label: 'Poles', v1: data1.poles, v2: data2.poles },
-  { label: 'Fastest Laps', v1: data1.fastestLaps, v2: data2.fastestLaps },
-  { label: 'Win Rate %', v1: data1.winRate, v2: data2.winRate },
-]
+    { label: 'Championships', v1: data1.championships, v2: data2.championships },
+    { label: 'Wins', v1: data1.wins, v2: data2.wins },
+    { label: 'Podiums', v1: data1.podiums, v2: data2.podiums },
+    { label: 'Win Rate %', v1: data1.winRate, v2: data2.winRate },
+    { label: 'Podium Rate %', v1: data1.podiumRate, v2: data2.podiumRate },
+    { label: 'Pole Rate %', v1: data1.poleRate, v2: data2.poleRate },
+  ]
 
   const n = stats.length
   const angle = (i) => (Math.PI * 2 * i) / n - Math.PI / 2
@@ -550,21 +569,39 @@ function Compare() {
 
           {view === 'bars' && (
             <div className={styles.statsRows}>
-              <StatBar label="Championships"  val1={data1.championships} val2={data2.championships} color1={d1.color} color2={d2.color} />
-              <StatBar label="Wins"           val1={data1.wins}          val2={data2.wins}          color1={d1.color} color2={d2.color} />
-              <StatBar label="Podiums"        val1={data1.podiums}       val2={data2.podiums}       color1={d1.color} color2={d2.color} />
-              <StatBar label="Pole Positions" val1={data1.poles}         val2={data2.poles}         color1={d1.color} color2={d2.color} />
-              <StatBar label="Fastest Laps"   val1={data1.fastestLaps}   val2={data2.fastestLaps}   color1={d1.color} color2={d2.color} />
-              <StatBar label="Total Races"    val1={data1.racesTotal}    val2={data2.racesTotal}    color1={d1.color} color2={d2.color} />
-              <StatBar label="DNFs"           val1={data1.dnfs}          val2={data2.dnfs}          color1={d1.color} color2={d2.color} />
+              <StatBar label="Championships" val1={data1.championships} val2={data2.championships} color1={d1.color} color2={d2.color} />
+              <StatBar label="Wins" val1={data1.wins} val2={data2.wins} color1={d1.color} color2={d2.color} />
+              <StatBar label="Podiums" val1={data1.podiums} val2={data2.podiums} color1={d1.color} color2={d2.color} />
+              <StatBar label="Pole Positions" val1={data1.poles} val2={data2.poles} color1={d1.color} color2={d2.color} />
+              <StatBar label="Fastest Laps" val1={data1.fastestLaps} val2={data2.fastestLaps} color1={d1.color} color2={d2.color} />
+              <StatBar label="Total Races" val1={data1.racesTotal} val2={data2.racesTotal} color1={d1.color} color2={d2.color} />
+              <StatBar label="DNFs" val1={data1.dnfs} val2={data2.dnfs} color1={d1.color} color2={d2.color} />
               <StatBar
-  label="Win Rate"
-  val1={data1.winRate}
-  val2={data2.winRate}
-  color1={d1.color}
-  color2={d2.color}
-  format={(v) => `${v.toFixed(1)}%`}
-/>
+                label="Win Rate"
+                val1={data1.winRate}
+                val2={data2.winRate}
+                color1={d1.color}
+                color2={d2.color}
+                format={(v) => `${v.toFixed(1)}%`}
+              />
+
+              <StatBar
+                label="Podium Rate"
+                val1={data1.podiumRate}
+                val2={data2.podiumRate}
+                color1={d1.color}
+                color2={d2.color}
+                format={(v) => `${v.toFixed(1)}%`}
+              />
+
+              <StatBar
+                label="Pole Rate"
+                val1={data1.poleRate}
+                val2={data2.poleRate}
+                color1={d1.color}
+                color2={d2.color}
+                format={(v) => `${v.toFixed(1)}%`}
+              />
               <StatBar
                 label={fromYear === toYear ? `${fromYear} Points` : 'Points in Range'}
                 val1={data1.points}
