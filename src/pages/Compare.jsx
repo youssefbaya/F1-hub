@@ -69,24 +69,32 @@ async function fetchCareerData(driverId, fromYear, toYear) {
       s => Number(s.championshipPosition) === 1
     ).length
 
-    return {
-      championships,
-      wins: seasonSummaries.reduce((sum, s) => sum + Number(s.wins || 0), 0),
-      seasons: seasonSummaries.length,
-      points:
-        fromYear <= currentYear && toYear >= currentYear
-          ? Number(currentStanding?.points || 0)
-          : seasonSummaries.reduce((sum, s) => sum + Number(s.points || 0), 0),
-      position:
-        fromYear <= currentYear && toYear >= currentYear
-          ? Number(currentStanding?.position || 0)
-          : null,
-      podiums: seasonSummaries.reduce((sum, s) => sum + Number(s.podiums || 0), 0),
-      poles: seasonSummaries.reduce((sum, s) => sum + Number(s.poles || 0), 0),
-      fastestLaps: seasonSummaries.reduce((sum, s) => sum + Number(s.fastestLaps || 0), 0),
-      dnfs: seasonSummaries.reduce((sum, s) => sum + Number(s.dnfs || 0), 0),
-      racesTotal: seasonSummaries.reduce((sum, s) => sum + Number(s.races || 0), 0),
-    }
+    const wins = seasonSummaries.reduce((sum, s) => sum + Number(s.wins || 0), 0)
+const podiums = seasonSummaries.reduce((sum, s) => sum + Number(s.podiums || 0), 0)
+const poles = seasonSummaries.reduce((sum, s) => sum + Number(s.poles || 0), 0)
+const fastestLaps = seasonSummaries.reduce((sum, s) => sum + Number(s.fastestLaps || 0), 0)
+const dnfs = seasonSummaries.reduce((sum, s) => sum + Number(s.dnfs || 0), 0)
+const racesTotal = seasonSummaries.reduce((sum, s) => sum + Number(s.races || 0), 0)
+
+return {
+  championships,
+  wins,
+  seasons: seasonSummaries.length,
+  points:
+    fromYear <= currentYear && toYear >= currentYear
+      ? Number(currentStanding?.points || 0)
+      : seasonSummaries.reduce((sum, s) => sum + Number(s.points || 0), 0),
+  position:
+    fromYear <= currentYear && toYear >= currentYear
+      ? Number(currentStanding?.position || 0)
+      : null,
+  podiums,
+  poles,
+  fastestLaps,
+  dnfs,
+  racesTotal,
+  winRate: racesTotal > 0 ? (wins / racesTotal) * 100 : 0,
+}
   } catch (e) {
     return {
       championships: 0,
@@ -227,13 +235,13 @@ function RadarChart({ data1, data2, d1, d2 }) {
   const r = 130
 
   const stats = [
-    { label: 'Championships', v1: data1.championships, v2: data2.championships },
-    { label: 'Wins', v1: data1.wins, v2: data2.wins },
-    { label: 'Podiums', v1: data1.podiums, v2: data2.podiums },
-    { label: 'Poles', v1: data1.poles, v2: data2.poles },
-    { label: 'Fastest Laps', v1: data1.fastestLaps, v2: data2.fastestLaps },
-    { label: 'Seasons', v1: data1.seasons, v2: data2.seasons },
-  ]
+  { label: 'Championships', v1: data1.championships, v2: data2.championships },
+  { label: 'Wins', v1: data1.wins, v2: data2.wins },
+  { label: 'Podiums', v1: data1.podiums, v2: data2.podiums },
+  { label: 'Poles', v1: data1.poles, v2: data2.poles },
+  { label: 'Fastest Laps', v1: data1.fastestLaps, v2: data2.fastestLaps },
+  { label: 'Win Rate %', v1: data1.winRate, v2: data2.winRate },
+]
 
   const n = stats.length
   const angle = (i) => (Math.PI * 2 * i) / n - Math.PI / 2
@@ -549,7 +557,14 @@ function Compare() {
               <StatBar label="Fastest Laps"   val1={data1.fastestLaps}   val2={data2.fastestLaps}   color1={d1.color} color2={d2.color} />
               <StatBar label="Total Races"    val1={data1.racesTotal}    val2={data2.racesTotal}    color1={d1.color} color2={d2.color} />
               <StatBar label="DNFs"           val1={data1.dnfs}          val2={data2.dnfs}          color1={d1.color} color2={d2.color} />
-              <StatBar label="Seasons"        val1={data1.seasons}       val2={data2.seasons}       color1={d1.color} color2={d2.color} />
+              <StatBar
+  label="Win Rate"
+  val1={data1.winRate}
+  val2={data2.winRate}
+  color1={d1.color}
+  color2={d2.color}
+  format={(v) => `${v.toFixed(1)}%`}
+/>
               <StatBar
                 label={fromYear === toYear ? `${fromYear} Points` : 'Points in Range'}
                 val1={data1.points}
