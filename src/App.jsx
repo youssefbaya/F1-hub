@@ -7,6 +7,7 @@ import Search from './components/Search'
 import Home from './pages/Home'
 import Drivers from './pages/Drivers'
 import DriverProfile from './pages/DriverProfile'
+import OldDrivers from './pages/OldDrivers'
 import Calendar from './pages/Calendar'
 import Teams from './pages/Teams'
 import TeamProfile from './pages/TeamProfile'
@@ -14,7 +15,7 @@ import Circuits from './pages/Circuits'
 import Compare from './pages/Compare'
 import RaceResult from './pages/RaceResult'
 import Max from './pages/Max'
-import OldDrivers from './pages/oldDrivers'
+
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('f1hub-theme') || 'dark')
   const [searchOpen, setSearchOpen] = useState(false)
