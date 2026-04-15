@@ -10,24 +10,46 @@ function OldDrivers() {
       <div className={styles.header}>
         <p className={styles.eyebrow}>Formula 1 · Legends</p>
         <h1 className={styles.title}>Old Drivers</h1>
+        <p className={styles.subTitle}>
+          Champions, icons, and historic names from across Formula 1 history.
+        </p>
       </div>
 
       <div className={styles.grid}>
-        {OLD_DRIVERS.map(driver => (
-          <div
+        {OLD_DRIVERS.map((driver) => (
+          <button
             key={driver.id}
+            type="button"
             className={styles.card}
             onClick={() => navigate(`/drivers/${driver.id}`)}
           >
-            <div className={styles.photo}>
-              <img
-                src={`/drivers/${driver.id}.avif`}
-                alt={driver.name}
-                onError={e => e.target.style.display = 'none'}
-              />
+            <div className={styles.cardGlow} />
+            <div className={styles.photoWrap}>
+              <div className={styles.photo}>
+                <img
+                  src={`/drivers/${driver.id}.avif`}
+                  alt={driver.name}
+                  className={styles.photoImg}
+                  onError={(e) => {
+                    e.target.style.display = 'none'
+                    e.target.nextSibling.style.display = 'flex'
+                  }}
+                />
+                <div className={styles.photoFallback} style={{ display: 'none' }}>
+                  {driver.name
+                    .split(' ')
+                    .map((part) => part[0])
+                    .slice(0, 2)
+                    .join('')}
+                </div>
+              </div>
             </div>
-            <p className={styles.name}>{driver.name}</p>
-          </div>
+
+            <div className={styles.cardBody}>
+              <p className={styles.name}>{driver.name}</p>
+              <p className={styles.meta}>Legend profile</p>
+            </div>
+          </button>
         ))}
       </div>
     </main>
