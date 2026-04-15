@@ -225,8 +225,8 @@ function DriverProfile() {
     { label: 'Total Races', value: data.racesTotal || '—' },
     { label: 'Seasons', value: totalSeasons || '—' },
     { label: 'Best Finish', value: bestFinish === 99 ? '—' : `P${bestFinish}` },
-    { label: '2026 Position', value: `P${currentPosition}` },
-    { label: '2026 Points', value: currentPoints },
+    { label: 'Current Position', value: currentPosition === 'N/A' ? 'N/A' : `P${currentPosition}` },
+    { label: 'Current Points', value: currentPoints },
   ]
 
   return (
@@ -392,7 +392,7 @@ function DriverProfile() {
               },
               { label: 'Permanent number', val: driver.permanentNumber ? `#${driver.permanentNumber}` : 'N/A' },
               { label: 'Current team', val: currentTeam },
-              { label: '2026 position', val: `P${currentPosition}` },
+              { label: 'Current position', val: currentPosition === 'N/A' ? 'N/A' : `P${currentPosition}` },
               { label: 'Total races', val: data.racesTotal || '—' },
               { label: 'Pole positions', val: data.poles || '—' },
               { label: 'Fastest laps', val: data.fastestLaps || '—' },
