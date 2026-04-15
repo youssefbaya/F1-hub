@@ -1,3 +1,5 @@
+import { OLD_DRIVER_PROFILES } from '../src/data/oldDriverProfiles.js'
+
 const BASE = 'https://api.jolpi.ca/ergast/f1'
 
 const CUSTOM_DRIVERS = {
@@ -142,6 +144,44 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Methods', 'GET')
 
   const { driverId } = req.query
+
+  const oldDriver = OLD_DRIVER_PROFILES[driverId]
+
+  if (oldDriver) {
+    const seasons =
+      oldDriver.seasons?.length
+        ? oldDriver.seasons
+        : (oldDriver.seasonSummaries || []).map((s) => ({
+          season: String(s.season),
+          DriverStandings: [
+            {
+              position:
+                s.championshipPosition == null
+                  ? null
+                  : String(s.championshipPosition),
+              points: String(s.points ?? 0),
+              wins: String(s.wins ?? 0),
+              Constructors: [{ name: s.team || 'N/A' }],
+            },
+          ],
+        }))
+
+    return res.status(200).json({
+      driver: oldDriver.driver,
+      seasons,
+      seasonSummaries: oldDriver.seasonSummaries || [],
+      career: oldDriver.career || null,
+      wins: oldDriver.career?.wins || 0,
+      podiums: oldDriver.career?.podiums || 0,
+      poles: oldDriver.career?.poles || 0,
+      fastestLaps: oldDriver.career?.fastestLaps || 0,
+      racesTotal: oldDriver.career?.races || 0,
+      dnfs: oldDriver.career?.dnfs || 0,
+      partial: false,
+      failedYears: 0,
+      custom: true,
+    })
+  }
 
   if (!driverId) {
     return res.status(400).json({ error: 'Missing driverId' })

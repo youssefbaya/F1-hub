@@ -964,3 +964,28 @@
   -webkit-backdrop-filter: blur(4px);
   z-index: 149;
 }
+
+.dropdownHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.oldDriversBtn {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--white);
+  padding: 4px 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.oldDriversBtn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(225,6,0,0.08);
+}

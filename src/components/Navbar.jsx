@@ -282,7 +282,10 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
       <div className={styles.dropdownDrivers}>
         <div className={styles.dropdownHeader}>
           <span>2026 Drivers</span>
-          <Link to="/drivers" className={styles.dropdownViewAll}>View all →</Link>
+          <div className={styles.dropdownHeaderRight}>
+            <Link to="/drivers" className={styles.dropdownViewAll}>View all →</Link>
+            <Link to="/drivers/old" className={styles.oldDriversBtn}>Old Drivers</Link>
+          </div>
         </div>
         <div className={styles.driverGrid}>
           {ALL_DRIVERS.map(d => <DriverCard key={d.id} driver={d} />)}

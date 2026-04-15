@@ -29,6 +29,12 @@ const DRIVER_NATIONALITIES = {
   vettel: { flag: 'de', nationality: 'German' },
   rosberg: { flag: 'de', nationality: 'German' },
   raikkonen: { flag: 'fi', nationality: 'Finnish' },
+  michael_schumacher: { flag: 'de', nationality: 'German' },
+  ayrton_senna: { flag: 'br', nationality: 'Brazilian' },
+  alain_prost: { flag: 'fr', nationality: 'French' },
+  kimi_raikkonen: { flag: 'fi', nationality: 'Finnish' },
+  sebastian_vettel: { flag: 'de', nationality: 'German' },
+  nico_rosberg: { flag: 'de', nationality: 'German' },
 }
 
 const DRIVER_IMAGES = {
@@ -57,6 +63,12 @@ const DRIVER_IMAGES = {
   vettel: 'sebastian_vettel',
   rosberg: 'nico_rosberg',
   raikkonen: 'kimi_raikkonen',
+  michael_schumacher: 'michael_schumacher',
+  ayrton_senna: 'ayrton_senna',
+  alain_prost: 'alain_prost',
+  kimi_raikkonen: 'kimi_raikkonen',
+  sebastian_vettel: 'sebastian_vettel',
+  nico_rosberg: 'nico_rosberg',
 }
 
 const TEAM_COLORS = {

@@ -14,7 +14,7 @@ import Circuits from './pages/Circuits'
 import Compare from './pages/Compare'
 import RaceResult from './pages/RaceResult'
 import Max from './pages/Max'
-
+import OldDrivers from './pages/oldDrivers'
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('f1hub-theme') || 'dark')
   const [searchOpen, setSearchOpen] = useState(false)
@@ -48,6 +48,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/drivers/:driverId" element={<DriverProfile />} />
         <Route path="/drivers" element={<Drivers />} />
+        <Route path="/drivers/old" element={<OldDrivers />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/teams/:teamId" element={<TeamProfile />} />
         <Route path="/teams" element={<Teams />} />
