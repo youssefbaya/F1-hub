@@ -130,22 +130,29 @@ function DriverProfile() {
     </div>
   )
 
-  const { driver, seasons, currentStandings } = data
+  const { driver, seasons, currentStandings, seasonSummaries = [] } = data
   const currentDriver = currentStandings.find(d => d.Driver.driverId === driverId)
   const currentTeam = currentDriver?.Constructors?.[0]?.name || seasons[seasons.length - 1]?.DriverStandings?.[0]?.Constructors?.[0]?.name || 'N/A'
   const currentPoints = currentDriver?.points || '0'
   const currentPosition = currentDriver?.position || 'N/A'
   const currentYear = new Date().getFullYear()
-  const totalWins = seasons
-    .filter(s => parseInt(s.season) < currentYear)
-    .reduce((sum, s) => sum + parseInt(s.DriverStandings?.[0]?.wins || 0), 0)
-  const championships = seasons
-    .filter(s => s.DriverStandings?.[0]?.position === '1' && parseInt(s.season) < currentYear).length
-  const totalSeasons = seasons.length
-  const bestFinish = seasons.reduce((best, s) => {
-    const pos = parseInt(s.DriverStandings?.[0]?.position || 99)
-    return pos < best ? pos : best
-  }, 99)
+  const totalWins = data.wins || 0
+
+const championships =
+  data.career?.championships ||
+  seasonSummaries.filter(s => s.championshipPosition === 1).length
+
+const totalSeasons = seasonSummaries.length || seasons.length
+
+const bestFinish = seasonSummaries.length
+  ? seasonSummaries.reduce((best, s) => {
+      const pos = parseInt(s.championshipPosition || 99)
+      return pos < best ? pos : best
+    }, 99)
+  : seasons.reduce((best, s) => {
+      const pos = parseInt(s.DriverStandings?.[0]?.position || 99)
+      return pos < best ? pos : best
+    }, 99)
   const age = driver.dateOfBirth
     ? Math.floor((new Date() - new Date(driver.dateOfBirth)) / (365.25 * 24 * 60 * 60 * 1000))
     : null
@@ -386,34 +393,39 @@ function DriverProfile() {
               <span>Wins</span>
               <span>Points</span>
             </div>
-            {[...seasons].reverse().map((s, i) => {
-              const st = s.DriverStandings?.[0]
-              const isChamp = st?.position === '1' && parseInt(s.season) < currentYear
-              const tColor = TEAM_COLORS[st?.Constructors?.[0]?.name] || 'var(--grey2)'
-              return (
-                <motion.div
-                  key={s.season}
-                  className={`${styles.seasonRow} ${isChamp ? styles.champRow : ''}`}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.025 }}
-                  whileHover={{ x: 6 }}
-                  style={isChamp ? { borderLeftColor: teamColor } : {}}
-                >
-                  <span className={styles.seasonYear}>
-                    {s.season}
-                    {isChamp && <span className={styles.champBadge}>🏆</span>}
-                  </span>
-                  <span className={styles.seasonTeam}>
-                    <span className={styles.seasonTeamDot} style={{ background: tColor }} />
-                    {st?.Constructors?.[0]?.name || 'N/A'}
-                  </span>
-                  <span className={styles.seasonPos} style={isChamp ? { color: teamColor } : {}}>P{st?.position || '?'}</span>
-                  <span className={styles.seasonWins}>{st?.wins || 0}</span>
-                  <span className={styles.seasonPts}>{st?.points || 0}</span>
-                </motion.div>
-              )
-            })}
+            {[...(seasonSummaries.length ? seasonSummaries : [])].reverse().map((s, i) => {
+  const isChamp = Number(s.championshipPosition) === 1 && parseInt(s.season) < currentYear
+  const tColor = TEAM_COLORS[s.team] || 'var(--grey2)'
+
+  return (
+    <motion.div
+      key={s.season}
+      className={`${styles.seasonRow} ${isChamp ? styles.champRow : ''}`}
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: i * 0.025 }}
+      whileHover={{ x: 6 }}
+      style={isChamp ? { borderLeftColor: teamColor } : {}}
+    >
+      <span className={styles.seasonYear}>
+        {s.season}
+        {isChamp && <span className={styles.champBadge}>🏆</span>}
+      </span>
+
+      <span className={styles.seasonTeam}>
+        <span className={styles.seasonTeamDot} style={{ background: tColor }} />
+        {s.team || 'N/A'}
+      </span>
+
+      <span className={styles.seasonPos} style={isChamp ? { color: teamColor } : {}}>
+        P{s.championshipPosition || '?'}
+      </span>
+
+      <span className={styles.seasonWins}>{s.wins || 0}</span>
+      <span className={styles.seasonPts}>{s.points || 0}</span>
+    </motion.div>
+  )
+})}
           </div>
         </motion.div>
       )}
