@@ -1,5 +1,7 @@
 /* hide default cursor everywhere */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   cursor: none !important;
 }
 

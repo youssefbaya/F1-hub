@@ -9,10 +9,9 @@ const CUSTOM_DRIVERS = {
       dateOfBirth: '2007-08-08',
       nationality: 'British',
       code: 'LIN',
-      permanentNumber: null,
+      permanentNumber: '41',
+      url: null,
     },
-
-    // adjust these
     career: {
       debutYear: 2026,
       lastYear: 2026,
@@ -24,31 +23,60 @@ const CUSTOM_DRIVERS = {
       fastestLaps: 0,
       dnfs: 0,
     },
-
-    seasons: [],
-    seasonSummaries: [],
+    seasons: [
+      {
+        season: '2026',
+        DriverStandings: [
+          {
+            position: null,
+            points: '0',
+            wins: '0',
+            Constructors: [{ name: 'Racing Bulls' }],
+          },
+        ],
+      },
+    ],
+    seasonSummaries: [
+      {
+        season: '2026',
+        team: 'Racing Bulls',
+        championshipPosition: null,
+        points: 0,
+        wins: 0,
+        podiums: 0,
+        poles: 0,
+        fastestLaps: 0,
+        races: 0,
+        dnfs: 0,
+      },
+    ],
   },
 }
 
 async function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-async function fetchJSON(url, retries = 5) {
+async function fetchJSON(url, { retries = 3, timeoutMs = 7000 } = {}) {
   for (let i = 0; i < retries; i++) {
-    try {
-      const r = await fetch(url)
+    const controller = new AbortController()
+    const timeout = setTimeout(() => controller.abort(), timeoutMs)
 
-      if (r.status === 429) {
-        await sleep(1200 * (i + 1))
+    try {
+      const res = await fetch(url, { signal: controller.signal })
+      clearTimeout(timeout)
+
+      if (res.status === 429) {
+        await sleep(900 * (i + 1))
         continue
       }
 
-      if (!r.ok) return null
-      return await r.json()
+      if (!res.ok) return null
+      return await res.json()
     } catch (e) {
+      clearTimeout(timeout)
       if (i === retries - 1) return null
-      await sleep(700)
+      await sleep(400 * (i + 1))
     }
   }
 
@@ -57,12 +85,10 @@ async function fetchJSON(url, retries = 5) {
 
 function isDnfStatus(status = '') {
   const s = String(status).toLowerCase()
-
   if (!s) return false
   if (s.includes('finished')) return false
   if (s.includes('+')) return false
   if (s.includes('lap')) return false
-
   return true
 }
 
@@ -70,12 +96,45 @@ async function getCareerYears(driverId) {
   const seasonsRes = await fetchJSON(`${BASE}/drivers/${driverId}/seasons.json?limit=100`)
   const seasons = seasonsRes?.MRData?.SeasonTable?.Seasons || []
 
-  if (!seasons.length) return []
-
   return seasons
-    .map(s => Number(s.season))
+    .map((s) => Number(s.season))
     .filter(Boolean)
     .sort((a, b) => a - b)
+}
+
+async function mapWithConcurrency(items, worker, concurrency = 4) {
+  const results = new Array(items.length)
+  let index = 0
+
+  async function runner() {
+    while (index < items.length) {
+      const currentIndex = index++
+      results[currentIndex] = await worker(items[currentIndex], currentIndex)
+    }
+  }
+
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, () => runner())
+  )
+
+  return results
+}
+
+function buildSeasonStubFromSummary(summary) {
+  return {
+    season: String(summary.season),
+    DriverStandings: [
+      {
+        position:
+          summary.championshipPosition == null
+            ? null
+            : String(summary.championshipPosition),
+        points: String(summary.points ?? 0),
+        wins: String(summary.wins ?? 0),
+        Constructors: [{ name: summary.team || 'N/A' }],
+      },
+    ],
+  }
 }
 
 export default async function handler(req, res) {
@@ -96,18 +155,24 @@ export default async function handler(req, res) {
       const custom = CUSTOM_DRIVERS[driverId]
 
       if (custom) {
+        res.setHeader(
+          'Cache-Control',
+          's-maxage=604800, stale-while-revalidate=2592000'
+        )
+
         return res.status(200).json({
           driver: custom.driver,
-          seasons: custom.seasons,
-          seasonSummaries: custom.seasonSummaries,
+          seasons: custom.seasons || [],
+          seasonSummaries: custom.seasonSummaries || [],
           career: custom.career,
-          wins: custom.career.wins,
-          podiums: custom.career.podiums,
-          poles: custom.career.poles,
-          fastestLaps: custom.career.fastestLaps,
-          racesTotal: custom.career.races,
-          dnfs: custom.career.dnfs,
+          wins: custom.career?.wins || 0,
+          podiums: custom.career?.podiums || 0,
+          poles: custom.career?.poles || 0,
+          fastestLaps: custom.career?.fastestLaps || 0,
+          racesTotal: custom.career?.races || 0,
+          dnfs: custom.career?.dnfs || 0,
           partial: false,
+          failedYears: 0,
           custom: true,
         })
       }
@@ -119,6 +184,11 @@ export default async function handler(req, res) {
     const years = await getCareerYears(ergastId)
 
     if (!years.length) {
+      res.setHeader(
+        'Cache-Control',
+        's-maxage=604800, stale-while-revalidate=2592000'
+      )
+
       return res.status(200).json({
         driver,
         seasons: [],
@@ -140,133 +210,98 @@ export default async function handler(req, res) {
         fastestLaps: 0,
         racesTotal: 0,
         dnfs: 0,
+        partial: false,
+        failedYears: 0,
+        custom: false,
       })
     }
 
-    const standingsResults = []
-    const raceResultsByYear = []
+    const raceResultsByYear = await mapWithConcurrency(
+      years,
+      async (year) => {
+        const data = await fetchJSON(
+          `${BASE}/${year}/drivers/${ergastId}/results.json?limit=100`
+        )
+        return { year, data }
+      },
+      5
+    )
 
-    // Sequential fetch = much safer than Promise.all for lots of seasons
-    for (const year of years) {
-      const standings = await fetchJSON(
-        `${BASE}/${year}/drivers/${ergastId}/driverStandings.json`
-      )
-      standingsResults.push(standings)
-      await sleep(120)
-    }
-
-    for (const year of years) {
-      const results = await fetchJSON(
-        `${BASE}/${year}/drivers/${ergastId}/results.json?limit=100`
-      )
-      raceResultsByYear.push(results)
-      await sleep(120)
-    }
-
-    const seasons = standingsResults
-      .filter(Boolean)
-      .map(d => d?.MRData?.StandingsTable?.StandingsLists?.[0])
-      .filter(Boolean)
-
-    const allRaceResults = raceResultsByYear
-      .filter(Boolean)
-      .flatMap(d => d?.MRData?.RaceTable?.Races || [])
-
+    const seasonSummariesMap = {}
+    let wins = 0
     let podiums = 0
     let poles = 0
     let fastestLaps = 0
     let racesTotal = 0
     let dnfs = 0
-    let wins = 0
+    let failedYears = 0
 
-    const seasonSummariesMap = {}
+    for (const entry of raceResultsByYear) {
+      if (!entry?.data) {
+        failedYears += 1
+        continue
+      }
 
-    for (const race of allRaceResults) {
-      const result = race?.Results?.[0]
-      if (!result) continue
+      const races = entry.data?.MRData?.RaceTable?.Races || []
 
-      const year = String(race.season)
+      for (const race of races) {
+        const result = race?.Results?.[0]
+        if (!result) continue
 
-      if (!seasonSummariesMap[year]) {
-        seasonSummariesMap[year] = {
-          season: year,
-          team: result?.Constructor?.name || 'N/A',
-          championshipPosition: null,
-          points: 0,
-          wins: 0,
-          podiums: 0,
-          poles: 0,
-          fastestLaps: 0,
-          races: 0,
-          dnfs: 0,
+        const year = String(race.season)
+
+        if (!seasonSummariesMap[year]) {
+          seasonSummariesMap[year] = {
+            season: year,
+            team: result?.Constructor?.name || 'N/A',
+            championshipPosition: null,
+            points: 0,
+            wins: 0,
+            podiums: 0,
+            poles: 0,
+            fastestLaps: 0,
+            races: 0,
+            dnfs: 0,
+          }
         }
-      }
 
-      const position = result.position ? Number(result.position) : null
-      const grid = result.grid ? Number(result.grid) : null
-      const points = result.points ? Number(result.points) : 0
-      const fastestLapRank = result.FastestLap?.rank
-        ? Number(result.FastestLap.rank)
-        : null
-      const status = result.status || ''
-
-      racesTotal += 1
-      seasonSummariesMap[year].races += 1
-      seasonSummariesMap[year].points += points
-
-      if (position === 1) {
-        wins += 1
-        seasonSummariesMap[year].wins += 1
-      }
-
-      if (position && position <= 3) {
-        podiums += 1
-        seasonSummariesMap[year].podiums += 1
-      }
-
-      if (grid === 1) {
-        poles += 1
-        seasonSummariesMap[year].poles += 1
-      }
-
-      if (fastestLapRank === 1) {
-        fastestLaps += 1
-        seasonSummariesMap[year].fastestLaps += 1
-      }
-
-      if (isDnfStatus(status)) {
-        dnfs += 1
-        seasonSummariesMap[year].dnfs += 1
-      }
-    }
-
-    for (const s of seasons) {
-      const year = String(s.season)
-      const st = s.DriverStandings?.[0]
-      if (!st) continue
-
-      if (!seasonSummariesMap[year]) {
-        seasonSummariesMap[year] = {
-          season: year,
-          team: st?.Constructors?.[0]?.name || 'N/A',
-          championshipPosition: st?.position ? Number(st.position) : null,
-          points: st?.points ? Number(st.points) : 0,
-          wins: st?.wins ? Number(st.wins) : 0,
-          podiums: 0,
-          poles: 0,
-          fastestLaps: 0,
-          races: 0,
-          dnfs: 0,
-        }
-      } else {
-        seasonSummariesMap[year].championshipPosition = st?.position
-          ? Number(st.position)
+        const summary = seasonSummariesMap[year]
+        const position = result.position ? Number(result.position) : null
+        const grid = result.grid ? Number(result.grid) : null
+        const points = result.points ? Number(result.points) : 0
+        const fastestLapRank = result.FastestLap?.rank
+          ? Number(result.FastestLap.rank)
           : null
-        seasonSummariesMap[year].team =
-          st?.Constructors?.[0]?.name || seasonSummariesMap[year].team
-        seasonSummariesMap[year].points = st?.points
-          ? Number(st.points)
-          : seasonSummariesMap[year].points
+        const status = result.status || ''
+
+        summary.races += 1
+        summary.points += points
+        racesTotal += 1
+
+        if (position === 1) {
+          summary.wins += 1
+          wins += 1
+        }
+
+        if (position && position <= 3) {
+          summary.podiums += 1
+          podiums += 1
+        }
+
+        if (grid === 1) {
+          summary.poles += 1
+          poles += 1
+        }
+
+        if (fastestLapRank === 1) {
+          summary.fastestLaps += 1
+          fastestLaps += 1
+        }
+
+        if (isDnfStatus(status)) {
+          summary.dnfs += 1
+          dnfs += 1
+        }
       }
     }
 
@@ -274,14 +309,12 @@ export default async function handler(req, res) {
       (a, b) => Number(a.season) - Number(b.season)
     )
 
-    const championships = seasonSummaries.filter(
-      s => Number(s.championshipPosition) === 1
-    ).length
+    const seasons = seasonSummaries.map(buildSeasonStubFromSummary)
 
     const career = {
-      debutYear: years[0],
-      lastYear: years[years.length - 1],
-      championships,
+      debutYear: years[0] || null,
+      lastYear: years[years.length - 1] || null,
+      championships: 0,
       races: racesTotal,
       wins,
       podiums,
@@ -290,7 +323,10 @@ export default async function handler(req, res) {
       dnfs,
     }
 
-    res.setHeader('Cache-Control', 's-maxage=86400, stale-while-revalidate=3600')
+    res.setHeader(
+      'Cache-Control',
+      's-maxage=604800, stale-while-revalidate=2592000'
+    )
 
     return res.status(200).json({
       driver,
@@ -303,6 +339,9 @@ export default async function handler(req, res) {
       fastestLaps,
       racesTotal,
       dnfs,
+      partial: failedYears > 0,
+      failedYears,
+      custom: false,
     })
   } catch (e) {
     console.error('driver api error:', e)

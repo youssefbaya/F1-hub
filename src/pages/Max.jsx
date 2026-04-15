@@ -67,8 +67,8 @@ function useCountdown(targetDate) {
       const diff = targetDate - new Date()
       if (diff <= 0) return setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
       setTimeLeft({
-        days:    Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours:   Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
         minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
         seconds: Math.floor((diff % (1000 * 60)) / 1000),
       })
@@ -146,10 +146,10 @@ export default function Max() {
           <p className={styles.cardSub}>May 14–17, 2026</p>
           <div className={styles.countdown}>
             {[
-              { label: 'Days',    val: timeLeft.days },
-              { label: 'Hours',   val: timeLeft.hours },
-              { label: 'Mins',    val: timeLeft.minutes },
-              { label: 'Secs',    val: timeLeft.seconds },
+              { label: 'Days', val: timeLeft.days },
+              { label: 'Hours', val: timeLeft.hours },
+              { label: 'Mins', val: timeLeft.minutes },
+              { label: 'Secs', val: timeLeft.seconds },
             ].map(u => (
               <div key={u.label} className={styles.countdownUnit}>
                 <span className={styles.countdownNum}>{String(u.val ?? 0).padStart(2, '0')}</span>

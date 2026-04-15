@@ -4,12 +4,14 @@
   justify-content: center;
   gap: 0;
 }
+
 .unit {
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
 }
+
 .value {
   font-family: var(--head);
   font-size: clamp(3rem, 6vw, 6rem);
@@ -20,6 +22,7 @@
   min-width: 2ch;
   text-align: center;
 }
+
 .label {
   font-family: var(--mono);
   font-size: 9px;
@@ -28,6 +31,7 @@
   color: var(--grey);
   margin-top: 0.4rem;
 }
+
 .sep {
   font-family: var(--head);
   font-size: clamp(2rem, 4vw, 4rem);

@@ -18,8 +18,8 @@ const TEAM_DATA = {
     totalWins: 183,
     notable: 'Ayrton Senna, Alain Prost, Lewis Hamilton',
     drivers: [
-      { id: 'norris',  name: 'Lando Norris',  number: 1,  img: 'lando_norris' },
-      { id: 'piastri', name: 'Oscar Piastri',  number: 81, img: 'oscar_piastri' },
+      { id: 'norris', name: 'Lando Norris', number: 1, img: 'lando_norris' },
+      { id: 'piastri', name: 'Oscar Piastri', number: 81, img: 'oscar_piastri' },
     ]
   },
   'red_bull': {
@@ -34,8 +34,8 @@ const TEAM_DATA = {
     totalWins: 122,
     notable: 'Sebastian Vettel, Max Verstappen',
     drivers: [
-      { id: 'max_verstappen', name: 'Max Verstappen', number: 3,  img: 'max_verstappen' },
-      { id: 'hadjar',         name: 'Isack Hadjar',   number: 6,  img: 'isack_hadjar' },
+      { id: 'max_verstappen', name: 'Max Verstappen', number: 3, img: 'max_verstappen' },
+      { id: 'hadjar', name: 'Isack Hadjar', number: 6, img: 'isack_hadjar' },
     ]
   },
   'ferrari': {
@@ -51,8 +51,8 @@ const TEAM_DATA = {
     totalWins: 243,
     notable: 'Michael Schumacher, Niki Lauda, Kimi Räikkönen',
     drivers: [
-      { id: 'leclerc',  name: 'Charles Leclerc', number: 16, img: 'charles_leclerc' },
-      { id: 'hamilton', name: 'Lewis Hamilton',  number: 44, img: 'lewis_hamilton' },
+      { id: 'leclerc', name: 'Charles Leclerc', number: 16, img: 'charles_leclerc' },
+      { id: 'hamilton', name: 'Lewis Hamilton', number: 44, img: 'lewis_hamilton' },
     ]
   },
   'mercedes': {
@@ -67,7 +67,7 @@ const TEAM_DATA = {
     totalWins: 125,
     notable: 'Lewis Hamilton, Nico Rosberg',
     drivers: [
-      { id: 'russell',   name: 'George Russell', number: 63, img: 'george_russell' },
+      { id: 'russell', name: 'George Russell', number: 63, img: 'george_russell' },
       { id: 'antonelli', name: 'Kimi Antonelli', number: 12, img: 'andrea_kimi_antonelli' },
     ]
   },
@@ -84,7 +84,7 @@ const TEAM_DATA = {
     notable: 'Fernando Alonso, Sebastian Vettel',
     drivers: [
       { id: 'alonso', name: 'Fernando Alonso', number: 14, img: 'fernando_alonso' },
-      { id: 'stroll', name: 'Lance Stroll',    number: 18, img: 'lance_stroll' },
+      { id: 'stroll', name: 'Lance Stroll', number: 18, img: 'lance_stroll' },
     ]
   },
   'alpine': {
@@ -99,7 +99,7 @@ const TEAM_DATA = {
     totalWins: 35,
     notable: 'Alain Prost, Fernando Alonso, Esteban Ocon',
     drivers: [
-      { id: 'gasly',     name: 'Pierre Gasly',    number: 10, img: 'pierre_gasly' },
+      { id: 'gasly', name: 'Pierre Gasly', number: 10, img: 'pierre_gasly' },
       { id: 'colapinto', name: 'Franco Colapinto', number: 43, img: 'franco_colapinto' },
     ]
   },
@@ -115,7 +115,7 @@ const TEAM_DATA = {
     totalWins: 0,
     notable: 'Romain Grosjean, Kevin Magnussen',
     drivers: [
-      { id: 'ocon',    name: 'Esteban Ocon',   number: 31, img: 'esteban_ocon' },
+      { id: 'ocon', name: 'Esteban Ocon', number: 31, img: 'esteban_ocon' },
       { id: 'bearman', name: 'Oliver Bearman', number: 87, img: 'oliver_bearman' },
     ]
   },
@@ -131,7 +131,7 @@ const TEAM_DATA = {
     totalWins: 2,
     notable: 'Max Verstappen, Pierre Gasly',
     drivers: [
-      { id: 'lawson',   name: 'Liam Lawson',    number: 30, img: 'liam_lawson' },
+      { id: 'lawson', name: 'Liam Lawson', number: 30, img: 'liam_lawson' },
       { id: 'lindblad', name: 'Arvid Lindblad', number: 41, img: 'arvid_lindblad' },
     ]
   },
@@ -147,8 +147,8 @@ const TEAM_DATA = {
     totalWins: 114,
     notable: 'Nigel Mansell, Damon Hill, Alain Prost',
     drivers: [
-      { id: 'albon',  name: 'Alexander Albon', number: 23, img: 'alexander_albon' },
-      { id: 'sainz',  name: 'Carlos Sainz',    number: 55, img: 'carlos_sainz' },
+      { id: 'albon', name: 'Alexander Albon', number: 23, img: 'alexander_albon' },
+      { id: 'sainz', name: 'Carlos Sainz', number: 55, img: 'carlos_sainz' },
     ]
   },
   'audi': {
@@ -163,8 +163,8 @@ const TEAM_DATA = {
     totalWins: 0,
     notable: 'Kimi Räikkönen, Robert Kubica',
     drivers: [
-      { id: 'hulkenberg', name: 'Nico Hülkenberg',   number: 27, img: 'nico_hulkenberg' },
-      { id: 'bortoleto',  name: 'Gabriel Bortoleto', number: 5,  img: 'gabriel_bortoleto' },
+      { id: 'hulkenberg', name: 'Nico Hülkenberg', number: 27, img: 'nico_hulkenberg' },
+      { id: 'bortoleto', name: 'Gabriel Bortoleto', number: 5, img: 'gabriel_bortoleto' },
     ]
   },
   'cadillac': {
@@ -180,7 +180,7 @@ const TEAM_DATA = {
     notable: 'First US-based F1 constructor since 1986',
     drivers: [
       { id: 'bottas', name: 'Valtteri Bottas', number: 77, img: 'valtteri_bottas' },
-      { id: 'perez',  name: 'Sergio Perez',    number: 11, img: 'sergio_perez' },
+      { id: 'perez', name: 'Sergio Perez', number: 11, img: 'sergio_perez' },
     ]
   },
 }
@@ -207,7 +207,7 @@ function TeamProfile() {
         setStandings(teamStanding)
         const races = resultsRes.MRData?.RaceTable?.Races || []
         setResults(races.slice(-5).reverse())
-      } catch(e) {
+      } catch (e) {
         console.error(e)
       } finally {
         setLoading(false)
@@ -359,12 +359,12 @@ function TeamProfile() {
           <h2 className={styles.sectionTitle}>Team Info</h2>
           <div className={styles.infoGrid}>
             {[
-              { label: 'Full name',     val: team.fullName },
-              { label: 'Base',          val: team.base },
-              { label: 'Founded',       val: team.founded },
+              { label: 'Full name', val: team.fullName },
+              { label: 'Base', val: team.base },
+              { label: 'Founded', val: team.founded },
               { label: 'Championships', val: team.championships },
               { label: '2026 Position', val: standings?.position ? `P${standings.position}` : 'N/A' },
-              { label: '2026 Points',   val: standings?.points || '0' },
+              { label: '2026 Points', val: standings?.points || '0' },
             ].map(r => (
               <div key={r.label} className={styles.infoRow}>
                 <span className={styles.infoLabel}>{r.label}</span>
@@ -378,9 +378,9 @@ function TeamProfile() {
           <h2 className={styles.sectionTitle}>History</h2>
           <div className={styles.historyGrid}>
             {[
-              { label: 'Best result',   val: team.bestFinish, highlight: true },
-              { label: 'First win',     val: team.firstWin },
-              { label: 'Total wins',    val: team.totalWins, highlight: true },
+              { label: 'Best result', val: team.bestFinish, highlight: true },
+              { label: 'First win', val: team.firstWin },
+              { label: 'Total wins', val: team.totalWins, highlight: true },
               { label: 'Notable drivers', val: team.notable },
             ].map(r => (
               <div key={r.label} className={styles.historyRow}>

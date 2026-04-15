@@ -2,18 +2,31 @@
   padding: 7rem 4rem 4rem;
   max-width: 1800px;
   margin: 0 auto;
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
-.header { margin-bottom: 2.5rem; }
-.eyebrow {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
-  color: var(--accent); text-transform: uppercase; margin-bottom: 0.5rem;
+.header {
+  margin-bottom: 2.5rem;
 }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
 .title {
-  font-family: var(--head); font-size: clamp(3rem, 7vw, 6rem);
-  font-weight: 900; text-transform: uppercase; letter-spacing: 0.02em;
-  line-height: 0.9; color: var(--white);
+  font-family: var(--head);
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 0.9;
+  color: var(--white);
 }
 
 .grid {
@@ -46,12 +59,12 @@
 
   transform-style: preserve-3d;
   height: 100%;
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .card:hover {
-  border-color: color-mix(in srgb, var(--team-color) 55%, rgba(255,255,255,0.08));
+  border-color: color-mix(in srgb, var(--team-color) 55%, rgba(255, 255, 255, 0.08));
   background: rgba(22, 22, 22, 0.74);
   box-shadow:
     0 22px 48px rgba(0, 0, 0, 0.3),
@@ -88,6 +101,7 @@ flex-direction: column;
   transform-origin: center 12%;
   filter: saturate(1.04);
 }
+
 .cardPhotoGradient {
   position: absolute;
   bottom: 0;
@@ -131,11 +145,9 @@ flex-direction: column;
 .cardOverlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(8, 8, 8, 0.92),
-    rgba(10, 10, 10, 0.78)
-  );
+  background: linear-gradient(to top,
+      rgba(8, 8, 8, 0.92),
+      rgba(10, 10, 10, 0.78));
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
 
@@ -149,28 +161,44 @@ flex-direction: column;
   transition: opacity 0.22s ease;
   z-index: 4;
 }
-.card:hover .cardOverlay { opacity: 1; }
+
+.card:hover .cardOverlay {
+  opacity: 1;
+}
 
 .overlayStats {
   display: flex;
   gap: 1.35rem;
 }
+
 .overlayStat {
-  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
+
 .overlayStatVal {
   font-family: var(--head);
   font-size: 1.45rem;
   font-weight: 900;
   line-height: 1;
 }
+
 .overlayStatLabel {
-  font-family: var(--mono); font-size: 8px; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--grey);
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey);
 }
+
 .overlayHint {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--grey);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey);
 }
 
 /* card body */
@@ -182,12 +210,14 @@ flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
 }
+
 .cardNameRow {
   display: grid;
   grid-template-columns: 14px 1fr;
   align-items: center;
   column-gap: 7px;
 }
+
 .cardFlag {
   width: 16px;
   height: 12px;
@@ -195,6 +225,7 @@ flex-direction: column;
   border-radius: 2px;
   margin-top: 1px;
 }
+
 .cardName {
   font-family: var(--head);
   font-size: 0.82rem;
@@ -208,6 +239,7 @@ flex-direction: column;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .cardTeam {
   font-family: var(--mono);
   font-size: 10px;

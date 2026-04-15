@@ -18,32 +18,56 @@
 /* loader */
 .loader {
   height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
 }
+
 .loaderBar {
-  height: 2px; background: var(--accent);
+  height: 2px;
+  background: var(--accent);
   box-shadow: 0 0 12px var(--accent);
   border-radius: 2px;
 }
+
 .loaderText {
-  font-family: var(--mono); font-size: 11px;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
 }
 
 /* dot nav */
 .dotNav {
-  position: fixed; right: 2rem; top: 50%;
+  position: fixed;
+  right: 2rem;
+  top: 50%;
   transform: translateY(-50%);
   z-index: 100;
-  display: flex; flex-direction: column; gap: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
 }
+
 .dot {
-  width: 8px; height: 8px; border-radius: 50%;
-  background: var(--grey2); border: none; cursor: pointer;
-  transition: all 0.3s ease; padding: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--grey2);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
 }
-.dot:hover { background: var(--grey); transform: scale(1.3); }
+
+.dot:hover {
+  background: var(--grey);
+  transform: scale(1.3);
+}
+
 .dotActive {
   background: var(--accent);
   box-shadow: 0 0 8px var(--accent);
@@ -52,34 +76,60 @@
 
 /* hero */
 .heroGlow {
-  background: radial-gradient(
-    ellipse 60% 50% at 50% 60%,
-    rgba(193, 18, 31, 0.08), /* use new red */
-    transparent 70%
-  );
+  background: radial-gradient(ellipse 60% 50% at 50% 60%,
+      rgba(193, 18, 31, 0.08),
+      /* use new red */
+      transparent 70%);
 }
+
 .heroContent {
-  display: flex; flex-direction: column;
-  align-items: center; text-align: center; gap: 0.8rem;
-  position: relative; z-index: 1; max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.8rem;
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
 }
-.raceFlag { font-size: 3rem; }
+
+.raceFlag {
+  font-size: 3rem;
+}
+
 .eyebrow {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
-  color: var(--accent); text-transform: uppercase;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
 }
+
 .raceName {
-  font-family: var(--head); font-size: clamp(3rem, 7vw, 6rem);
-  font-weight: 900; letter-spacing: -0.03em; color: var(--white); line-height: 1;
+  font-family: var(--head);
+  font-size: clamp(3rem, 7vw, 6rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--white);
+  line-height: 1;
 }
+
 .circuit {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.15em;
-  color: var(--grey); text-transform: uppercase;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--grey);
+  text-transform: uppercase;
 }
+
 .sessions {
-  display: flex; gap: 0.6rem; flex-wrap: wrap;
-  justify-content: center; margin-top: 0.5rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.5rem;
 }
+
 .session {
   display: flex;
   flex-direction: column;
@@ -109,6 +159,7 @@
     background 0.2s ease,
     box-shadow 0.2s ease;
 }
+
 .session:hover {
   transform: translateY(-3px) scale(1.03);
   border-color: rgba(255, 255, 255, 0.14);
@@ -119,6 +170,7 @@
   z-index: 10;
   position: relative;
 }
+
 .sessionLabel {
   font-size: 10px;
   letter-spacing: 0.15em;
@@ -146,39 +198,82 @@
 
 /* all session types same grey — only race is red */
 .practice {}
+
 .sprintQuali {}
+
 .sprint {}
+
 .quali {}
 
 .race {
-  border-color: rgba(225,6,0,0.3);
-  background: rgba(225,6,0,0.06);
+  border-color: rgba(225, 6, 0, 0.3);
+  background: rgba(225, 6, 0, 0.06);
 }
-.race .sessionLabel { color: var(--accent); }
-.race .sessionTime  { color: var(--accent); }
-.race:hover { border-color: var(--accent); }
 
-.pastSession { opacity: 0.35; }
-.pastSession:hover { opacity: 0.7; }
+.race .sessionLabel {
+  color: var(--accent);
+}
+
+.race .sessionTime {
+  color: var(--accent);
+}
+
+.race:hover {
+  border-color: var(--accent);
+}
+
+.pastSession {
+  opacity: 0.35;
+}
+
+.pastSession:hover {
+  opacity: 0.7;
+}
 
 /* sections */
 .sectionInner {
   width: 100%;
   max-width: 920px;
 }
-.sectionHeader { display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem; }
-.sectionNum { font-family: var(--mono); font-size: 10px; color: var(--accent); letter-spacing: 0.2em; }
-.sectionTitle {
-  font-family: var(--head); font-size: clamp(1.8rem, 3vw, 2.8rem);
-  font-weight: 900; letter-spacing: -0.02em;
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
 }
-.sectionTitle em { font-style: normal; -webkit-text-stroke: 1px var(--accent); color: transparent; }
+
+.sectionNum {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+}
+
+.sectionTitle {
+  font-family: var(--head);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.sectionTitle em {
+  font-style: normal;
+  -webkit-text-stroke: 1px var(--accent);
+  color: transparent;
+}
 
 /* podium */
 .podium {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-  background: var(--line); border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
 }
+
 .podiumCard {
   background: rgba(20, 20, 20, 0.62);
   backdrop-filter: blur(10px);
@@ -201,6 +296,7 @@
     border-color 0.2s ease,
     background 0.2s ease;
 }
+
 .podiumCard:hover {
   background: rgba(28, 28, 28, 0.76);
   border-color: rgba(255, 255, 255, 0.11);
@@ -208,13 +304,46 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.05),
     0 18px 38px rgba(0, 0, 0, 0.3);
 }
-.p1 { border-top: 2px solid gold; }
-.p2 { border-top: 2px solid silver; }
-.p3 { border-top: 2px solid #cd7f32; }
-.podiumPos { font-size: 2.5rem; }
-.podiumDriver { font-family: var(--head); font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; }
-.podiumTeam { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; color: var(--grey); text-transform: uppercase; margin-top: 0.2rem; }
-.podiumTime { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 0.5rem; }
+
+.p1 {
+  border-top: 2px solid gold;
+}
+
+.p2 {
+  border-top: 2px solid silver;
+}
+
+.p3 {
+  border-top: 2px solid #cd7f32;
+}
+
+.podiumPos {
+  font-size: 2.5rem;
+}
+
+.podiumDriver {
+  font-family: var(--head);
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.podiumTeam {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--grey);
+  text-transform: uppercase;
+  margin-top: 0.2rem;
+}
+
+.podiumTime {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  margin-top: 0.5rem;
+}
+
 .podiumHint {
   margin-top: 0.7rem;
   font-family: var(--mono);
@@ -235,10 +364,24 @@
   padding-right: 6px;
   overscroll-behavior: contain;
 }
-.standingsTable::-webkit-scrollbar { width: 6px; }
-.standingsTable::-webkit-scrollbar-track { background: var(--surface2); border-radius: 4px; }
-.standingsTable::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
-.standingsTable::-webkit-scrollbar-thumb:hover { background: var(--white); }
+
+.standingsTable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.standingsTable::-webkit-scrollbar-track {
+  background: var(--surface2);
+  border-radius: 4px;
+}
+
+.standingsTable::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 4px;
+}
+
+.standingsTable::-webkit-scrollbar-thumb:hover {
+  background: var(--white);
+}
 
 .standingsRow {
   display: grid;
@@ -267,9 +410,25 @@
   background: rgba(26, 26, 26, 0.76);
   border-color: rgba(255, 255, 255, 0.1);
 }
-.standingsPos { font-family: var(--mono); font-size: 12px; color: var(--accent); }
-.standingsName { font-size: 14px; font-weight: 500; color: var(--white); }
-.standingsTeam { font-family: var(--mono); font-size: 10px; color: var(--grey); }
+
+.standingsPos {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+}
+
+.standingsName {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white);
+}
+
+.standingsTeam {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--grey);
+}
+
 .standingsBarWrap {
   height: 4px;
   background: rgba(255, 255, 255, 0.06);
@@ -282,19 +441,28 @@
   background: linear-gradient(90deg, var(--accent), rgba(230, 230, 230, 0.92));
   border-radius: 999px;
 }
-.standingsPts { font-family: var(--mono); font-size: 12px; color: var(--white); text-align: right; }
+
+.standingsPts {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--white);
+  text-align: right;
+}
 
 .sprintSession {
-  border-color: rgba(255,165,0,0.4);
-  background: rgba(255,165,0,0.06);
+  border-color: rgba(255, 165, 0, 0.4);
+  background: rgba(255, 165, 0, 0.06);
 }
-.sprintSession span:first-child { color: orange; }
+
+.sprintSession span:first-child {
+  color: orange;
+}
 
 .modalOverlay {
   position: fixed;
   inset: 0;
   z-index: 999;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   display: flex;
@@ -329,15 +497,14 @@
 /* gradient border overlay */
 .modalCard::before {
   content: '';
-  position: absolute; inset: 0;
+  position: absolute;
+  inset: 0;
   border-radius: 16px;
   padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(225,6,0,0.5) 0%,
-    rgba(255,255,255,0.1) 40%,
-    rgba(225,6,0,0.2) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(225, 6, 0, 0.5) 0%,
+      rgba(255, 255, 255, 0.1) 40%,
+      rgba(225, 6, 0, 0.2) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -351,131 +518,181 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(
-    circle at 50% 35%,
-    rgba(193, 18, 31, 0.08) 0%,
-    transparent 55%
-  );
+  background: radial-gradient(circle at 50% 35%,
+      rgba(193, 18, 31, 0.08) 0%,
+      transparent 55%);
 }
 
 /* race type border colours */
 .modalCard.race::before {
-  background: linear-gradient(
-    135deg,
-    rgba(225,6,0,0.7) 0%,
-    rgba(255,255,255,0.1) 50%,
-    rgba(225,6,0,0.3) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(225, 6, 0, 0.7) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(225, 6, 0, 0.3) 100%);
 }
+
 .modalCard.sprint::before {
-  background: linear-gradient(
-    135deg,
-    rgba(255,165,0,0.7) 0%,
-    rgba(255,255,255,0.1) 50%,
-    rgba(255,165,0,0.3) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 165, 0, 0.7) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 165, 0, 0.3) 100%);
 }
+
 .modalCard.quali::before {
-  background: linear-gradient(
-    135deg,
-    rgba(255,220,0,0.7) 0%,
-    rgba(255,255,255,0.1) 50%,
-    rgba(255,220,0,0.3) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 220, 0, 0.7) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 220, 0, 0.3) 100%);
 }
+
 .modalCard.sprintQuali::before {
-  background: linear-gradient(
-    135deg,
-    rgba(255,165,0,0.7) 0%,
-    rgba(255,255,255,0.1) 50%,
-    rgba(255,165,0,0.3) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(255, 165, 0, 0.7) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 165, 0, 0.3) 100%);
 }
 
 .modalClose {
-  position: absolute; top: 1rem; right: 1rem;
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.1);
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 50%;
-  color: var(--grey); font-size: 0.85rem;
-  cursor: pointer; transition: all 0.2s;
-  width: 28px; height: 28px;
-  display: flex; align-items: center; justify-content: center;
+  color: var(--grey);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 2;
 }
+
 .modalClose:hover {
-  background: rgba(225,6,0,0.15);
-  border-color: rgba(225,6,0,0.4);
+  background: rgba(225, 6, 0, 0.15);
+  border-color: rgba(225, 6, 0, 0.4);
   color: var(--white);
 }
 
 .modalEyebrow {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem;
-  position: relative; z-index: 1;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .modalTitle {
-  font-family: var(--head); font-size: 2.5rem;
-  font-weight: 900; text-transform: uppercase;
-  letter-spacing: 0.02em; margin-bottom: 2rem;
-  line-height: 1; position: relative; z-index: 1;
+  font-family: var(--head);
+  font-size: 2.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 2rem;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
   overflow: hidden;
 }
 
 /* shimmer on title */
 .modalTitle::after {
   content: '';
-  position: absolute; top: 0; left: -100%;
-  width: 60%; height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255,255,255,0.15),
-    transparent
-  );
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.15),
+      transparent);
   animation: shimmer 0.8s ease forwards;
 }
+
 @keyframes shimmer {
-  from { left: -60%; }
-  to   { left: 150%; }
+  from {
+    left: -60%;
+  }
+
+  to {
+    left: 150%;
+  }
 }
 
 .modalDetails {
-  display: flex; flex-direction: column; gap: 0.8rem;
-  position: relative; z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  position: relative;
+  z-index: 1;
 }
+
 .modalRow {
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   padding-bottom: 0.8rem;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
-.modalRow:last-child { border-bottom: none; }
+
+.modalRow:last-child {
+  border-bottom: none;
+}
+
 .modalLabel {
-  font-family: var(--mono); font-size: 10px;
-  letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey);
 }
-.modalValue { font-size: 14px; font-weight: 500; color: var(--white); }
+
+.modalValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white);
+}
+
 .modalHint {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--grey2);
-  text-align: center; margin-top: 1.5rem;
-  position: relative; z-index: 1;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--grey2);
+  text-align: center;
+  margin-top: 1.5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .raceFlagImg {
   border-radius: 4px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
-  width: 64px; height: 48px; object-fit: cover;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  width: 64px;
+  height: 48px;
+  object-fit: cover;
 }
 
 .scrollHint {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em;
-  color: var(--grey); text-transform: uppercase; margin-top: 2.5rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--grey);
+  text-transform: uppercase;
+  margin-top: 2.5rem;
 }
 
 @media (max-width: 900px) {
-  .dotNav { display: none; }
+  .dotNav {
+    display: none;
+  }
 
   .fullSection {
     padding: 4.5rem 1rem 1.2rem;
@@ -592,21 +809,38 @@
   .heroContent {
     max-width: 900px;
   }
+
   .standingsWrap {
     max-width: 700px;
     margin: 0 auto;
   }
 }
 
-[data-theme="light"] .countdownNum { color: #18181B; }
-[data-theme="light"] .countdownSep { color: #E11D48; }
-[data-theme="light"] .raceName { color: #18181B; }
-[data-theme="light"] .raceSubtitle { color: #71717A; }
+[data-theme="light"] .countdownNum {
+  color: #18181B;
+}
+
+[data-theme="light"] .countdownSep {
+  color: #E11D48;
+}
+
+[data-theme="light"] .raceName {
+  color: #18181B;
+}
+
+[data-theme="light"] .raceSubtitle {
+  color: #71717A;
+}
+
 [data-theme="light"] .sessionCard {
-  background: rgba(0,0,0,0.04);
-  border-color: rgba(0,0,0,0.08);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
 }
+
 [data-theme="light"] .sessionCard:hover {
-  background: rgba(0,0,0,0.07);
+  background: rgba(0, 0, 0, 0.07);
 }
-[data-theme="light"] .scrollHint { color: #71717A; }
+
+[data-theme="light"] .scrollHint {
+  color: #71717A;
+}

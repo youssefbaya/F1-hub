@@ -160,20 +160,20 @@ function DriverProfile() {
   const seasonsForTable = seasonSummaries.length
     ? seasonSummaries
     : seasons.map((s) => {
-        const st = s.DriverStandings?.[0]
-        return {
-          season: s.season,
-          team: st?.Constructors?.[0]?.name || 'N/A',
-          championshipPosition: st?.position ? Number(st.position) : null,
-          points: st?.points ? Number(st.points) : 0,
-          wins: st?.wins ? Number(st.wins) : 0,
-          podiums: 0,
-          poles: 0,
-          fastestLaps: 0,
-          races: 0,
-          dnfs: 0,
-        }
-      })
+      const st = s.DriverStandings?.[0]
+      return {
+        season: s.season,
+        team: st?.Constructors?.[0]?.name || 'N/A',
+        championshipPosition: st?.position ? Number(st.position) : null,
+        points: st?.points ? Number(st.points) : 0,
+        wins: st?.wins ? Number(st.wins) : 0,
+        podiums: 0,
+        poles: 0,
+        fastestLaps: 0,
+        races: 0,
+        dnfs: 0,
+      }
+    })
 
   const currentDriver = currentStandings.find(d => d.Driver.driverId === driverId)
 
@@ -193,17 +193,17 @@ function DriverProfile() {
       : seasonsForTable.reduce((sum, s) => sum + Number(s.wins || 0), 0)
 
   const championships =
-    typeof data.career?.championships === 'number'
-      ? data.career.championships
+    data?.custom
+      ? (typeof data.career?.championships === 'number' ? data.career.championships : 0)
       : seasonsForTable.filter(s => Number(s.championshipPosition) === 1).length
 
   const totalSeasons = seasonsForTable.length
 
-  const bestFinish = seasonsForTable.length
+  const bestFinish = seasonsForTable.some(s => s.championshipPosition != null)
     ? seasonsForTable.reduce((best, s) => {
-        const pos = parseInt(s.championshipPosition || 99)
-        return pos < best ? pos : best
-      }, 99)
+      const pos = parseInt(s.championshipPosition || 99)
+      return pos < best ? pos : best
+    }, 99)
     : 99
 
   const age = driver.dateOfBirth
@@ -384,10 +384,10 @@ function DriverProfile() {
                 label: 'Date of birth',
                 val: driver.dateOfBirth
                   ? new Date(driver.dateOfBirth).toLocaleDateString('en-GB', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                    })
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })
                   : 'N/A',
               },
               { label: 'Permanent number', val: driver.permanentNumber ? `#${driver.permanentNumber}` : 'N/A' },

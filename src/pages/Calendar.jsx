@@ -5,15 +5,15 @@ import styles from './Calendar.module.css'
 import { useNavigate } from 'react-router-dom'
 
 const COUNTRY_FLAGS = {
-  'Australia':      'au', 'China':          'cn', 'Japan':          'jp',
-  'Bahrain':        'bh', 'Saudi Arabia':   'sa', 'USA':            'us',
-  'United States':  'us', 'Italy':          'it', 'Monaco':         'mc',
-  'Canada':         'ca', 'Spain':          'es', 'Austria':        'at',
-  'UK':             'gb', 'Great Britain':  'gb', 'Hungary':        'hu',
-  'Belgium':        'be', 'Netherlands':    'nl', 'Singapore':      'sg',
-  'Qatar':          'qa', 'Mexico':         'mx', 'Brazil':         'br',
-  'UAE':            'ae', 'Abu Dhabi':      'ae', 'Azerbaijan':     'az',
-  'Las Vegas':      'us', 'Miami':          'us',
+  'Australia': 'au', 'China': 'cn', 'Japan': 'jp',
+  'Bahrain': 'bh', 'Saudi Arabia': 'sa', 'USA': 'us',
+  'United States': 'us', 'Italy': 'it', 'Monaco': 'mc',
+  'Canada': 'ca', 'Spain': 'es', 'Austria': 'at',
+  'UK': 'gb', 'Great Britain': 'gb', 'Hungary': 'hu',
+  'Belgium': 'be', 'Netherlands': 'nl', 'Singapore': 'sg',
+  'Qatar': 'qa', 'Mexico': 'mx', 'Brazil': 'br',
+  'UAE': 'ae', 'Abu Dhabi': 'ae', 'Azerbaijan': 'az',
+  'Las Vegas': 'us', 'Miami': 'us',
 }
 
 function formatLocalTime(date, time) {
@@ -42,7 +42,7 @@ function Calendar() {
         // auto expand next race
         const next = data.find(r => new Date(r.date) >= today)
         if (next) setExpandedRace(next.round)
-      } catch(e) {
+      } catch (e) {
         console.error(e)
       } finally {
         setLoading(false)
@@ -130,11 +130,11 @@ function Calendar() {
           const flagCode = COUNTRY_FLAGS[race.Circuit.Location.country] || 'un'
 
           const sessions = [
-            race.FirstPractice  && { name: 'FP1',        ...formatLocalTime(race.FirstPractice.date,  race.FirstPractice.time),  isRace: false },
+            race.FirstPractice && { name: 'FP1', ...formatLocalTime(race.FirstPractice.date, race.FirstPractice.time), isRace: false },
             race.SecondPractice && { name: race.Sprint ? 'Sprint Quali' : 'FP2', ...formatLocalTime(race.SecondPractice.date, race.SecondPractice.time), isRace: false },
-            race.ThirdPractice  && { name: 'FP3',        ...formatLocalTime(race.ThirdPractice.date,  race.ThirdPractice.time),  isRace: false },
-            race.Sprint         && { name: 'Sprint',     ...formatLocalTime(race.Sprint.date,         race.Sprint.time),         isRace: false },
-            race.Qualifying     && { name: 'Qualifying', ...formatLocalTime(race.Qualifying.date,     race.Qualifying.time),     isRace: false },
+            race.ThirdPractice && { name: 'FP3', ...formatLocalTime(race.ThirdPractice.date, race.ThirdPractice.time), isRace: false },
+            race.Sprint && { name: 'Sprint', ...formatLocalTime(race.Sprint.date, race.Sprint.time), isRace: false },
+            race.Qualifying && { name: 'Qualifying', ...formatLocalTime(race.Qualifying.date, race.Qualifying.time), isRace: false },
             { name: 'Race', ...formatLocalTime(race.date, race.time), isRace: true },
           ].filter(Boolean)
 
@@ -146,12 +146,12 @@ function Calendar() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.04, duration: 0.5 }}
               onClick={() => {
-  if (status === 'completed') {
-    navigate(`/race/${race.season}/${race.round}`)
-  } else {
-    toggleRace(race.round)
-  }
-}}
+                if (status === 'completed') {
+                  navigate(`/race/${race.season}/${race.round}`)
+                } else {
+                  toggleRace(race.round)
+                }
+              }}
             >
               <div className={styles.raceMain}>
                 <div className={styles.raceLeft}>
@@ -184,12 +184,12 @@ function Calendar() {
                 </div>
 
                 <span
-  className={`${styles.expandIcon} ${isExpanded ? styles.expandIconOpen : ''}`}
-  onClick={e => {
-    e.stopPropagation()
-    toggleRace(race.round)
-  }}
->▾</span>
+                  className={`${styles.expandIcon} ${isExpanded ? styles.expandIconOpen : ''}`}
+                  onClick={e => {
+                    e.stopPropagation()
+                    toggleRace(race.round)
+                  }}
+                >▾</span>
               </div>
 
               {/* expanded sessions */}

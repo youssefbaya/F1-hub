@@ -6,24 +6,42 @@
 
 .loader {
   height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
 }
+
 .loaderBar {
-  height: 2px; background: var(--accent);
-  box-shadow: 0 0 12px var(--accent); border-radius: 2px;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  border-radius: 2px;
 }
+
 .loaderText {
-  font-family: var(--mono); font-size: 11px;
-  letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
 }
 
 /* header */
-.header { margin-bottom: 3rem; }
-.eyebrow {
-  font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em;
-  color: var(--accent); text-transform: uppercase; margin-bottom: 0.5rem;
+.header {
+  margin-bottom: 3rem;
 }
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
 .title {
   font-family: var(--head);
   font-size: clamp(2rem, 4vw, 6rem);
@@ -33,6 +51,7 @@
   line-height: 0.9;
   margin-bottom: 2rem;
 }
+
 .title em {
   font-style: italic;
   -webkit-text-stroke: 2px var(--accent);
@@ -40,30 +59,61 @@
 }
 
 /* season progress */
-.seasonProgress { margin-top: 1.5rem; }
+.seasonProgress {
+  margin-top: 1.5rem;
+}
+
 .progressInfo {
-  display: flex; justify-content: space-between; align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 0.6rem;
 }
-.progressLabel { font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--grey); }
-.progressValue { font-family: var(--mono); font-size: 11px; color: var(--white); }
-.progressTrack {
-  height: 4px; background: var(--surface2); border-radius: 2px;
-  position: relative; overflow: visible;
+
+.progressLabel {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey);
 }
+
+.progressValue {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--white);
+}
+
+.progressTrack {
+  height: 4px;
+  background: var(--surface2);
+  border-radius: 2px;
+  position: relative;
+  overflow: visible;
+}
+
 .progressFill {
-  height: 100%; background: var(--accent);
+  height: 100%;
+  background: var(--accent);
   border-radius: 2px;
   box-shadow: 0 0 8px var(--accent);
 }
+
 .progressCar {
-  position: absolute; top: 50%; transform: translate(-50%, -50%);
-  font-size: 1.2rem; pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  pointer-events: none;
   transition: left 1.2s ease;
 }
 
 /* race list */
-.raceList { display: flex; flex-direction: column; gap: 2px; }
+.raceList {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
 
 .raceCard {
   background: var(--surface);
@@ -73,17 +123,30 @@
   transition: all 0.2s;
   overflow: hidden;
 }
-.raceCard:hover { border-color: var(--grey2); background: var(--surface2); }
+
+.raceCard:hover {
+  border-color: var(--grey2);
+  background: var(--surface2);
+}
 
 /* status variants */
-.completed { opacity: 0.55; }
-.completed:hover { opacity: 0.8; }
-.next {
-  border-color: rgba(225,6,0,0.3);
-  background: rgba(225,6,0,0.04);
-  box-shadow: 0 0 20px rgba(225,6,0,0.08);
+.completed {
+  opacity: 0.55;
 }
-.next:hover { border-color: rgba(225,6,0,0.6); }
+
+.completed:hover {
+  opacity: 0.8;
+}
+
+.next {
+  border-color: rgba(225, 6, 0, 0.3);
+  background: rgba(225, 6, 0, 0.04);
+  box-shadow: 0 0 20px rgba(225, 6, 0, 0.08);
+}
+
+.next:hover {
+  border-color: rgba(225, 6, 0, 0.6);
+}
 
 .raceMain {
   display: grid;
@@ -93,12 +156,27 @@
   padding: 1.2rem 1.5rem;
 }
 
-.raceLeft { display: flex; align-items: center; gap: 1rem; }
-.raceRound {
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.15em;
-  color: var(--accent); flex-shrink: 0; min-width: 24px;
+.raceLeft {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
-.raceInfo { display: flex; flex-direction: column; gap: 2px; }
+
+.raceRound {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+  flex-shrink: 0;
+  min-width: 24px;
+}
+
+.raceInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .raceName {
   font-family: var(--head);
   font-size: 1.2rem;
@@ -107,36 +185,92 @@
   text-transform: uppercase;
   color: var(--white);
 }
-.raceCircuit { font-family: var(--mono); font-size: 10px; color: var(--grey); letter-spacing: 0.05em; }
 
-.raceCenter { display: flex; flex-direction: column; gap: 2px; }
-.raceCountry { font-size: 13px; font-weight: 500; color: var(--white); }.raceCenter > div {
-  display: flex; align-items: center; gap: 8px;
+.raceCircuit {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--grey);
+  letter-spacing: 0.05em;
 }
-.raceLocality { font-family: var(--mono); font-size: 10px; color: var(--grey); }
 
-.raceRight { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; }
-.raceDate { font-family: var(--mono); font-size: 11px; color: var(--grey); }
+.raceCenter {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.raceCountry {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--white);
+}
+
+.raceCenter>div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.raceLocality {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--grey);
+}
+
+.raceRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.raceDate {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--grey);
+}
 
 .raceBadge {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
-  text-transform: uppercase; padding: 3px 8px; border-radius: 2px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 2px;
 }
+
 .badge_completed {
   color: var(--accent);
   border-color: var(--accent);
-  background: rgba(225,6,0,0.08);
+  background: rgba(225, 6, 0, 0.08);
 }
-.badge_next { color: var(--accent); background: rgba(225,6,0,0.1); border: 1px solid rgba(225,6,0,0.3); }
-.badge_upcoming { color: var(--grey2); background: transparent; border: 1px solid var(--grey2); }
+
+.badge_next {
+  color: var(--accent);
+  background: rgba(225, 6, 0, 0.1);
+  border: 1px solid rgba(225, 6, 0, 0.3);
+}
+
+.badge_upcoming {
+  color: var(--grey2);
+  background: transparent;
+  border: 1px solid var(--grey2);
+}
 
 .expandIcon {
-  font-size: 1rem; color: var(--grey);
+  font-size: 1rem;
+  color: var(--grey);
   transition: transform 0.3s ease;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 20px;
 }
-.expandIconOpen { transform: rotate(180deg); color: var(--accent); }
+
+.expandIconOpen {
+  transform: rotate(180deg);
+  color: var(--accent);
+}
 
 /* sessions */
 .sessionsInner {
@@ -148,50 +282,114 @@
   padding-top: 1rem;
   margin-top: 0;
 }
+
 .session {
-  display: flex; flex-direction: column; gap: 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
   padding: 0.6rem 0.8rem;
-  background: var(--bg); border: 1px solid var(--line); border-radius: 4px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 4px;
 }
-.sessionRace { border-color: rgba(225,6,0,0.2); background: rgba(225,6,0,0.04); }
+
+.sessionRace {
+  border-color: rgba(225, 6, 0, 0.2);
+  background: rgba(225, 6, 0, 0.04);
+}
+
 .sessionName {
-  font-family: var(--mono); font-size: 9px; letter-spacing: 0.15em;
-  text-transform: uppercase; color: var(--accent);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
 }
-.sessionRace .sessionName { color: var(--accent); }
-.sessionDate { font-size: 12px; font-weight: 500; color: var(--white); }
-.sessionTime { font-family: var(--mono); font-size: 10px; color: var(--grey); }
+
+.sessionRace .sessionName {
+  color: var(--accent);
+}
+
+.sessionDate {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--white);
+}
+
+.sessionTime {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--grey);
+}
 
 @media (max-width: 768px) {
-  .main { padding: 6rem 1.5rem 3rem; }
-  .raceMain { grid-template-columns: 1fr auto; gap: 0.8rem; }
-  .raceCenter { display: none; }
-  .raceRight { align-items: flex-start; }
+  .main {
+    padding: 6rem 1.5rem 3rem;
+  }
+
+  .raceMain {
+    grid-template-columns: 1fr auto;
+    gap: 0.8rem;
+  }
+
+  .raceCenter {
+    display: none;
+  }
+
+  .raceRight {
+    align-items: flex-start;
+  }
 }
 
 .tzNotice {
-  display: flex; align-items: center; gap: 8px;
-  font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
-  color: var(--grey); margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--grey);
+  margin-bottom: 1.5rem;
   padding: 8px 12px;
-  background: var(--surface); border: 1px solid var(--line);
-  border-radius: 4px; width: fit-content;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  width: fit-content;
 }
-.tzIcon { font-size: 12px; }
-.tzNotice strong { color: var(--white); }
+
+.tzIcon {
+  font-size: 12px;
+}
+
+.tzNotice strong {
+  color: var(--white);
+}
 
 .raceFlag {
-  width: 24px; height: 18px; border-radius: 2px;
-  object-fit: cover; flex-shrink: 0;
+  width: 24px;
+  height: 18px;
+  border-radius: 2px;
+  object-fit: cover;
+  flex-shrink: 0;
 }
+
 .raceCenter {
-  display: flex; align-items: center; gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .sessionTimeWrap {
-  display: flex; flex-direction: column; align-items: flex-end; gap: 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
 }
+
 .sessionTz {
-  font-family: var(--mono); font-size: 8px; letter-spacing: 0.1em;
-  color: var(--grey); text-transform: uppercase;
+  font-family: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  color: var(--grey);
+  text-transform: uppercase;
 }

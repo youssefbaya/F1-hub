@@ -6,47 +6,47 @@ import styles from './RaceResult.module.css'
 const BASE = 'https://api.jolpi.ca/ergast/f1'
 
 const TEAM_COLORS = {
-  'McLaren':          '#FF8000',
-  'Red Bull':         '#3671C6',
-  'Red Bull Racing':  '#3671C6',
-  'Ferrari':          '#E8002D',
-  'Mercedes':         '#27F4D2',
-  'Aston Martin':     '#229971',
-  'Alpine':           '#FF87BC',
-  'Alpine F1 Team':   '#FF87BC',
-  'Haas F1 Team':     '#B6BABD',
-  'Haas':             '#B6BABD',
-  'Racing Bulls':     '#6692FF',
-  'RB F1 Team':       '#6692FF',
-  'Williams':         '#64C4FF',
-  'Audi':             '#B20000',
-  'Sauber':           '#52E252',
-  'Cadillac':         '#C8AA6E',
+  'McLaren': '#FF8000',
+  'Red Bull': '#3671C6',
+  'Red Bull Racing': '#3671C6',
+  'Ferrari': '#E8002D',
+  'Mercedes': '#27F4D2',
+  'Aston Martin': '#229971',
+  'Alpine': '#FF87BC',
+  'Alpine F1 Team': '#FF87BC',
+  'Haas F1 Team': '#B6BABD',
+  'Haas': '#B6BABD',
+  'Racing Bulls': '#6692FF',
+  'RB F1 Team': '#6692FF',
+  'Williams': '#64C4FF',
+  'Audi': '#B20000',
+  'Sauber': '#52E252',
+  'Cadillac': '#C8AA6E',
 }
 
 const DRIVER_IMAGES = {
-  'norris':         'lando_norris',
-  'piastri':        'oscar_piastri',
+  'norris': 'lando_norris',
+  'piastri': 'oscar_piastri',
   'max_verstappen': 'max_verstappen',
-  'hadjar':         'isack_hadjar',
-  'leclerc':        'charles_leclerc',
-  'hamilton':       'lewis_hamilton',
-  'russell':        'george_russell',
-  'antonelli':      'andrea_kimi_antonelli',
-  'alonso':         'fernando_alonso',
-  'stroll':         'lance_stroll',
-  'gasly':          'pierre_gasly',
-  'colapinto':      'franco_colapinto',
-  'ocon':           'esteban_ocon',
-  'bearman':        'oliver_bearman',
-  'lawson':         'liam_lawson',
-  'lindblad':       'arvid_lindblad',
-  'albon':          'alexander_albon',
-  'sainz':          'carlos_sainz',
-  'hulkenberg':     'nico_hulkenberg',
-  'bortoleto':      'gabriel_bortoleto',
-  'bottas':         'valtteri_bottas',
-  'perez':          'sergio_perez',
+  'hadjar': 'isack_hadjar',
+  'leclerc': 'charles_leclerc',
+  'hamilton': 'lewis_hamilton',
+  'russell': 'george_russell',
+  'antonelli': 'andrea_kimi_antonelli',
+  'alonso': 'fernando_alonso',
+  'stroll': 'lance_stroll',
+  'gasly': 'pierre_gasly',
+  'colapinto': 'franco_colapinto',
+  'ocon': 'esteban_ocon',
+  'bearman': 'oliver_bearman',
+  'lawson': 'liam_lawson',
+  'lindblad': 'arvid_lindblad',
+  'albon': 'alexander_albon',
+  'sainz': 'carlos_sainz',
+  'hulkenberg': 'nico_hulkenberg',
+  'bortoleto': 'gabriel_bortoleto',
+  'bottas': 'valtteri_bottas',
+  'perez': 'sergio_perez',
 }
 
 function RaceResult() {
@@ -61,7 +61,7 @@ function RaceResult() {
         const res = await fetch(`${BASE}/${season}/${round}/results.json`)
         const data = await res.json()
         setRace(data.MRData?.RaceTable?.Races?.[0])
-      } catch(e) {
+      } catch (e) {
         console.error(e)
       } finally {
         setLoading(false)

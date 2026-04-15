@@ -4,64 +4,64 @@ import styles from './Drivers.module.css'
 import { CURRENT_2026_STANDINGS } from '../services/ergast.js'
 
 const DRIVER_IMAGES = {
-  'norris':         'lando_norris',
-  'piastri':        'oscar_piastri',
+  'norris': 'lando_norris',
+  'piastri': 'oscar_piastri',
   'max_verstappen': 'max_verstappen',
-  'hadjar':         'isack_hadjar',
-  'leclerc':        'charles_leclerc',
-  'hamilton':       'lewis_hamilton',
-  'russell':        'george_russell',
-  'antonelli':      'andrea_kimi_antonelli',
-  'alonso':         'fernando_alonso',
-  'stroll':         'lance_stroll',
-  'gasly':          'pierre_gasly',
-  'colapinto':      'franco_colapinto',
-  'ocon':           'esteban_ocon',
-  'bearman':        'oliver_bearman',
-  'lawson':         'liam_lawson',
-  'lindblad':       'arvid_lindblad',
-  'albon':          'alexander_albon',
-  'sainz':          'carlos_sainz',
-  'hulkenberg':     'nico_hulkenberg',
-  'bortoleto':      'gabriel_bortoleto',
-  'bottas':         'valtteri_bottas',
-  'perez':          'sergio_perez',
+  'hadjar': 'isack_hadjar',
+  'leclerc': 'charles_leclerc',
+  'hamilton': 'lewis_hamilton',
+  'russell': 'george_russell',
+  'antonelli': 'andrea_kimi_antonelli',
+  'alonso': 'fernando_alonso',
+  'stroll': 'lance_stroll',
+  'gasly': 'pierre_gasly',
+  'colapinto': 'franco_colapinto',
+  'ocon': 'esteban_ocon',
+  'bearman': 'oliver_bearman',
+  'lawson': 'liam_lawson',
+  'lindblad': 'arvid_lindblad',
+  'albon': 'alexander_albon',
+  'sainz': 'carlos_sainz',
+  'hulkenberg': 'nico_hulkenberg',
+  'bortoleto': 'gabriel_bortoleto',
+  'bottas': 'valtteri_bottas',
+  'perez': 'sergio_perez',
 }
 
 const DRIVER_FLAGS = {
-  'norris':         'gb', 'piastri':        'au', 'max_verstappen': 'nl',
-  'hadjar':         'fr', 'leclerc':        'mc', 'hamilton':       'gb',
-  'russell':        'gb', 'antonelli':      'it', 'alonso':         'es',
-  'stroll':         'ca', 'gasly':          'fr', 'colapinto':      'ar',
-  'ocon':           'fr', 'bearman':        'gb', 'lawson':         'nz',
-  'lindblad':       'gb', 'albon':          'th', 'sainz':          'es',
-  'hulkenberg':     'de', 'bortoleto':      'br', 'bottas':         'fi',
-  'perez':          'mx',
+  'norris': 'gb', 'piastri': 'au', 'max_verstappen': 'nl',
+  'hadjar': 'fr', 'leclerc': 'mc', 'hamilton': 'gb',
+  'russell': 'gb', 'antonelli': 'it', 'alonso': 'es',
+  'stroll': 'ca', 'gasly': 'fr', 'colapinto': 'ar',
+  'ocon': 'fr', 'bearman': 'gb', 'lawson': 'nz',
+  'lindblad': 'gb', 'albon': 'th', 'sainz': 'es',
+  'hulkenberg': 'de', 'bortoleto': 'br', 'bottas': 'fi',
+  'perez': 'mx',
 }
 
 const DRIVERS = [
-  { id: 'max_verstappen', name: 'Max Verstappen',     code: 'VER', number: 3,  team: 'Red Bull',      color: '#3671C6' },
-  { id: 'hadjar',         name: 'Isack Hadjar',       code: 'HAD', number: 6,  team: 'Red Bull',      color: '#3671C6' },
-  { id: 'norris',         name: 'Lando Norris',      code: 'NOR', number: 1,  team: 'McLaren',       color: '#FF8000' },
-  { id: 'piastri',        name: 'Oscar Piastri',      code: 'PIA', number: 81, team: 'McLaren',       color: '#FF8000' },
-  { id: 'leclerc',        name: 'Charles Leclerc',    code: 'LEC', number: 16, team: 'Ferrari',       color: '#E8002D' },
-  { id: 'hamilton',       name: 'Lewis Hamilton',     code: 'HAM', number: 44, team: 'Ferrari',       color: '#E8002D' },
-  { id: 'russell',        name: 'George Russell',     code: 'RUS', number: 63, team: 'Mercedes',      color: '#27F4D2' },
-  { id: 'antonelli',      name: 'Kimi Antonelli',     code: 'ANT', number: 12, team: 'Mercedes',      color: '#27F4D2' },
-  { id: 'alonso',         name: 'Fernando Alonso',    code: 'ALO', number: 14, team: 'Aston Martin',  color: '#229971' },
-  { id: 'stroll',         name: 'Lance Stroll',       code: 'STR', number: 18, team: 'Aston Martin',  color: '#229971' },
-  { id: 'gasly',          name: 'Pierre Gasly',       code: 'GAS', number: 10, team: 'Alpine',        color: '#FF87BC' },
-  { id: 'colapinto',      name: 'Franco Colapinto',   code: 'COL', number: 43, team: 'Alpine',        color: '#FF87BC' },
-  { id: 'ocon',           name: 'Esteban Ocon',       code: 'OCO', number: 31, team: 'Haas F1 Team',  color: '#B6BABD' },
-  { id: 'bearman',        name: 'Oliver Bearman',     code: 'BEA', number: 87, team: 'Haas F1 Team',  color: '#B6BABD' },
-  { id: 'lawson',         name: 'Liam Lawson',        code: 'LAW', number: 30, team: 'Racing Bulls',  color: '#6692FF' },
-  { id: 'lindblad',       name: 'Arvid Lindblad',     code: 'LIN', number: 41, team: 'Racing Bulls',  color: '#6692FF' },
-  { id: 'albon',          name: 'Alexander Albon',    code: 'ALB', number: 23, team: 'Williams',      color: '#64C4FF' },
-  { id: 'sainz',          name: 'Carlos Sainz',       code: 'SAI', number: 55, team: 'Williams',      color: '#64C4FF' },
-  { id: 'hulkenberg',     name: 'Nico Hülkenberg',    code: 'HUL', number: 27, team: 'Audi',          color: '#B20000' },
-  { id: 'bortoleto',      name: 'Gabriel Bortoleto',  code: 'BOR', number: 5,  team: 'Audi',          color: '#B20000' },
-  { id: 'bottas',         name: 'Valtteri Bottas',    code: 'BOT', number: 77, team: 'Cadillac',      color: '#C8AA6E' },
-  { id: 'perez',          name: 'Sergio Perez',       code: 'PER', number: 11, team: 'Cadillac',      color: '#C8AA6E' },
+  { id: 'max_verstappen', name: 'Max Verstappen', code: 'VER', number: 3, team: 'Red Bull', color: '#3671C6' },
+  { id: 'hadjar', name: 'Isack Hadjar', code: 'HAD', number: 6, team: 'Red Bull', color: '#3671C6' },
+  { id: 'norris', name: 'Lando Norris', code: 'NOR', number: 1, team: 'McLaren', color: '#FF8000' },
+  { id: 'piastri', name: 'Oscar Piastri', code: 'PIA', number: 81, team: 'McLaren', color: '#FF8000' },
+  { id: 'leclerc', name: 'Charles Leclerc', code: 'LEC', number: 16, team: 'Ferrari', color: '#E8002D' },
+  { id: 'hamilton', name: 'Lewis Hamilton', code: 'HAM', number: 44, team: 'Ferrari', color: '#E8002D' },
+  { id: 'russell', name: 'George Russell', code: 'RUS', number: 63, team: 'Mercedes', color: '#27F4D2' },
+  { id: 'antonelli', name: 'Kimi Antonelli', code: 'ANT', number: 12, team: 'Mercedes', color: '#27F4D2' },
+  { id: 'alonso', name: 'Fernando Alonso', code: 'ALO', number: 14, team: 'Aston Martin', color: '#229971' },
+  { id: 'stroll', name: 'Lance Stroll', code: 'STR', number: 18, team: 'Aston Martin', color: '#229971' },
+  { id: 'gasly', name: 'Pierre Gasly', code: 'GAS', number: 10, team: 'Alpine', color: '#FF87BC' },
+  { id: 'colapinto', name: 'Franco Colapinto', code: 'COL', number: 43, team: 'Alpine', color: '#FF87BC' },
+  { id: 'ocon', name: 'Esteban Ocon', code: 'OCO', number: 31, team: 'Haas F1 Team', color: '#B6BABD' },
+  { id: 'bearman', name: 'Oliver Bearman', code: 'BEA', number: 87, team: 'Haas F1 Team', color: '#B6BABD' },
+  { id: 'lawson', name: 'Liam Lawson', code: 'LAW', number: 30, team: 'Racing Bulls', color: '#6692FF' },
+  { id: 'lindblad', name: 'Arvid Lindblad', code: 'LIN', number: 41, team: 'Racing Bulls', color: '#6692FF' },
+  { id: 'albon', name: 'Alexander Albon', code: 'ALB', number: 23, team: 'Williams', color: '#64C4FF' },
+  { id: 'sainz', name: 'Carlos Sainz', code: 'SAI', number: 55, team: 'Williams', color: '#64C4FF' },
+  { id: 'hulkenberg', name: 'Nico Hülkenberg', code: 'HUL', number: 27, team: 'Audi', color: '#B20000' },
+  { id: 'bortoleto', name: 'Gabriel Bortoleto', code: 'BOR', number: 5, team: 'Audi', color: '#B20000' },
+  { id: 'bottas', name: 'Valtteri Bottas', code: 'BOT', number: 77, team: 'Cadillac', color: '#C8AA6E' },
+  { id: 'perez', name: 'Sergio Perez', code: 'PER', number: 11, team: 'Cadillac', color: '#C8AA6E' },
 ]
 
 function DriverCard({ driver, standing }) {
@@ -69,17 +69,17 @@ function DriverCard({ driver, standing }) {
   const flag = DRIVER_FLAGS[driver.id]
 
   const handleMouseMove = (e) => {
-  const card = e.currentTarget
-  const rect = card.getBoundingClientRect()
-  const x = (e.clientX - rect.left) / rect.width - 0.5
-  const y = (e.clientY - rect.top) / rect.height - 0.5
+    const card = e.currentTarget
+    const rect = card.getBoundingClientRect()
+    const x = (e.clientX - rect.left) / rect.width - 0.5
+    const y = (e.clientY - rect.top) / rect.height - 0.5
 
-  card.style.transform = `perspective(700px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg) translateY(-4px) scale(1.015)`
-}
+    card.style.transform = `perspective(700px) rotateY(${x * 7}deg) rotateX(${-y * 7}deg) translateY(-4px) scale(1.015)`
+  }
 
-const handleMouseLeave = (e) => {
-  e.currentTarget.style.transform = 'perspective(700px) rotateY(0deg) rotateX(0deg) translateY(0) scale(1)'
-}
+  const handleMouseLeave = (e) => {
+    e.currentTarget.style.transform = 'perspective(700px) rotateY(0deg) rotateX(0deg) translateY(0) scale(1)'
+  }
 
   return (
     <motion.div

@@ -334,9 +334,8 @@ function Home() {
               return (
                 <div
                   key={i}
-                  className={`${styles.session} ${styles[session.type]} ${
-                    isPast ? styles.pastSession : ''
-                  }`}
+                  className={`${styles.session} ${styles[session.type]} ${isPast ? styles.pastSession : ''
+                    }`}
                   onClick={() => setSelectedSession({ ...session, localDate, localTime })}
                 >
                   <span className={styles.sessionLabel}>{session.label}</span>

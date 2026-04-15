@@ -5,7 +5,9 @@
   z-index: 1;
 }
 
-.header { margin-bottom: 2.5rem; }
+.header {
+  margin-bottom: 2.5rem;
+}
 
 .eyebrow {
   font-family: var(--mono);
@@ -44,12 +46,12 @@
   border: 1px solid var(--line);
   border-left: 4px solid var(--team);
   transition: all 0.3s ease;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .card:hover {
   border-color: var(--team);
-  box-shadow: 0 0 0 1px var(--team), 0 12px 40px rgba(0,0,0,0.5), 0 0 40px color-mix(in srgb, var(--team) 20%, transparent);
+  box-shadow: 0 0 0 1px var(--team), 0 12px 40px rgba(0, 0, 0, 0.5), 0 0 40px color-mix(in srgb, var(--team) 20%, transparent);
   background: var(--surface2);
 }
 
@@ -57,13 +59,16 @@
 .card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0; right: 0;
+  top: 0;
+  left: 0;
+  right: 0;
   height: 120px;
   background: linear-gradient(180deg, color-mix(in srgb, var(--team) 15%, transparent) 0%, transparent 100%);
   pointer-events: none;
   z-index: 0;
   transition: opacity 0.3s ease;
 }
+
 .card:hover::before {
   background: linear-gradient(180deg, color-mix(in srgb, var(--team) 25%, transparent) 0%, transparent 100%);
 }
@@ -104,7 +109,10 @@
   padding: 0;
   transition: opacity 0.2s;
 }
-.driver:hover { opacity: 0.75; }
+
+.driver:hover {
+  opacity: 0.75;
+}
 
 .driverCircle {
   width: 26px;
@@ -132,6 +140,7 @@
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
+
 .driverName strong {
   font-weight: 700;
   color: var(--white);
@@ -147,7 +156,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .logoImg {
@@ -175,7 +184,7 @@
   width: 85%;
   max-height: 105px;
   object-fit: contain;
-  filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6));
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.6));
   transition: transform 0.4s ease;
 }
 
@@ -184,6 +193,11 @@
 }
 
 @media (max-width: 900px) {
-  .main { padding: 5rem 1.5rem 3rem; }
-  .grid { grid-template-columns: 1fr; }
+  .main {
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
 }
