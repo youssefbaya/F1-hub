@@ -4,72 +4,90 @@ import { motion } from 'framer-motion'
 import styles from './DriverProfile.module.css'
 
 const DRIVER_NATIONALITIES = {
-  'max_verstappen': { flag: 'nl', nationality: 'Dutch' },
-  'hadjar':         { flag: 'fr', nationality: 'French' },
-  'leclerc':        { flag: 'mc', nationality: 'Monégasque' },
-  'hamilton':       { flag: 'gb', nationality: 'British' },
-  'russell':        { flag: 'gb', nationality: 'British' },
-  'antonelli':      { flag: 'it', nationality: 'Italian' },
-  'norris':         { flag: 'gb', nationality: 'British' },
-  'piastri':        { flag: 'au', nationality: 'Australian' },
-  'alonso':         { flag: 'es', nationality: 'Spanish' },
-  'stroll':         { flag: 'ca', nationality: 'Canadian' },
-  'gasly':          { flag: 'fr', nationality: 'French' },
-  'colapinto':      { flag: 'ar', nationality: 'Argentine' },
-  'ocon':           { flag: 'fr', nationality: 'French' },
-  'bearman':        { flag: 'gb', nationality: 'British' },
-  'lawson':         { flag: 'nz', nationality: 'New Zealander' },
-  'lindblad':       { flag: 'gb', nationality: 'British' },
-  'albon':          { flag: 'th', nationality: 'Thai' },
-  'sainz':          { flag: 'es', nationality: 'Spanish' },
-  'hulkenberg':     { flag: 'de', nationality: 'German' },
-  'bortoleto':      { flag: 'br', nationality: 'Brazilian' },
-  'bottas':         { flag: 'fi', nationality: 'Finnish' },
-  'perez':          { flag: 'mx', nationality: 'Mexican' },
+  max_verstappen: { flag: 'nl', nationality: 'Dutch' },
+  hadjar: { flag: 'fr', nationality: 'French' },
+  leclerc: { flag: 'mc', nationality: 'Monégasque' },
+  hamilton: { flag: 'gb', nationality: 'British' },
+  russell: { flag: 'gb', nationality: 'British' },
+  antonelli: { flag: 'it', nationality: 'Italian' },
+  norris: { flag: 'gb', nationality: 'British' },
+  piastri: { flag: 'au', nationality: 'Australian' },
+  alonso: { flag: 'es', nationality: 'Spanish' },
+  stroll: { flag: 'ca', nationality: 'Canadian' },
+  gasly: { flag: 'fr', nationality: 'French' },
+  colapinto: { flag: 'ar', nationality: 'Argentine' },
+  ocon: { flag: 'fr', nationality: 'French' },
+  bearman: { flag: 'gb', nationality: 'British' },
+  lawson: { flag: 'nz', nationality: 'New Zealander' },
+  lindblad: { flag: 'gb', nationality: 'British' },
+  albon: { flag: 'th', nationality: 'Thai' },
+  sainz: { flag: 'es', nationality: 'Spanish' },
+  hulkenberg: { flag: 'de', nationality: 'German' },
+  bortoleto: { flag: 'br', nationality: 'Brazilian' },
+  bottas: { flag: 'fi', nationality: 'Finnish' },
+  perez: { flag: 'mx', nationality: 'Mexican' },
+  vettel: { flag: 'de', nationality: 'German' },
+  rosberg: { flag: 'de', nationality: 'German' },
+  raikkonen: { flag: 'fi', nationality: 'Finnish' },
 }
 
 const DRIVER_IMAGES = {
-  'norris':         'lando_norris',
-  'piastri':        'oscar_piastri',
-  'max_verstappen': 'max_verstappen',
-  'hadjar':         'isack_hadjar',
-  'leclerc':        'charles_leclerc',
-  'hamilton':       'lewis_hamilton',
-  'russell':        'george_russell',
-  'antonelli':      'andrea_kimi_antonelli',
-  'alonso':         'fernando_alonso',
-  'stroll':         'lance_stroll',
-  'gasly':          'pierre_gasly',
-  'colapinto':      'franco_colapinto',
-  'ocon':           'esteban_ocon',
-  'bearman':        'oliver_bearman',
-  'lawson':         'liam_lawson',
-  'lindblad':       'arvid_lindblad',
-  'albon':          'alexander_albon',
-  'sainz':          'carlos_sainz',
-  'hulkenberg':     'nico_hulkenberg',
-  'bortoleto':      'gabriel_bortoleto',
-  'bottas':         'valtteri_bottas',
-  'perez':          'sergio_perez',
+  norris: 'lando_norris',
+  piastri: 'oscar_piastri',
+  max_verstappen: 'max_verstappen',
+  hadjar: 'isack_hadjar',
+  leclerc: 'charles_leclerc',
+  hamilton: 'lewis_hamilton',
+  russell: 'george_russell',
+  antonelli: 'andrea_kimi_antonelli',
+  alonso: 'fernando_alonso',
+  stroll: 'lance_stroll',
+  gasly: 'pierre_gasly',
+  colapinto: 'franco_colapinto',
+  ocon: 'esteban_ocon',
+  bearman: 'oliver_bearman',
+  lawson: 'liam_lawson',
+  lindblad: 'arvid_lindblad',
+  albon: 'alexander_albon',
+  sainz: 'carlos_sainz',
+  hulkenberg: 'nico_hulkenberg',
+  bortoleto: 'gabriel_bortoleto',
+  bottas: 'valtteri_bottas',
+  perez: 'sergio_perez',
+  vettel: 'sebastian_vettel',
+  rosberg: 'nico_rosberg',
+  raikkonen: 'kimi_raikkonen',
 }
 
 const TEAM_COLORS = {
-  'McLaren':          '#FF8000',
-  'Red Bull':         '#3671C6',
-  'Red Bull Racing':  '#3671C6',
-  'Ferrari':          '#E8002D',
-  'Mercedes':         '#27F4D2',
-  'Aston Martin':     '#229971',
-  'Alpine':           '#FF87BC',
-  'Alpine F1 Team':   '#FF87BC',
-  'Haas F1 Team':     '#B6BABD',
-  'Haas':             '#B6BABD',
-  'Racing Bulls':     '#6692FF',
-  'RB F1 Team':       '#6692FF',
-  'Williams':         '#64C4FF',
-  'Audi':             '#B20000',
-  'Sauber':           '#52E252',
-  'Cadillac':         '#C8AA6E',
+  McLaren: '#FF8000',
+  'Red Bull': '#3671C6',
+  'Red Bull Racing': '#3671C6',
+  Ferrari: '#E8002D',
+  Mercedes: '#27F4D2',
+  'Aston Martin': '#229971',
+  Alpine: '#FF87BC',
+  'Alpine F1 Team': '#FF87BC',
+  'Haas F1 Team': '#B6BABD',
+  Haas: '#B6BABD',
+  'Racing Bulls': '#6692FF',
+  'RB F1 Team': '#6692FF',
+  Williams: '#64C4FF',
+  Audi: '#B20000',
+  Sauber: '#52E252',
+  Cadillac: '#C8AA6E',
+  Renault: '#FFF500',
+  Lotus: '#C0B000',
+  Brawn: '#D8E600',
+  'BMW Sauber': '#52E252',
+  Toyota: '#D9D9D9',
+  BAR: '#B0B0B0',
+  Benetton: '#2A8F5B',
+  Jordan: '#E8D000',
+  Jaguar: '#0B6B3A',
+  Minardi: '#1F3C88',
+  'Toro Rosso': '#1E5BC6',
+  AlphaTauri: '#4E7C9B',
 }
 
 async function fetchDriverData(driverId) {
@@ -82,16 +100,19 @@ async function fetchDriverData(driverId) {
     if (!driverRes?.driver) return { driver: null, seasons: [], currentStandings: [] }
 
     return {
-      driver:        driverRes.driver,
-      seasons:       driverRes.seasons || [],
-      podiums:       driverRes.podiums || 0,
-      poles:         driverRes.poles || 0,
-      fastestLaps:   driverRes.fastestLaps || 0,
-      racesTotal:    driverRes.racesTotal || 0,
-      dnfs:          driverRes.dnfs || 0,
+      driver: driverRes.driver,
+      seasons: driverRes.seasons || [],
+      seasonSummaries: driverRes.seasonSummaries || [],
+      career: driverRes.career || null,
+      podiums: driverRes.podiums || 0,
+      poles: driverRes.poles || 0,
+      fastestLaps: driverRes.fastestLaps || 0,
+      racesTotal: driverRes.racesTotal || 0,
+      dnfs: driverRes.dnfs || 0,
+      wins: driverRes.wins || 0,
       currentStandings: standingsRes?.standings || [],
     }
-  } catch(e) {
+  } catch (e) {
     return { driver: null, seasons: [], currentStandings: [] }
   }
 }
@@ -112,82 +133,100 @@ function DriverProfile() {
       .finally(() => setLoading(false))
   }, [driverId])
 
-  if (loading) return (
-    <div className={styles.loader}>
-      <motion.div
-        className={styles.loaderBar}
-        initial={{ width: 0 }}
-        animate={{ width: '60vw' }}
-        transition={{ duration: 1.2, ease: 'easeInOut' }}
-      />
-      <p className={styles.loaderText}>Loading driver data...</p>
-    </div>
-  )
+  if (loading) {
+    return (
+      <div className={styles.loader}>
+        <motion.div
+          className={styles.loaderBar}
+          initial={{ width: 0 }}
+          animate={{ width: '60vw' }}
+          transition={{ duration: 1.2, ease: 'easeInOut' }}
+        />
+        <p className={styles.loaderText}>Loading driver data...</p>
+      </div>
+    )
+  }
 
-  if (!data?.driver) return (
-    <div className={styles.loader}>
-      <p className={styles.loaderText}>Driver not found</p>
-    </div>
-  )
+  if (!data?.driver) {
+    return (
+      <div className={styles.loader}>
+        <p className={styles.loaderText}>Driver not found</p>
+      </div>
+    )
+  }
+
+  const { driver, seasons = [], currentStandings = [], seasonSummaries = [] } = data
 
   const seasonsForTable = seasonSummaries.length
-  ? seasonSummaries
-  : seasons.map((s) => {
-      const st = s.DriverStandings?.[0]
+    ? seasonSummaries
+    : seasons.map((s) => {
+        const st = s.DriverStandings?.[0]
+        return {
+          season: s.season,
+          team: st?.Constructors?.[0]?.name || 'N/A',
+          championshipPosition: st?.position ? Number(st.position) : null,
+          points: st?.points ? Number(st.points) : 0,
+          wins: st?.wins ? Number(st.wins) : 0,
+          podiums: 0,
+          poles: 0,
+          fastestLaps: 0,
+          races: 0,
+          dnfs: 0,
+        }
+      })
 
-      return {
-        season: s.season,
-        team: st?.Constructors?.[0]?.name || 'N/A',
-        championshipPosition: st?.position ? Number(st.position) : null,
-        points: st?.points ? Number(st.points) : 0,
-        wins: st?.wins ? Number(st.wins) : 0,
-      }
-    })
   const currentDriver = currentStandings.find(d => d.Driver.driverId === driverId)
+
   const currentTeam =
-  currentDriver?.Constructors?.[0]?.name ||
-  seasonsForTable[seasonsForTable.length - 1]?.team ||
-  seasons[seasons.length - 1]?.DriverStandings?.[0]?.Constructors?.[0]?.name ||
-  'N/A'
+    currentDriver?.Constructors?.[0]?.name ||
+    seasonsForTable[seasonsForTable.length - 1]?.team ||
+    seasons[seasons.length - 1]?.DriverStandings?.[0]?.Constructors?.[0]?.name ||
+    'N/A'
+
   const currentPoints = currentDriver?.points || '0'
   const currentPosition = currentDriver?.position || 'N/A'
   const currentYear = new Date().getFullYear()
+
   const totalWins =
-  typeof data.wins === 'number'
-    ? data.wins
-    : seasonsForTable.reduce((sum, s) => sum + Number(s.wins || 0), 0)
+    typeof data.wins === 'number' && data.wins > 0
+      ? data.wins
+      : seasonsForTable.reduce((sum, s) => sum + Number(s.wins || 0), 0)
 
-const championships =
-  typeof data.career?.championships === 'number'
-    ? data.career.championships
-    : seasonsForTable.filter(s => Number(s.championshipPosition) === 1).length
+  const championships =
+    typeof data.career?.championships === 'number'
+      ? data.career.championships
+      : seasonsForTable.filter(s => Number(s.championshipPosition) === 1).length
 
-const totalSeasons = seasonsForTable.length
+  const totalSeasons = seasonsForTable.length
 
-const bestFinish = seasonsForTable.reduce((best, s) => {
-  const pos = parseInt(s.championshipPosition || 99)
-  return pos < best ? pos : best
-}, 99)
+  const bestFinish = seasonsForTable.length
+    ? seasonsForTable.reduce((best, s) => {
+        const pos = parseInt(s.championshipPosition || 99)
+        return pos < best ? pos : best
+      }, 99)
+    : 99
+
   const age = driver.dateOfBirth
     ? Math.floor((new Date() - new Date(driver.dateOfBirth)) / (365.25 * 24 * 60 * 60 * 1000))
     : null
+
   const teamColor = TEAM_COLORS[currentTeam] || 'var(--accent)'
   const driverInfo = DRIVER_NATIONALITIES[driverId] || {
-  flag: null,
-  nationality: driver.nationality,
-}
+    flag: null,
+    nationality: driver.nationality,
+  }
 
   const stats = [
     { label: 'Championships', value: championships, highlight: championships > 0 },
-    { label: 'Career Wins',   value: totalWins },
-    { label: 'Podiums',       value: data.podiums || '—' },
-    { label: 'Pole Positions',value: data.poles || '—' },
-    { label: 'Fastest Laps',  value: data.fastestLaps || '—' },
-    { label: 'Total Races',   value: data.racesTotal || '—' },
-    { label: 'Seasons',       value: totalSeasons },
-    { label: 'Best Finish',   value: `P${bestFinish}` },
+    { label: 'Career Wins', value: totalWins },
+    { label: 'Podiums', value: data.podiums || '—' },
+    { label: 'Pole Positions', value: data.poles || '—' },
+    { label: 'Fastest Laps', value: data.fastestLaps || '—' },
+    { label: 'Total Races', value: data.racesTotal || '—' },
+    { label: 'Seasons', value: totalSeasons || '—' },
+    { label: 'Best Finish', value: bestFinish === 99 ? '—' : `P${bestFinish}` },
     { label: '2026 Position', value: `P${currentPosition}` },
-    { label: '2026 Points',   value: currentPoints },
+    { label: '2026 Points', value: currentPoints },
   ]
 
   return (
@@ -203,7 +242,10 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
       </motion.button>
 
       <div className={styles.hero} style={{ '--team-color': teamColor }}>
-        <div className={styles.heroBg} style={{ background: `radial-gradient(ellipse 60% 80% at 100% 50%, ${teamColor}18, transparent)` }} />
+        <div
+          className={styles.heroBg}
+          style={{ background: `radial-gradient(ellipse 60% 80% at 100% 50%, ${teamColor}18, transparent)` }}
+        />
 
         <motion.div
           className={styles.heroLeft}
@@ -212,22 +254,32 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
           transition={{ duration: 0.6 }}
         >
           <div className={styles.heroMeta}>
-            {driverInfo && (
-              <img src={`https://flagcdn.com/24x18/${driverInfo.flag}.png`} alt={driverInfo.nationality} className={styles.heroFlag} />
+            {driverInfo?.flag && (
+              <img
+                src={`https://flagcdn.com/24x18/${driverInfo.flag}.png`}
+                alt={driverInfo.nationality}
+                className={styles.heroFlag}
+              />
             )}
-            <span className={styles.eyebrow}>{driverInfo?.nationality || driver.nationality} · {currentTeam}</span>
+            <span className={styles.eyebrow}>
+              {driverInfo?.nationality || driver.nationality} · {currentTeam}
+            </span>
           </div>
 
           <h1 className={styles.driverName}>
             <span className={styles.firstName}>{driver.givenName}</span>
-            <span className={styles.lastName} style={{ color: teamColor }}>{driver.familyName}</span>
+            <span className={styles.lastName} style={{ color: teamColor }}>
+              {driver.familyName}
+            </span>
           </h1>
 
           <div className={styles.driverMeta}>
             {driver.permanentNumber && (
               <div className={styles.metaItem}>
                 <span className={styles.metaLabel}>Number</span>
-                <span className={styles.metaVal} style={{ color: teamColor }}>#{driver.permanentNumber}</span>
+                <span className={styles.metaVal} style={{ color: teamColor }}>
+                  #{driver.permanentNumber}
+                </span>
               </div>
             )}
             {driver.code && (
@@ -246,7 +298,11 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
               <div className={styles.metaItem}>
                 <span className={styles.metaLabel}>Born</span>
                 <span className={styles.metaVal}>
-                  {new Date(driver.dateOfBirth).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
+                  {new Date(driver.dateOfBirth).toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })}
                 </span>
               </div>
             )}
@@ -267,7 +323,9 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
               onError={e => { e.target.style.display = 'none' }}
             />
           </div>
-          <div className={styles.bigNumber} style={{ color: teamColor }}>{driver.permanentNumber}</div>
+          <div className={styles.bigNumber} style={{ color: teamColor }}>
+            {driver.permanentNumber}
+          </div>
         </motion.div>
       </div>
 
@@ -287,7 +345,9 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
             whileHover={{ y: -4, scale: 1.02 }}
             style={s.highlight ? { borderColor: `${teamColor}50`, background: `${teamColor}10` } : {}}
           >
-            <span className={styles.statValue} style={s.highlight ? { color: teamColor } : {}}>{s.value}</span>
+            <span className={styles.statValue} style={s.highlight ? { color: teamColor } : {}}>
+              {s.value}
+            </span>
             <span className={styles.statLabel}>{s.label}</span>
           </motion.div>
         ))}
@@ -318,16 +378,25 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
           <div className={styles.infoCard}>
             <h3 className={styles.infoTitle}>Driver Info</h3>
             {[
-              { label: 'Full name',        val: `${driver.givenName} ${driver.familyName}` },
-              { label: 'Nationality',      val: driverInfo?.nationality || driver.nationality },
-              { label: 'Date of birth',    val: driver.dateOfBirth ? new Date(driver.dateOfBirth).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) : 'N/A' },
-              { label: 'Permanent number', val: `#${driver.permanentNumber}` },
-              { label: 'Current team',     val: currentTeam },
-              { label: '2026 position',    val: `P${currentPosition}` },
-              { label: 'Total races',      val: data.racesTotal || '—' },
-              { label: 'Pole positions',   val: data.poles || '—' },
-              { label: 'Fastest laps',     val: data.fastestLaps || '—' },
-              { label: 'Podiums',          val: data.podiums || '—' },
+              { label: 'Full name', val: `${driver.givenName} ${driver.familyName}` },
+              { label: 'Nationality', val: driverInfo?.nationality || driver.nationality },
+              {
+                label: 'Date of birth',
+                val: driver.dateOfBirth
+                  ? new Date(driver.dateOfBirth).toLocaleDateString('en-GB', {
+                      day: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })
+                  : 'N/A',
+              },
+              { label: 'Permanent number', val: driver.permanentNumber ? `#${driver.permanentNumber}` : 'N/A' },
+              { label: 'Current team', val: currentTeam },
+              { label: '2026 position', val: `P${currentPosition}` },
+              { label: 'Total races', val: data.racesTotal || '—' },
+              { label: 'Pole positions', val: data.poles || '—' },
+              { label: 'Fastest laps', val: data.fastestLaps || '—' },
+              { label: 'Podiums', val: data.podiums || '—' },
             ].map(r => (
               <div key={r.label} className={styles.infoRow}>
                 <span className={styles.infoLabel}>{r.label}</span>
@@ -337,7 +406,13 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
             {driver.url && (
               <div className={styles.infoRow}>
                 <span className={styles.infoLabel}>Wikipedia</span>
-                <a href={driver.url} target="_blank" rel="noreferrer" className={styles.infoLink} style={{ color: teamColor }}>
+                <a
+                  href={driver.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={styles.infoLink}
+                  style={{ color: teamColor }}
+                >
                   View profile →
                 </a>
               </div>
@@ -353,11 +428,15 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
                   <div>
                     <p className={styles.highlightVal}>{championships}x World Champion</p>
                     <p className={styles.highlightSub}>
-                      {seasons.filter(s => s.DriverStandings?.[0]?.position === '1' && parseInt(s.season) < currentYear).map(s => s.season).join(', ')}
+                      {seasonsForTable
+                        .filter(s => Number(s.championshipPosition) === 1 && parseInt(s.season) < currentYear)
+                        .map(s => s.season)
+                        .join(', ')}
                     </p>
                   </div>
                 </div>
               )}
+
               <div className={styles.highlight}>
                 <span className={styles.highlightIcon}>🏁</span>
                 <div>
@@ -365,6 +444,7 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
                   <p className={styles.highlightSub}>Across {totalSeasons} seasons</p>
                 </div>
               </div>
+
               {data.podiums > 0 && (
                 <div className={styles.highlight}>
                   <span className={styles.highlightIcon}>🥇</span>
@@ -374,24 +454,30 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
                   </div>
                 </div>
               )}
-              {seasons.length > 0 && (
+
+              {seasonsForTable.length > 0 && (
                 <div className={styles.highlight}>
                   <span className={styles.highlightIcon}>📅</span>
                   <div>
-                    <p className={styles.highlightVal}>{seasons[0]?.season} — {seasons[seasons.length - 1]?.season}</p>
+                    <p className={styles.highlightVal}>
+                      {seasonsForTable[0]?.season} — {seasonsForTable[seasonsForTable.length - 1]?.season}
+                    </p>
                     <p className={styles.highlightSub}>F1 career span</p>
                   </div>
                 </div>
               )}
-              <div className={styles.highlight}>
-                <span className={styles.highlightIcon}>⭐</span>
-                <div>
-                  <p className={styles.highlightVal}>Best: P{bestFinish} in championship</p>
-                  <p className={styles.highlightSub}>
-                    {seasons.find(s => s.DriverStandings?.[0]?.position === String(bestFinish))?.season}
-                  </p>
+
+              {bestFinish !== 99 && (
+                <div className={styles.highlight}>
+                  <span className={styles.highlightIcon}>⭐</span>
+                  <div>
+                    <p className={styles.highlightVal}>Best: P{bestFinish} in championship</p>
+                    <p className={styles.highlightSub}>
+                      {seasonsForTable.find(s => Number(s.championshipPosition) === bestFinish)?.season || ''}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </motion.div>
@@ -411,47 +497,41 @@ const bestFinish = seasonsForTable.reduce((best, s) => {
               <span>Wins</span>
               <span>Points</span>
             </div>
+
             {[...seasonsForTable].reverse().map((s, i) => {
-  const isChamp =
-    Number(s.championshipPosition) === 1 && parseInt(s.season) < currentYear
+              const isChamp =
+                Number(s.championshipPosition) === 1 && parseInt(s.season) < currentYear
+              const tColor = TEAM_COLORS[s.team] || 'var(--grey2)'
 
-  const tColor = TEAM_COLORS[s.team] || 'var(--grey2)'
+              return (
+                <motion.div
+                  key={s.season}
+                  className={`${styles.seasonRow} ${isChamp ? styles.champRow : ''}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.025 }}
+                  whileHover={{ x: 6 }}
+                  style={isChamp ? { borderLeftColor: teamColor } : {}}
+                >
+                  <span className={styles.seasonYear}>
+                    {s.season}
+                    {isChamp && <span className={styles.champBadge}>🏆</span>}
+                  </span>
 
-  return (
-    <motion.div
-      key={s.season}
-      className={`${styles.seasonRow} ${isChamp ? styles.champRow : ''}`}
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: i * 0.025 }}
-      whileHover={{ x: 6 }}
-      style={isChamp ? { borderLeftColor: teamColor } : {}}
-    >
-      <span className={styles.seasonYear}>
-        {s.season}
-        {isChamp && <span className={styles.champBadge}>🏆</span>}
-      </span>
+                  <span className={styles.seasonTeam}>
+                    <span className={styles.seasonTeamDot} style={{ background: tColor }} />
+                    {s.team || 'N/A'}
+                  </span>
 
-      <span className={styles.seasonTeam}>
-        <span
-          className={styles.seasonTeamDot}
-          style={{ background: tColor }}
-        />
-        {s.team || 'N/A'}
-      </span>
+                  <span className={styles.seasonPos} style={isChamp ? { color: teamColor } : {}}>
+                    P{s.championshipPosition || '?'}
+                  </span>
 
-      <span
-        className={styles.seasonPos}
-        style={isChamp ? { color: teamColor } : {}}
-      >
-        P{s.championshipPosition || '?'}
-      </span>
-
-      <span className={styles.seasonWins}>{s.wins || 0}</span>
-      <span className={styles.seasonPts}>{s.points || 0}</span>
-    </motion.div>
-  )
-})}
+                  <span className={styles.seasonWins}>{s.wins || 0}</span>
+                  <span className={styles.seasonPts}>{s.points || 0}</span>
+                </motion.div>
+              )
+            })}
           </div>
         </motion.div>
       )}
