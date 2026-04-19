@@ -248,19 +248,7 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
   const handleLogoHover = () => {
     setGlitchLogo(true)
     try {
-      const ctx = new (window.AudioContext || window.webkitAudioContext)()
-      const osc = ctx.createOscillator()
-      const gain = ctx.createGain()
-      osc.type = 'sawtooth'
-      osc.frequency.setValueAtTime(80, ctx.currentTime)
-      osc.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.15)
-      osc.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.3)
-      gain.gain.setValueAtTime(0.08, ctx.currentTime)
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35)
-      osc.connect(gain)
-      gain.connect(ctx.destination)
-      osc.start(ctx.currentTime)
-      osc.stop(ctx.currentTime + 0.36)
+    
     } catch (e) { }
     setTimeout(() => setGlitchLogo(false), 400)
   }
@@ -367,12 +355,7 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
             className={styles.logoImg}
             onError={e => e.target.style.display = 'none'}
           />
-          {glitchLogo && (
-            <>
-              <span className={styles.glitchClone1}>F1</span>
-              <span className={styles.glitchClone2}>F1</span>
-            </>
-          )}
+          
         </Link>
 
         {/* nav links — timing tower style */}
