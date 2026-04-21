@@ -64,7 +64,7 @@
   font-family: var(--head);
   font-size: var(--page-title-size);
   font-weight: 700;
-  letter-spacing: var(--page-title-spacing);
+  letter-spacing: -0.04em;
   text-transform: uppercase;
   line-height: 0.9;
   color: var(--white);
@@ -78,13 +78,30 @@
 }
 
 .heroCard {
-  background: rgba(18, 18, 18, 0.62);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0)),
+    rgba(18, 18, 18, 0.62);
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 18px;
-  padding: 1rem;
+  padding: 1.1rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.heroCard:hover {
+  transform: translateY(-3px);
+  border-color: #e47c7c;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0)),
+    rgba(24, 24, 24, 0.78);
 }
 
 .heroLabel {
@@ -97,10 +114,11 @@
 
 .heroValue {
   font-family: var(--head);
-  font-size: 1.1rem;
+  font-size: 1.18rem;
   font-weight: 700;
   color: var(--white);
-  line-height: 1.1;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
 }
 
 .heroMeta {
@@ -111,24 +129,29 @@
 
 .section {
   margin-bottom: 2rem;
-  background: rgba(16, 16, 16, 0.35);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0)),
+    rgba(16, 16, 16, 0.35);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 18px;
-  padding: 1.2rem;
+  border-radius: 22px;
+  padding: 1.3rem;
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
 .sectionTitle {
   font-family: var(--head);
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--accent);
   margin-bottom: 1rem;
-  padding-bottom: 0.7rem;
-  border-bottom: 1px solid rgba(225, 6, 0, 0.35);
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #e47c7c6e;
 }
 
 .table {
@@ -146,7 +169,7 @@
 }
 
 .tableHeader {
-  padding: 0.65rem 1rem;
+  padding: 0.7rem 1rem;
   font-family: var(--mono);
   font-size: 9px;
   letter-spacing: 0.15em;
@@ -155,12 +178,22 @@
 }
 
 .tableRow {
-  padding: 0.85rem 1rem;
+  padding: 0.9rem 1rem;
   background: rgba(24, 24, 24, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.04);
   border-radius: 12px;
   color: var(--white);
   font-family: var(--body);
+  transition:
+    transform 0.16s ease,
+    background 0.16s ease,
+    border-color 0.16s ease;
+}
+
+.tableRow:hover {
+  transform: translateX(4px);
+  background: rgba(30, 30, 30, 0.88);
+  border-color: rgba(255,255,255,0.08);
 }
 
 .raceList {
@@ -174,17 +207,57 @@
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.95rem 1rem;
-  border-radius: 12px;
+  padding: 1rem 1rem;
+  border-radius: 16px;
   background: rgba(24, 24, 24, 0.72);
   border: 1px solid rgba(255, 255, 255, 0.04);
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.raceCard:hover {
+  transform: translateX(4px);
+  background: rgba(30, 30, 30, 0.88);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.raceLeft {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.raceRoundBadge {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  border: 1px solid rgba(225, 6, 0, 0.25);
+  background: rgba(225, 6, 0, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.raceInfo {
+  min-width: 0;
 }
 
 .raceName {
   font-family: var(--head);
-  font-size: 0.95rem;
+  font-size: 0.96rem;
   font-weight: 700;
   color: var(--white);
+  letter-spacing: -0.015em;
+  line-height: 1.1;
 }
 
 .raceMeta {
@@ -193,14 +266,16 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--grey);
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
 .raceWinner {
   font-family: var(--body);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
+  font-weight: 600;
   color: var(--white);
   text-align: right;
+  flex-shrink: 0;
 }
 
 @media (max-width: 900px) {
@@ -241,7 +316,12 @@
     align-items: flex-start;
   }
 
+  .raceLeft {
+    width: 100%;
+  }
+
   .raceWinner {
     text-align: left;
+    padding-left: 54px;
   }
 }

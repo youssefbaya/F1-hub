@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 4rem;
+  padding: 0 2rem;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   background: transparent;
   border-bottom: 1px solid transparent;
@@ -27,6 +27,13 @@
   border: 1px solid rgba(255, 255, 255, 0.06);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   padding: 0 1.5rem;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav.scrolled {
+    background:
+      linear-gradient(180deg, rgba(20, 20, 20, 0.92), rgba(10, 10, 10, 0.9));
+  }
 }
 
 /* hide progress bar and top line */
@@ -1136,4 +1143,3 @@
   color: var(--grey);
   text-transform: uppercase;
 }
-

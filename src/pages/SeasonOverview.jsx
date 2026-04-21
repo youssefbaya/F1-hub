@@ -16,20 +16,41 @@ function SeasonOverview() {
   useEffect(() => {
     async function loadSeason() {
       setLoading(true)
+
       try {
-        const [driversRes, constructorsRes, racesRes] = await Promise.all([
+        const [driversRes, constructorsRes, scheduleRes] = await Promise.all([
           fetch(`${BASE}/${year}/driverStandings.json`).then((r) => r.json()),
           fetch(`${BASE}/${year}/constructorStandings.json`).then((r) => r.json()),
-          fetch(`${BASE}/${year}/results.json?limit=1000`).then((r) => r.json()),
+          fetch(`${BASE}/${year}.json?limit=1500`).then((r) => r.json()),
         ])
 
-        setDriverStandings(
+        const driverStandingsData =
           driversRes?.MRData?.StandingsTable?.StandingsLists?.[0]?.DriverStandings || []
-        )
-        setConstructorStandings(
+
+        const constructorStandingsData =
           constructorsRes?.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings || []
+
+        const schedule =
+          scheduleRes?.MRData?.RaceTable?.Races || []
+
+        // fetch each race winner separately
+        const raceResults = await Promise.all(
+          schedule.map(async (race) => {
+            try {
+              const res = await fetch(`${BASE}/${year}/${race.round}/results.json`)
+              const data = await res.json()
+              const fullRace = data?.MRData?.RaceTable?.Races?.[0]
+
+              return fullRace || race
+            } catch (e) {
+              return race
+            }
+          })
         )
-        setRaces(racesRes?.MRData?.RaceTable?.Races || [])
+
+        setDriverStandings(driverStandingsData)
+        setConstructorStandings(constructorStandingsData)
+        setRaces(raceResults)
       } catch (e) {
         console.error(e)
       } finally {
@@ -61,6 +82,9 @@ function SeasonOverview() {
   }, [races])
 
   const topWinner = winnerCounts[0]
+  const completedRaces = races.filter(
+    (race) => race?.Results?.length && race?.Results?.[0]?.Driver
+  )
 
   if (loading) {
     return (
@@ -112,8 +136,12 @@ function SeasonOverview() {
 
         <div className={styles.heroCard}>
           <span className={styles.heroLabel}>Grand Prix</span>
-          <span className={styles.heroValue}>{races.length}</span>
-          <span className={styles.heroMeta}>Races held</span>
+          <span className={styles.heroValue}>{completedRaces.length}</span>
+          <span className={styles.heroMeta}>
+            {String(year) === String(new Date().getFullYear())
+              ? 'Races completed'
+              : 'Races held'}
+          </span>
         </div>
 
         <div className={styles.heroCard}>
@@ -151,16 +179,24 @@ function SeasonOverview() {
       <div className={styles.section}>
         <h2 className={styles.sectionTitle}>Race Winners</h2>
         <div className={styles.raceList}>
-          {races.map((race) => {
+          {completedRaces.map((race, index) => {
             const winner = race?.Results?.[0]
+
             return (
               <div key={`${race.season}-${race.round}`} className={styles.raceCard}>
-                <div>
-                  <p className={styles.raceName}>{race.raceName}</p>
-                  <p className={styles.raceMeta}>
-                    {race.Circuit?.circuitName} · {race.Circuit?.Location?.country}
-                  </p>
+                <div className={styles.raceLeft}>
+                  <div className={styles.raceRoundBadge}>
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
+
+                  <div className={styles.raceInfo}>
+                    <p className={styles.raceName}>{race.raceName}</p>
+                    <p className={styles.raceMeta}>
+                      {race.Circuit?.circuitName} · {race.Circuit?.Location?.country}
+                    </p>
+                  </div>
                 </div>
+
                 <div className={styles.raceWinner}>
                   {winner
                     ? `${winner.Driver.givenName} ${winner.Driver.familyName}`

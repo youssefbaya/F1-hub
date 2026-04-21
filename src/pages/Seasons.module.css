@@ -68,11 +68,11 @@
 
 .card:hover {
   transform: translateY(-4px);
-  border-color: rgba(225, 6, 0, 0.35);
+  border-color: #e47c7c;
   background: rgba(24, 24, 24, 0.78);
   box-shadow:
     0 20px 44px rgba(0, 0, 0, 0.28),
-    0 0 0 1px rgba(225, 6, 0, 0.12);
+    0 0 0 1px #e47c7c;
 }
 
 .year {
