@@ -15,6 +15,8 @@ import Circuits from './pages/Circuits'
 import Compare from './pages/Compare'
 import RaceResult from './pages/RaceResult'
 import Max from './pages/Max'
+import Seasons from './pages/Seasons'
+import SeasonOverview from './pages/SeasonOverview'
 
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('f1hub-theme') || 'dark')
@@ -57,6 +59,9 @@ function App() {
         <Route path="/compare" element={<Compare />} />
         <Route path="/race/:season/:round" element={<RaceResult />} />
         <Route path="/max" element={<Max />} />
+        <Route path="/season-overview" element={<SeasonOverview />} />
+        <Route path="/seasons" element={<Seasons />} />
+        <Route path="/seasons/:year" element={<SeasonOverview />} />
       </Routes>
     </>
   )

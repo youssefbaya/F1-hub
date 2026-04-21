@@ -1,0 +1,247 @@
+.main {
+  padding: calc(var(--page-header-margin-top) + 2rem) 2rem 3rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.loader {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.loaderBar {
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.loaderText {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding: 0;
+  margin-bottom: 2rem;
+  transition: color 0.2s;
+}
+
+.backBtn:hover {
+  color: var(--accent);
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.55rem;
+}
+
+.title {
+  font-family: var(--head);
+  font-size: var(--page-title-size);
+  font-weight: 700;
+  letter-spacing: var(--page-title-spacing);
+  text-transform: uppercase;
+  line-height: 0.9;
+  color: var(--white);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 2rem;
+}
+
+.heroCard {
+  background: rgba(18, 18, 18, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.heroLabel {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.heroValue {
+  font-family: var(--head);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.1;
+}
+
+.heroMeta {
+  font-family: var(--body);
+  font-size: 0.92rem;
+  color: var(--grey);
+}
+
+.section {
+  margin-bottom: 2rem;
+  background: rgba(16, 16, 16, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 18px;
+  padding: 1.2rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.sectionTitle {
+  font-family: var(--head);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid rgba(225, 6, 0, 0.35);
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tableHeader,
+.tableRow {
+  display: grid;
+  grid-template-columns: 60px 1.4fr 1.1fr 90px 70px;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tableHeader {
+  padding: 0.65rem 1rem;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.tableRow {
+  padding: 0.85rem 1rem;
+  background: rgba(24, 24, 24, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  border-radius: 12px;
+  color: var(--white);
+  font-family: var(--body);
+}
+
+.raceList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.raceCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.95rem 1rem;
+  border-radius: 12px;
+  background: rgba(24, 24, 24, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.raceName {
+  font-family: var(--head);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.raceMeta {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--grey);
+  margin-top: 4px;
+}
+
+.raceWinner {
+  font-family: var(--body);
+  font-size: 0.95rem;
+  color: var(--white);
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  .heroGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .tableHeader,
+  .tableRow {
+    grid-template-columns: 46px 1.2fr 1fr 70px 56px;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: calc(var(--page-header-margin-top) + 1.5rem) 1.25rem 2.5rem;
+  }
+
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .tableHeader,
+  .tableRow {
+    grid-template-columns: 40px 1.3fr 70px;
+  }
+
+  .tableHeader span:nth-child(3),
+  .tableHeader span:nth-child(5),
+  .tableRow span:nth-child(3),
+  .tableRow span:nth-child(5) {
+    display: none;
+  }
+
+  .raceCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .raceWinner {
+    text-align: left;
+  }
+}

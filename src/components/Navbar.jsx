@@ -113,6 +113,8 @@ const ALL_CIRCUITS = [
 
 const ALL_EXTRAS = [
   { id: 'max', name: 'Max Verstappen', sub: 'GT3 · Nürburgring · Records', path: '/max' },
+  { id: 'season-overview', name: 'Season Overview', path: '/season-overview' },
+  { id: 'seasons', name: 'Seasons', path: '/seasons' },
 ]
 
 const NAV_LINKS = [
@@ -248,7 +250,7 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
   const handleLogoHover = () => {
     setGlitchLogo(true)
     try {
-    
+
     } catch (e) { }
     setTimeout(() => setGlitchLogo(false), 400)
   }
@@ -355,7 +357,7 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
             className={styles.logoImg}
             onError={e => e.target.style.display = 'none'}
           />
-          
+
         </Link>
 
         {/* nav links — timing tower style */}
@@ -414,7 +416,8 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
         {/* right side */}
         <div className={styles.navRight}>
           <button className={styles.searchBtn} onClick={onSearchOpen} title="Search (/)">
-            ⌕
+            <span className={styles.searchIcon}>⌕</span>
+            <span className={styles.searchText}>Search drivers, teams...    </span>
           </button>
           <button
             className={styles.themeToggle}
@@ -448,47 +451,69 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
 
       <AnimatePresence>
         {menuOpen && (
-          <motion.div
-            className={styles.mobileMenu}
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
-          >
-            <div className={styles.mobileMenuTop}>
-              <span className={styles.mobileMenuTitle}>Menu</span>
-            </div>
-            <div className={styles.mobileLinks}>
-              {NAV_LINKS.map((l, i) => (
-                <motion.div
-                  key={l.path}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 20 }}
-                  transition={{ delay: i * 0.06 + 0.1 }}
-                >
-                  {l.noLink ? (
-                    <div className={`${styles.mobileLink}`}>
-                      <span className={styles.mobileLinkLabel}>{l.label}</span>
-                      <span className={styles.mobileLinkNum}>{l.num}</span>
-                    </div>
-                  ) : (
-                    <Link
-                      to={l.path}
-                      className={`${styles.mobileLink} ${location.pathname === l.path ? styles.mobileLinkActive : ''}`}
-                      onClick={() => setMenuOpen(false)}
-                    >
-                      <span className={styles.mobileLinkLabel}>{l.label}</span>
-                      <span className={styles.mobileLinkNum}>{l.num}</span>
-                    </Link>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-            <div className={styles.mobileMenuBottom}>
-              <span className={styles.mobileMenuFooter}>F1 HUB · 2026</span>
-            </div>
-          </motion.div>
+          <>
+            <motion.div
+              className={styles.mobileOverlay}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setMenuOpen(false)}
+            />
+
+            <motion.div
+              className={styles.mobileMenu}
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <div className={styles.mobileMenuTop}>
+                <span className={styles.mobileMenuTitle}>Menu</span>
+              </div>
+
+              <div className={styles.mobileLinks}>
+                {NAV_LINKS.map((l, i) => (
+                  <motion.div
+                    key={l.path}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ delay: i * 0.06 + 0.1 }}
+                  >
+                    {l.dropdown === 'extras' ? (
+                      <Link
+                        to="/max"
+                        className={styles.mobileLink}
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <span className={styles.mobileLinkLabel}>{l.label}</span>
+                        <span className={styles.mobileLinkNum}>{l.num}</span>
+                      </Link>
+                    ) : l.noLink ? (
+                      <div className={styles.mobileLink}>
+                        <span className={styles.mobileLinkLabel}>{l.label}</span>
+                        <span className={styles.mobileLinkNum}>{l.num}</span>
+                      </div>
+                    ) : (
+                      <Link
+                        to={l.path}
+                        className={`${styles.mobileLink} ${location.pathname === l.path ? styles.mobileLinkActive : ''}`}
+                        onClick={() => setMenuOpen(false)}
+                      >
+                        <span className={styles.mobileLinkLabel}>{l.label}</span>
+                        <span className={styles.mobileLinkNum}>{l.num}</span>
+                      </Link>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className={styles.mobileMenuBottom}>
+                <span className={styles.mobileMenuFooter}>F1 HUB · 2026</span>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </>
