@@ -17,6 +17,8 @@ import RaceResult from './pages/RaceResult'
 import Max from './pages/Max'
 import Seasons from './pages/Seasons'
 import SeasonOverview from './pages/SeasonOverview'
+import Quiz from './pages/Quiz'
+import QuizDriver from './pages/QuizDriver'
 
 function App() {
   const [theme, setTheme] = useState(() => localStorage.getItem('f1hub-theme') || 'dark')
@@ -62,6 +64,8 @@ function App() {
         <Route path="/season-overview" element={<SeasonOverview />} />
         <Route path="/seasons" element={<Seasons />} />
         <Route path="/seasons/:year" element={<SeasonOverview />} />
+        <Route path="/quiz" element={<Quiz />} />
+        <Route path="/quiz/driver" element={<QuizDriver />} />
       </Routes>
     </>
   )

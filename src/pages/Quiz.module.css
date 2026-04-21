@@ -1,0 +1,312 @@
+.main {
+  padding: calc(var(--page-header-margin-top) + 2rem) 2rem 3rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.backBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding: 0;
+  margin-bottom: 2rem;
+  transition: color 0.2s;
+}
+
+.backBtn:hover {
+  color: var(--accent);
+}
+
+.header {
+  margin-top: var(--page-header-margin-top);
+  margin-bottom: 2rem;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 0.55rem;
+}
+
+.title {
+  font-family: var(--head);
+  font-size: var(--page-title-size);
+  font-weight: 700;
+  letter-spacing: var(--page-title-spacing);
+  text-transform: uppercase;
+  line-height: 0.9;
+  color: var(--white);
+  margin-bottom: 0.7rem;
+}
+
+.subTitle {
+  max-width: 700px;
+  font-family: var(--body);
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: var(--grey);
+}
+
+.modeGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.modeCard {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+  background: rgba(18, 18, 18, 0.62);
+  padding: 1.25rem;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
+  box-shadow:
+    0 14px 34px rgba(0, 0, 0, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.modeCard:hover {
+  transform: translateY(-4px);
+  border-color: rgba(225, 6, 0, 0.35);
+  background: rgba(24, 24, 24, 0.78);
+  box-shadow:
+    0 20px 44px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(225, 6, 0, 0.12);
+}
+
+.modeLabel {
+  display: block;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.modeTitle {
+  display: block;
+  font-family: var(--head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.45rem;
+}
+
+.modeMeta {
+  display: block;
+  font-family: var(--body);
+  font-size: 0.95rem;
+  color: var(--grey);
+  line-height: 1.45;
+}
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 1.4rem;
+}
+
+.statCard {
+  background: rgba(18, 18, 18, 0.62);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.statLabel {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.statValue {
+  font-family: var(--head);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1;
+}
+
+.quizCard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.cluesCard,
+.answersCard {
+  background: rgba(16, 16, 16, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 1.2rem;
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.sectionTitle {
+  font-family: var(--head);
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(225, 6, 0, 0.35);
+}
+
+.clueList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.clueRow {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0.85rem 0.95rem;
+  border-radius: 12px;
+  background: rgba(24, 24, 24, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.clueLabel {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.clueValue {
+  font-family: var(--body);
+  font-size: 0.98rem;
+  color: var(--white);
+  line-height: 1.4;
+}
+
+.answersGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.answerBtn {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  background: rgba(24, 24, 24, 0.72);
+  color: var(--white);
+  padding: 1rem;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--body);
+  font-size: 0.98rem;
+  font-weight: 600;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.answerBtn:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(30, 30, 30, 0.88);
+}
+
+.answerCorrect {
+  border-color: rgba(0, 200, 120, 0.45);
+  background: rgba(0, 200, 120, 0.12);
+}
+
+.answerWrong {
+  border-color: rgba(225, 6, 0, 0.45);
+  background: rgba(225, 6, 0, 0.12);
+}
+
+.answerMuted {
+  opacity: 0.65;
+}
+
+.resultBox {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.resultText {
+  font-family: var(--body);
+  font-size: 0.98rem;
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+
+.resultName {
+  font-weight: 700;
+}
+
+.nextBtn {
+  appearance: none;
+  border: 1px solid rgba(225, 6, 0, 0.35);
+  border-radius: 12px;
+  background: rgba(225, 6, 0, 0.12);
+  color: var(--white);
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.nextBtn:hover {
+  transform: translateY(-2px);
+  background: rgba(225, 6, 0, 0.18);
+  border-color: rgba(225, 6, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: calc(var(--page-header-margin-top) + 1.5rem) 1.25rem 2.5rem;
+  }
+
+  .modeGrid,
+  .quizCard,
+  .statsRow,
+  .answersGrid {
+    grid-template-columns: 1fr;
+  }
+}

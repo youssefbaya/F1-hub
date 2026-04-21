@@ -114,6 +114,7 @@ const ALL_CIRCUITS = [
 const ALL_EXTRAS = [
   { id: 'seasons', name: 'Seasons', sub: 'Archive · Past seasons', path: '/seasons' },
   { id: 'max', name: 'Max Verstappen', sub: 'Season overview', path: '/max' },
+  { id: 'quiz_driver', name: 'Guess the Driver', sub: 'Quiz mode', path: '/quiz/driver' },
 ]
 
 const NAV_LINKS = [
