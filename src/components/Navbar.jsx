@@ -112,9 +112,8 @@ const ALL_CIRCUITS = [
 ]
 
 const ALL_EXTRAS = [
-  { id: 'max', name: 'Max Verstappen', sub: 'GT3 · Nürburgring · Records', path: '/max' },
-  { id: 'season-overview', name: 'Season Overview', path: '/season-overview' },
-  { id: 'seasons', name: 'Seasons', path: '/seasons' },
+  { id: 'seasons', name: 'Seasons', sub: 'Archive · Past seasons', path: '/seasons' },
+  { id: 'max', name: 'Max Verstappen', sub: 'Season overview', path: '/max' },
 ]
 
 const NAV_LINKS = [
@@ -126,6 +125,7 @@ const NAV_LINKS = [
   { path: '/teams', label: 'Teams', num: '06', dropdown: 'teams' },
   { path: '/extras', label: 'Extras', num: '07', dropdown: 'extras', noLink: true },
 ]
+
 function DriverCard({ driver }) {
   const color = TEAM_COLORS[driver.team] || '#888'
   return (
@@ -184,6 +184,7 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
   const [openDropdown, setOpenDropdown] = useState(null)
   const [liveSession, setLiveSession] = useState(null)
   const closeTimer = useRef(null)
+  const [mobileExtrasOpen, setMobileExtrasOpen] = useState(false)
 
   useEffect(() => {
     const handleMutation = () => {
@@ -221,6 +222,7 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
   useEffect(() => {
     setOpenDropdown(null)
     setMenuOpen(false)
+    setMobileExtrasOpen(false)
     setScrollProgress(0)
   }, [location.pathname])
 
@@ -482,14 +484,62 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
                     transition={{ delay: i * 0.06 + 0.1 }}
                   >
                     {l.dropdown === 'extras' ? (
-                      <Link
-                        to="/max"
-                        className={styles.mobileLink}
-                        onClick={() => setMenuOpen(false)}
-                      >
-                        <span className={styles.mobileLinkLabel}>{l.label}</span>
-                        <span className={styles.mobileLinkNum}>{l.num}</span>
-                      </Link>
+                      <div className={styles.mobileExtrasBlock}>
+                        <button
+                          type="button"
+                          className={`${styles.mobileLink} ${styles.mobileExpandBtn}`}
+                          onClick={() => setMobileExtrasOpen((s) => !s)}
+                        >
+                          <span className={styles.mobileLinkLabel}>{l.label}</span>
+                          <div className={styles.mobileExpandRight}>
+                            <span className={styles.mobileLinkNum}>{l.num}</span>
+                            <span
+                              className={`${styles.mobileExpandChevron} ${mobileExtrasOpen ? styles.mobileExpandChevronOpen : ''
+                                }`}
+                            >
+                              ›
+                            </span>
+                          </div>
+                        </button>
+
+                        <AnimatePresence>
+                          {mobileExtrasOpen && (
+                            <motion.div
+                              className={styles.mobileSubmenu}
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: 'auto' }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.22, ease: 'easeOut' }}
+                            >
+                              {ALL_EXTRAS.map((extra, extraIndex) => (
+                                <motion.div
+                                  key={extra.id}
+                                  initial={{ opacity: 0, y: 8 }}
+                                  animate={{ opacity: 1, y: 0 }}
+                                  exit={{ opacity: 0, y: 8 }}
+                                  transition={{ delay: extraIndex * 0.04 }}
+                                >
+                                  <Link
+                                    to={extra.path}
+                                    className={styles.mobileSubmenuLink}
+                                    onClick={() => {
+                                      setMenuOpen(false)
+                                      setMobileExtrasOpen(false)
+                                    }}
+                                  >
+                                    <div className={styles.mobileSubmenuText}>
+                                      <span className={styles.mobileSubmenuName}>{extra.name}</span>
+                                      {extra.sub && (
+                                        <span className={styles.mobileSubmenuSub}>{extra.sub}</span>
+                                      )}
+                                    </div>
+                                  </Link>
+                                </motion.div>
+                              ))}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
                     ) : l.noLink ? (
                       <div className={styles.mobileLink}>
                         <span className={styles.mobileLinkLabel}>{l.label}</span>

@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
+  padding: 0 4rem;
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   background: transparent;
   border-bottom: 1px solid transparent;
@@ -1056,3 +1056,84 @@
     display: none;
   }
 }
+
+.mobileExtrasBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobileExpandBtn {
+  width: 100%;
+  appearance: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mobileExpandRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobileExpandChevron {
+  font-size: 0.9rem;
+  color: var(--grey);
+  line-height: 1;
+  transition: transform 0.2s ease, color 0.2s ease;
+  transform: rotate(90deg);
+}
+
+.mobileExpandChevronOpen {
+  transform: rotate(-90deg);
+  color: var(--accent);
+}
+
+.mobileSubmenu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+  padding-left: 0.6rem;
+}
+
+.mobileSubmenuLink {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.mobileSubmenuLink:hover {
+  border-color: var(--accent);
+  background: rgba(225, 6, 0, 0.06);
+}
+
+.mobileSubmenuText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mobileSubmenuName {
+  font-family: var(--head);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--white);
+  letter-spacing: -0.01em;
+}
+
+.mobileSubmenuSub {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--grey);
+  text-transform: uppercase;
+}
+
