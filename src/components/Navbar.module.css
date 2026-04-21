@@ -699,16 +699,18 @@
   flex-direction: column;
   padding: 5rem 1.2rem 2rem;
 
-  background:
-    linear-gradient(180deg, rgba(20, 20, 20, 0.92), rgba(10, 10, 10, 0.96)),
-    radial-gradient(circle at top right, rgba(225, 6, 0, 0.12), transparent 40%);
-  backdrop-filter: blur(5px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  background: rgba(14, 14, 14, 0.92);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
 
   border-left: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
     -12px 0 40px rgba(0, 0, 0, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
 }
 
 .mobileMenuTop {
@@ -728,6 +730,15 @@
   flex-direction: column;
   gap: 8px;
   flex: 1;
+  min-height: 0;
+}
+
+.mobileMenuBottom {
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  border-top: 1px solid var(--line);
+  margin-top: 1rem;
+  flex-shrink: 0;
 }
 
 .mobileLink {
@@ -793,6 +804,19 @@
   letter-spacing: 0.2em;
   color: var(--grey);
   text-transform: uppercase;
+}
+
+.mobileMenu::-webkit-scrollbar {
+  width: 6px;
+}
+
+.mobileMenu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.mobileMenu::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
 }
 
 @media (max-width: 768px) {
@@ -1041,7 +1065,7 @@
   text-transform: uppercase;
   color: var(--white);
   padding: 4px 8px;
-  border: 1px solid rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 4px;
   text-decoration: none;
   transition: all 0.2s ease;
@@ -1050,7 +1074,7 @@
 .oldDriversBtn:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(225,6,0,0.08);
+  background: rgba(225, 6, 0, 0.08);
 }
 
 @media (max-width: 1100px) {
