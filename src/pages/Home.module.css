@@ -169,12 +169,11 @@
 .session:hover {
   transform: translateY(-3px) scale(1.03);
   border-color: rgba(255, 255, 255, 0.14);
-  background: rgba(28, 28, 28, 0.78);
+  background: rgba(28, 28, 28, 0.92);
   box-shadow:
-    0 16px 38px rgba(0, 0, 0, 0.32),
+    0 16px 38px rgba(0, 0, 0, 0.35),
     0 0 18px rgba(255, 156, 162, 0.08);
   z-index: 10;
-  position: relative;
 }
 
 .sessionLabel {
@@ -207,7 +206,10 @@
 
 .sprintQuali {}
 
-.sprint {}
+.sprint {
+  border-color: #e47c7c65;
+  background: #e47c7c21;
+}
 
 .quali {}
 

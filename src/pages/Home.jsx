@@ -160,6 +160,8 @@ function Home() {
   const buildSessions = (race) => {
     if (!race) return []
 
+    const sprintQuali = race.SprintQualifying || race.SprintShootout || null
+
     return [
       race.FirstPractice && {
         label: 'FP1',
@@ -167,30 +169,42 @@ function Home() {
         time: race.FirstPractice.time,
         type: 'practice',
       },
-      race.SecondPractice && {
-        label: race.Sprint ? 'Sprint Quali' : 'FP2',
+
+      !race.Sprint && race.SecondPractice && {
+        label: 'FP2',
         date: race.SecondPractice.date,
         time: race.SecondPractice.time,
-        type: race.Sprint ? 'sprintQuali' : 'practice',
+        type: 'practice',
       },
+
+      sprintQuali && {
+        label: 'Sprint Quali',
+        date: sprintQuali.date,
+        time: sprintQuali.time,
+        type: 'sprintQuali',
+      },
+
       race.Sprint && {
         label: 'Sprint',
         date: race.Sprint.date,
         time: race.Sprint.time,
         type: 'sprint',
       },
+
       race.ThirdPractice && {
         label: 'FP3',
         date: race.ThirdPractice.date,
         time: race.ThirdPractice.time,
         type: 'practice',
       },
+
       race.Qualifying && {
         label: 'Qualifying',
         date: race.Qualifying.date,
         time: race.Qualifying.time,
         type: 'quali',
       },
+
       race.date && {
         label: 'Race',
         date: race.date,
