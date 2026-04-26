@@ -66,14 +66,19 @@ const SEARCH_DATA = [
   { type: 'circuit', id: 'yas_marina', name: 'Yas Marina Circuit', sub: 'Abu Dhabi, UAE', url: '/circuits?track=yas_marina' },
   { type: 'circuit', id: 'nurburgring_nordschleife', name: 'Nürburgring Nordschleife', sub: 'Nürburg, Germany · GT', url: '/circuits?track=nurburgring_nordschleife' },
   { type: 'circuit', id: 'le_mans', name: 'Circuit de la Sarthe', sub: 'Le Mans, France · GT', url: '/circuits?track=le_mans' },
-  // Pages
-  { type: 'page', name: 'Home', sub: 'Page', url: '/' },
-  { type: 'page', name: 'Drivers', sub: 'Page', url: '/drivers' },
-  { type: 'page', name: 'Teams', sub: 'Page', url: '/teams' },
-  { type: 'page', name: 'Calendar', sub: 'Page', url: '/calendar' },
-  { type: 'page', name: 'Circuits', sub: 'Page', url: '/circuits' },
-  { type: 'page', name: 'Compare Drivers', sub: 'Page', url: '/compare' },
-  { type: 'page', name: 'Max Verstappen', sub: 'Special Page · GT3', url: '/max' },
+  // Pages / Extras
+  { type: 'page', id: 'home', name: 'Home', sub: 'Main page', url: '/' },
+  { type: 'page', id: 'drivers', name: 'Drivers', sub: '2026 driver grid', url: '/drivers' },
+  { type: 'page', id: 'old_drivers', name: 'Old Drivers', sub: 'Archive · Former drivers', url: '/drivers/old' },
+  { type: 'page', id: 'teams', name: 'Teams', sub: '2026 constructors', url: '/teams' },
+  { type: 'page', id: 'calendar', name: 'Calendar', sub: 'Race schedule', url: '/calendar' },
+  { type: 'page', id: 'circuits', name: 'Circuits', sub: 'Track archive', url: '/circuits' },
+  { type: 'page', id: 'compare', name: 'Compare Drivers', sub: 'Comparison tool', url: '/compare' },
+  { type: 'page', id: 'seasons', name: 'Seasons', sub: 'Archive · Past seasons', url: '/seasons' },
+  { type: 'page', id: 'season_overview', name: 'Season Overview', sub: 'Championship snapshot', url: '/season-overview' },
+  { type: 'page', id: 'max', name: 'Max Verstappen', sub: 'Special page · GT3', url: '/max' },
+  { type: 'page', id: 'quiz', name: 'Quiz', sub: 'F1 quiz hub', url: '/quiz' },
+  { type: 'page', id: 'guess_driver', name: 'Guess the Driver', sub: 'Quiz mode', url: '/quiz/driver' },
 ]
 
 const TYPE_COLORS = {
@@ -96,11 +101,17 @@ export default function Search({ onClose }) {
   const [selected, setSelected] = useState(0)
   const inputRef = useRef(null)
 
-  const results = query.length < 1 ? [] : SEARCH_DATA.filter(item =>
-    item.name.toLowerCase().includes(query.toLowerCase()) ||
-    item.sub?.toLowerCase().includes(query.toLowerCase()) ||
-    item.id?.toLowerCase().includes(query.toLowerCase())
+  const quickResults = SEARCH_DATA.filter(item =>
+    ['page', 'driver', 'team', 'circuit'].includes(item.type)
   ).slice(0, 8)
+
+  const results = query.length < 1
+    ? quickResults
+    : SEARCH_DATA.filter(item =>
+      item.name.toLowerCase().includes(query.toLowerCase()) ||
+      item.sub?.toLowerCase().includes(query.toLowerCase()) ||
+      item.id?.toLowerCase().includes(query.toLowerCase())
+    ).slice(0, 10)
 
   useEffect(() => { inputRef.current?.focus() }, [])
   useEffect(() => { setSelected(0) }, [query])
@@ -192,11 +203,14 @@ export default function Search({ onClose }) {
         )}
 
         {query.length === 0 && (
-          <div className={styles.hints}>
-            <span className={styles.hint}><kbd>↑↓</kbd> navigate</span>
-            <span className={styles.hint}><kbd>↵</kbd> select</span>
-            <span className={styles.hint}><kbd>ESC</kbd> close</span>
-          </div>
+          <>
+            <p className={styles.quickTitle}>Quick search</p>
+            <div className={styles.hints}>
+              <span className={styles.hint}><kbd>↑↓</kbd> navigate</span>
+              <span className={styles.hint}><kbd>↵</kbd> select</span>
+              <span className={styles.hint}><kbd>ESC</kbd> close</span>
+            </div>
+          </>
         )}
       </motion.div>
     </motion.div>

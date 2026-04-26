@@ -97,15 +97,20 @@
   height: 100%;
   background: var(--accent);
   border-radius: 2px;
-  box-shadow: 0 0 8px var(--accent);
+  box-shadow: 0 0 8px rgba(255, 123, 132, 0.55);
 }
 
 .progressCar {
   position: absolute;
   top: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 1.2rem;
+  transform: translate(-50%, -50%) scaleX(1); /* flip direction if needed */
   pointer-events: none;
+
+  font-size: 1.1rem;
+  color: var(--accent);
+
+  filter: drop-shadow(0 0 6px rgba(255, 123, 132, 0.6));
+
   transition: left 1.2s ease;
 }
 
@@ -140,13 +145,13 @@
 }
 
 .next {
-  border-color: rgba(225, 6, 0, 0.3);
-  background: rgba(225, 6, 0, 0.04);
-  box-shadow: 0 0 20px rgba(225, 6, 0, 0.08);
+  border-color: rgba(255, 123, 132, 0.3);
+  background: rgba(255, 123, 132, 0.04);
+  box-shadow: 0 0 20px rgba(255, 123, 132, 0.08);
 }
 
 .next:hover {
-  border-color: rgba(225, 6, 0, 0.6);
+  border-color: rgba(255, 123, 132, 0.55);
 }
 
 .raceMain {
@@ -243,13 +248,14 @@
 .badge_completed {
   color: var(--accent);
   border-color: var(--accent);
-  background: rgba(225, 6, 0, 0.08);
+  background: rgba(255, 123, 132, 0.08);
 }
+
 
 .badge_next {
   color: var(--accent);
-  background: rgba(225, 6, 0, 0.1);
-  border: 1px solid rgba(225, 6, 0, 0.3);
+  background: rgba(255, 123, 132, 0.1);
+  border: 1px solid rgba(255, 123, 132, 0.3);
 }
 
 .badge_upcoming {
@@ -295,8 +301,8 @@
 }
 
 .sessionRace {
-  border-color: rgba(225, 6, 0, 0.2);
-  background: rgba(225, 6, 0, 0.04);
+  border-color: rgba(255, 123, 132, 0.2);
+  background: rgba(255, 123, 132, 0.04);
 }
 
 .sessionName {

@@ -536,12 +536,14 @@
 
 /* theme toggle */
 .themeToggle {
-  background: none;
-  border: none;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
-  padding: 6px;
-  border-radius: 4px;
-  transition: background 0.2s;
+  padding: 0;
+  border-radius: 8px;
+  transition: background 0.2s, border-color 0.2s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -572,15 +574,20 @@
 }
 
 .livePill {
+  height: 28px;
+  min-width: 92px;
   display: flex;
   align-items: center;
-  gap: 5px;
-  padding: 4px 10px;
-  background: rgba(255, 255, 255, 0.04);
+  justify-content: center;
+  gap: 6px;
+
+  padding: 0 12px;
+  background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 2px;
+  border-radius: 8px;
+
   cursor: default;
-  transition: all 0.2s;
+  transition: all 0.2s ease;
 }
 
 .livePillActive {
@@ -909,16 +916,16 @@
 
 .searchBtn {
   min-width: 180px;
-  height: 30px;
+  height: 28px;
   display: flex;
   align-items: center;
   gap: 10px;
 
   padding: 0 12px;
-  border-radius: 12px;
+  border-radius: 8px;
   cursor: pointer;
 
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.035);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 
@@ -928,8 +935,7 @@
   transition:
     border-color 0.2s ease,
     background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
+    color 0.2s ease;
 }
 
 .searchBtn:hover {

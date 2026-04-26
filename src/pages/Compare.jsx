@@ -225,7 +225,12 @@ function StatBar({ label, val1, val2, color1, color2, format }) {
           initial={{ width: 0 }}
           animate={{ width: `${pct1}%` }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          style={{ background: color1, opacity: d1Wins ? 1 : 0.4 }}
+          style={{
+            background: color1,
+            color: color1,
+            opacity: d1Wins ? 1 : 0.35,
+            boxShadow: d1Wins ? `0 0 14px ${color1}66` : 'none',
+          }}
         />
       </div>
 
@@ -237,7 +242,12 @@ function StatBar({ label, val1, val2, color1, color2, format }) {
           initial={{ width: 0 }}
           animate={{ width: `${pct2}%` }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          style={{ background: color2, opacity: d2Wins ? 1 : 0.4 }}
+          style={{
+            background: color2,
+            color: color2,
+            opacity: d2Wins ? 1 : 0.35,
+            boxShadow: d2Wins ? `0 0 14px ${color2}66` : 'none',
+          }}
         />
         <span className={styles.statVal} style={{ color: d2Wins ? color2 : 'var(--white)' }}>
           {fmt(val2)}
@@ -414,6 +424,17 @@ function YearSelect({ value, onChange, options }) {
   )
 }
 
+function StatGroup({ title, children }) {
+  return (
+    <div className={styles.statGroup}>
+      <div className={styles.statGroupTitle}>{title}</div>
+      <div className={styles.statGroupRows}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
 function Compare() {
   const currentYear = new Date().getFullYear()
   const allYearOptions = Array.from(
@@ -569,57 +590,63 @@ function Compare() {
 
           {view === 'bars' && (
             <div className={styles.statsRows}>
-              <StatBar label="Championships" val1={data1.championships} val2={data2.championships} color1={d1.color} color2={d2.color} />
-              <StatBar label="Wins" val1={data1.wins} val2={data2.wins} color1={d1.color} color2={d2.color} />
-              <StatBar label="Podiums" val1={data1.podiums} val2={data2.podiums} color1={d1.color} color2={d2.color} />
-              <StatBar label="Pole Positions" val1={data1.poles} val2={data2.poles} color1={d1.color} color2={d2.color} />
-              <StatBar label="Fastest Laps" val1={data1.fastestLaps} val2={data2.fastestLaps} color1={d1.color} color2={d2.color} />
-              <StatBar label="Total Races" val1={data1.racesTotal} val2={data2.racesTotal} color1={d1.color} color2={d2.color} />
-              <StatBar label="DNFs" val1={data1.dnfs} val2={data2.dnfs} color1={d1.color} color2={d2.color} />
-              <StatBar
-                label="Win Rate"
-                val1={data1.winRate}
-                val2={data2.winRate}
-                color1={d1.color}
-                color2={d2.color}
-                format={(v) => `${v.toFixed(1)}%`}
-              />
+              <StatGroup title="General">
+                <StatBar label="Championships" val1={data1.championships} val2={data2.championships} color1={d1.color} color2={d2.color} />
+                <StatBar label="Wins" val1={data1.wins} val2={data2.wins} color1={d1.color} color2={d2.color} />
+                <StatBar label="Podiums" val1={data1.podiums} val2={data2.podiums} color1={d1.color} color2={d2.color} />
+              </StatGroup>
 
-              <StatBar
-                label="Podium Rate"
-                val1={data1.podiumRate}
-                val2={data2.podiumRate}
-                color1={d1.color}
-                color2={d2.color}
-                format={(v) => `${v.toFixed(1)}%`}
-              />
-
-              <StatBar
-                label="Pole Rate"
-                val1={data1.poleRate}
-                val2={data2.poleRate}
-                color1={d1.color}
-                color2={d2.color}
-                format={(v) => `${v.toFixed(1)}%`}
-              />
-              <StatBar
-                label={fromYear === toYear ? `${fromYear} Points` : 'Points in Range'}
-                val1={data1.points}
-                val2={data2.points}
-                color1={d1.color}
-                color2={d2.color}
-              />
-
-              {data1.position && data2.position && fromYear <= currentYear && toYear >= currentYear && (
+              <StatGroup title="Performance">
+                <StatBar label="Pole Positions" val1={data1.poles} val2={data2.poles} color1={d1.color} color2={d2.color} />
+                <StatBar label="Fastest Laps" val1={data1.fastestLaps} val2={data2.fastestLaps} color1={d1.color} color2={d2.color} />
                 <StatBar
-                  label="Current Position"
-                  val1={23 - data1.position}
-                  val2={23 - data2.position}
+                  label="Win Rate"
+                  val1={data1.winRate}
+                  val2={data2.winRate}
                   color1={d1.color}
                   color2={d2.color}
-                  format={v => `P${23 - v}`}
+                  format={(v) => `${v.toFixed(1)}%`}
                 />
-              )}
+                <StatBar
+                  label="Podium Rate"
+                  val1={data1.podiumRate}
+                  val2={data2.podiumRate}
+                  color1={d1.color}
+                  color2={d2.color}
+                  format={(v) => `${v.toFixed(1)}%`}
+                />
+                <StatBar
+                  label="Pole Rate"
+                  val1={data1.poleRate}
+                  val2={data2.poleRate}
+                  color1={d1.color}
+                  color2={d2.color}
+                  format={(v) => `${v.toFixed(1)}%`}
+                />
+              </StatGroup>
+
+              <StatGroup title="Career">
+                <StatBar label="Total Races" val1={data1.racesTotal} val2={data2.racesTotal} color1={d1.color} color2={d2.color} />
+                <StatBar label="DNFs" val1={data1.dnfs} val2={data2.dnfs} color1={d1.color} color2={d2.color} />
+                <StatBar
+                  label={fromYear === toYear ? `${fromYear} Points` : 'Points in Range'}
+                  val1={data1.points}
+                  val2={data2.points}
+                  color1={d1.color}
+                  color2={d2.color}
+                />
+
+                {data1.position && data2.position && fromYear <= currentYear && toYear >= currentYear && (
+                  <StatBar
+                    label="Current Position"
+                    val1={23 - data1.position}
+                    val2={23 - data2.position}
+                    color1={d1.color}
+                    color2={d2.color}
+                    format={v => `P${23 - v}`}
+                  />
+                )}
+              </StatGroup>
             </div>
           )}
 

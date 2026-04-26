@@ -1,5 +1,5 @@
 .main {
-  padding: calc(var(--page-header-margin-top) + 2rem) 2rem 3rem;
+  padding: calc(var(--page-header-margin-top) + 4rem) 2rem 3rem;
   max-width: 1100px;
   margin: 0 auto;
   position: relative;

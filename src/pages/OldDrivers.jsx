@@ -14,6 +14,15 @@ function OldDrivers() {
           Champions, icons, and historic names from across Formula 1 history.
         </p>
       </div>
+      <div className={styles.devNotice}>
+        <span className={styles.devNoticeDot} />
+        <div>
+          <p className={styles.devNoticeTitle}>Still in development</p>
+          <p className={styles.devNoticeText}>
+            This archive is being cleaned up and expanded. Some drivers, images, and stats may change.
+          </p>
+        </div>
+      </div>
 
       <div className={styles.grid}>
         {OLD_DRIVERS.map((driver) => (

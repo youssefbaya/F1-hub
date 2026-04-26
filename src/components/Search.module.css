@@ -190,6 +190,15 @@
   padding: 2px 6px;
 }
 
+.quickTitle {
+  margin: 0.75rem 0 0.45rem;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
 /* light mode */
 [data-theme="light"] .modal {
   background: #fff;

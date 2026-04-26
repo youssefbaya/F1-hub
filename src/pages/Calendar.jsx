@@ -129,13 +129,54 @@ function Calendar() {
           const raceDate = new Date(race.date)
           const flagCode = COUNTRY_FLAGS[race.Circuit.Location.country] || 'un'
 
+          const sprintQuali =
+            race.SprintQualifying ||
+            race.SprintShootout ||
+            race.SprintQualification ||
+            null
+
           const sessions = [
-            race.FirstPractice && { name: 'FP1', ...formatLocalTime(race.FirstPractice.date, race.FirstPractice.time), isRace: false },
-            race.SecondPractice && { name: race.Sprint ? 'Sprint Quali' : 'FP2', ...formatLocalTime(race.SecondPractice.date, race.SecondPractice.time), isRace: false },
-            race.ThirdPractice && { name: 'FP3', ...formatLocalTime(race.ThirdPractice.date, race.ThirdPractice.time), isRace: false },
-            race.Sprint && { name: 'Sprint', ...formatLocalTime(race.Sprint.date, race.Sprint.time), isRace: false },
-            race.Qualifying && { name: 'Qualifying', ...formatLocalTime(race.Qualifying.date, race.Qualifying.time), isRace: false },
-            { name: 'Race', ...formatLocalTime(race.date, race.time), isRace: true },
+            race.FirstPractice && {
+              name: 'FP1',
+              ...formatLocalTime(race.FirstPractice.date, race.FirstPractice.time),
+              isRace: false,
+            },
+
+            sprintQuali && {
+              name: 'Sprint Quali',
+              ...formatLocalTime(sprintQuali.date, sprintQuali.time),
+              isRace: false,
+            },
+
+            !sprintQuali && race.SecondPractice && {
+              name: race.Sprint ? 'Sprint Quali' : 'FP2',
+              ...formatLocalTime(race.SecondPractice.date, race.SecondPractice.time),
+              isRace: false,
+            },
+
+            race.ThirdPractice && {
+              name: 'FP3',
+              ...formatLocalTime(race.ThirdPractice.date, race.ThirdPractice.time),
+              isRace: false,
+            },
+
+            race.Sprint && {
+              name: 'Sprint',
+              ...formatLocalTime(race.Sprint.date, race.Sprint.time),
+              isRace: false,
+            },
+
+            race.Qualifying && {
+              name: 'Qualifying',
+              ...formatLocalTime(race.Qualifying.date, race.Qualifying.time),
+              isRace: false,
+            },
+
+            {
+              name: 'Race',
+              ...formatLocalTime(race.date, race.time),
+              isRace: true,
+            },
           ].filter(Boolean)
 
           return (
@@ -179,7 +220,7 @@ function Calendar() {
                     {raceDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </span>
                   <span className={`${styles.raceBadge} ${styles[`badge_${status}`]}`}>
-                    {status === 'completed' ? '✓ Done' : status === 'next' ? '⚡ Next' : 'Upcoming'}
+                    {status === 'completed' ? '✓ Done' : status === 'next' ? 'Next' : 'Upcoming'}
                   </span>
                 </div>
 
