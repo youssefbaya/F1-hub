@@ -113,6 +113,7 @@ const ALL_CIRCUITS = [
 
 const ALL_EXTRAS = [
   { id: 'seasons', name: 'Seasons', sub: 'Archive · Past seasons', path: '/seasons' },
+  { id: 'old_drivers', name: 'Old Drivers', sub: 'Archive · Former grid', path: '/drivers/old' },
   { id: 'max', name: 'Max Verstappen', sub: 'Season overview', path: '/max' },
   { id: 'quiz_driver', name: 'Guess the Driver', sub: 'Quiz mode', path: '/quiz/driver' },
 ]
@@ -228,6 +229,17 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
   }, [location.pathname])
 
   useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [menuOpen])
+  useEffect(() => {
     async function checkLive() {
       try {
         const res = await fetch('https://api.openf1.org/v1/sessions?session_key=latest')
@@ -277,7 +289,6 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
           <span>2026 Drivers</span>
           <div className={styles.dropdownHeaderRight}>
             <Link to="/drivers" className={styles.dropdownViewAll}>View all →</Link>
-            <Link to="/drivers/old" className={styles.oldDriversBtn}>Old Drivers</Link>
           </div>
         </div>
         <div className={styles.driverGrid}>
@@ -326,6 +337,7 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
             <Link key={e.id} to={e.path} className={styles.extrasItem}>
               <div>
                 <span className={styles.extrasName}>{e.name}</span>
+                {e.sub && <span className={styles.extrasSub}>{e.sub}</span>}
 
               </div>
             </Link>
