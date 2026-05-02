@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import styles from './Navbar.module.css'
+import { getCurrentSeason } from '../services/ergast'
 
 const TEAM_COLORS = {
   'McLaren': '#FF8000',
@@ -241,50 +242,66 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
     }
   }, [menuOpen])
   useEffect(() => {
+    const getDuration = (name = '') => {
+      const n = name.toLowerCase()
+      if (n.includes('race') && !n.includes('sprint')) return 150
+      if (n.includes('sprint') && !n.includes('quali')) return 75
+      if (n.includes('quali')) return 90
+      if (n.includes('practice') || n.includes('fp')) return 90
+      return 90
+    }
+
+    const getSessions = (race) => {
+      const sprintQuali =
+        race.SprintQualifying ||
+        race.SprintShootout ||
+        race.SprintQualification ||
+        null
+
+      return [
+        race.FirstPractice && { name: 'FP1', date: race.FirstPractice.date, time: race.FirstPractice.time },
+        sprintQuali && { name: 'Sprint Quali', date: sprintQuali.date, time: sprintQuali.time },
+        !sprintQuali && race.SecondPractice && {
+          name: race.Sprint ? 'Sprint Quali' : 'FP2',
+          date: race.SecondPractice.date,
+          time: race.SecondPractice.time,
+        },
+        race.ThirdPractice && { name: 'FP3', date: race.ThirdPractice.date, time: race.ThirdPractice.time },
+        race.Sprint && { name: 'Sprint', date: race.Sprint.date, time: race.Sprint.time },
+        race.Qualifying && { name: 'Qualifying', date: race.Qualifying.date, time: race.Qualifying.time },
+        race.date && { name: 'Race', date: race.date, time: race.time },
+      ].filter(Boolean)
+    }
+
     async function checkLive() {
       try {
-        const year = new Date().getFullYear()
-        const res = await fetch(`https://api.openf1.org/v1/sessions?year=${year}`)
-
-        if (!res.ok) {
-          setLiveSession(null)
-          setNextSession(null)
-          return
-        }
-
-        const sessions = await res.json()
+        const races = await getCurrentSeason()
         const now = new Date()
         const soonWindow = 90 * 60 * 1000
 
-        const getSessionDuration = (sessionName = '') => {
-          const name = sessionName.toLowerCase()
+        const allSessions = races.flatMap((race) =>
+          getSessions(race).map((session) => ({
+            ...session,
+            raceName: race.raceName,
+          }))
+        )
 
-          if (name.includes('race') && !name.includes('sprint')) return 150
-          if (name.includes('sprint') && !name.includes('qual')) return 75
-          if (name.includes('qual')) return 90
-          if (name.includes('practice')) return 90
+        const live = allSessions.find((session) => {
+          if (!session.date || !session.time) return false
 
-          return 90
-        }
-
-        const live = sessions.find((session) => {
-          if (!session.date_start) return false
-
-          const start = new Date(session.date_start)
-
-          const end = session.date_end
-            ? new Date(session.date_end)
-            : new Date(start.getTime() + getSessionDuration(session.session_name) * 60 * 1000)
+          const start = new Date(`${session.date}T${session.time}`)
+          const end = new Date(start.getTime() + getDuration(session.name) * 60 * 1000)
 
           return now >= start && now <= end
         })
 
-        const soon = sessions
+        const soon = allSessions
           .filter((session) => {
-            const start = new Date(session.date_start)
-            return session.date_start && start > now && start - now <= soonWindow
+            if (!session.date || !session.time) return false
+            const start = new Date(`${session.date}T${session.time}`)
+            return start > now && start - now <= soonWindow
           })
-          .sort((a, b) => new Date(a.date_start) - new Date(b.date_start))[0]
+          .sort((a, b) => new Date(`${a.date}T${a.time}`) - new Date(`${b.date}T${b.time}`))[0]
 
         setLiveSession(live || null)
         setNextSession(!live ? soon || null : null)
@@ -496,10 +513,9 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
             </div>
             <div className={styles.liveTooltip}>
               {liveSession
-                ? `🔴 ${liveSession.session_name} — ${liveSession.meeting_name}`
+                ? `Live now: ${liveSession.name} — ${liveSession.raceName}`
                 : nextSession
-                  ? `Starts soon: ${nextSession.session_name}${nextSession.meeting_name ? ` — ${nextSession.meeting_name}` : ''
-                  }`
+                  ? `Starts soon: ${nextSession.name} — ${nextSession.raceName}`
                   : 'No session currently live'
               }
             </div>
