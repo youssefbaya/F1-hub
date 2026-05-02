@@ -475,14 +475,15 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
                   }`}
               />
               <span className={styles.liveLabel}>
-                {liveSession ? '● LIVE' : nextSession ? '◐ SOON' : '○ OFFLINE'}
+                {liveSession ? 'LIVE' : nextSession ? 'SOON' : 'OFFLINE'}
               </span>
             </div>
             <div className={styles.liveTooltip}>
               {liveSession
                 ? `🔴 ${liveSession.session_name} — ${liveSession.meeting_name}`
                 : nextSession
-                  ? `Starts soon: ${nextSession.session_name} — ${nextSession.meeting_name}`
+                  ? `Starts soon: ${nextSession.session_name}${nextSession.meeting_name ? ` — ${nextSession.meeting_name}` : ''
+                  }`
                   : 'No session currently live'
               }
             </div>
