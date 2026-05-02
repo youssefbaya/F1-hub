@@ -242,23 +242,38 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
   useEffect(() => {
     async function checkLive() {
       try {
-        const res = await fetch('https://api.openf1.org/v1/sessions?session_key=latest')
-        if (!res.ok) return
-        const data = await res.json()
-        if (!data.length) return
-        const session = data[0]
-        const now = new Date()
-        const start = new Date(session.date_start)
-        const end = new Date(session.date_end)
-        if (now >= start && now <= end && session.meeting_name) {
-          setLiveSession(session)
-        } else {
+        const year = new Date().getFullYear()
+        const res = await fetch(`https://api.openf1.org/v1/sessions?year=${year}`)
+
+        if (!res.ok) {
           setLiveSession(null)
+          return
         }
-      } catch (e) { }
+
+        const sessions = await res.json()
+        const now = new Date()
+
+        const live = sessions.find((session) => {
+          const start = new Date(session.date_start)
+          const end = new Date(session.date_end)
+
+          return (
+            session.date_start &&
+            session.date_end &&
+            now >= start &&
+            now <= end
+          )
+        })
+
+        setLiveSession(live || null)
+      } catch (e) {
+        setLiveSession(null)
+      }
     }
+
     checkLive()
-    const interval = setInterval(checkLive, 300000)
+    const interval = setInterval(checkLive, 60000)
+
     return () => clearInterval(interval)
   }, [])
 
@@ -446,7 +461,9 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
           <div className={styles.liveWrap}>
             <div className={`${styles.livePill} ${liveSession ? styles.livePillActive : ''}`}>
               <span className={`${styles.liveDot} ${liveSession ? styles.liveDotActive : ''}`} />
-              <span className={styles.liveLabel}>{liveSession ? '● ON AIR' : '○ OFFLINE'}</span>
+              <span className={styles.liveLabel}>
+                {liveSession ? '● LIVE' : '○ OFFLINE'}
+              </span>
             </div>
             <div className={styles.liveTooltip}>
               {liveSession
