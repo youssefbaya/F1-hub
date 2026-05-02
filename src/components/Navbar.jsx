@@ -256,11 +256,27 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
         const now = new Date()
         const soonWindow = 90 * 60 * 1000
 
-        const live = sessions.find((session) => {
-          const start = new Date(session.date_start)
-          const end = new Date(session.date_end)
+        const getSessionDuration = (sessionName = '') => {
+          const name = sessionName.toLowerCase()
 
-          return session.date_start && session.date_end && now >= start && now <= end
+          if (name.includes('race') && !name.includes('sprint')) return 150
+          if (name.includes('sprint') && !name.includes('qual')) return 75
+          if (name.includes('qual')) return 90
+          if (name.includes('practice')) return 90
+
+          return 90
+        }
+
+        const live = sessions.find((session) => {
+          if (!session.date_start) return false
+
+          const start = new Date(session.date_start)
+
+          const end = session.date_end
+            ? new Date(session.date_end)
+            : new Date(start.getTime() + getSessionDuration(session.session_name) * 60 * 1000)
+
+          return now >= start && now <= end
         })
 
         const soon = sessions
