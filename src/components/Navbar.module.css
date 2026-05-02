@@ -704,13 +704,13 @@
   background: rgba(10, 10, 10, 0.86);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-left: 1px solid rgba(255,255,255,0.08);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
   z-index: 150;
 
   display: flex;
   flex-direction: column;
   padding: 5rem 1.2rem 1.4rem;
-  box-shadow: -12px 0 40px rgba(0,0,0,0.45);
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.45);
 
   overflow-y: auto;
   overscroll-behavior: contain;
@@ -1170,4 +1170,18 @@
   letter-spacing: 0.08em;
   color: var(--grey);
   text-transform: uppercase;
+}
+
+.livePillSoon {
+  background: rgba(255, 123, 132, 0.09) !important;
+  border-color: rgba(255, 123, 132, 0.35) !important;
+}
+
+.liveDotSoon {
+  background: var(--accent) !important;
+  box-shadow: 0 0 8px rgba(255, 123, 132, 0.45);
+}
+
+.livePillSoon .liveLabel {
+  color: var(--accent);
 }

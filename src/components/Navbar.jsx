@@ -185,6 +185,7 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
   const [glitchLogo, setGlitchLogo] = useState(false)
   const [openDropdown, setOpenDropdown] = useState(null)
   const [liveSession, setLiveSession] = useState(null)
+  const [nextSession, setNextSession] = useState(null)
   const closeTimer = useRef(null)
   const [mobileExtrasOpen, setMobileExtrasOpen] = useState(false)
 
@@ -247,27 +248,33 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
 
         if (!res.ok) {
           setLiveSession(null)
+          setNextSession(null)
           return
         }
 
         const sessions = await res.json()
         const now = new Date()
+        const soonWindow = 90 * 60 * 1000
 
         const live = sessions.find((session) => {
           const start = new Date(session.date_start)
           const end = new Date(session.date_end)
 
-          return (
-            session.date_start &&
-            session.date_end &&
-            now >= start &&
-            now <= end
-          )
+          return session.date_start && session.date_end && now >= start && now <= end
         })
 
+        const soon = sessions
+          .filter((session) => {
+            const start = new Date(session.date_start)
+            return session.date_start && start > now && start - now <= soonWindow
+          })
+          .sort((a, b) => new Date(a.date_start) - new Date(b.date_start))[0]
+
         setLiveSession(live || null)
+        setNextSession(!live ? soon || null : null)
       } catch (e) {
         setLiveSession(null)
+        setNextSession(null)
       }
     }
 
@@ -459,16 +466,24 @@ function Navbar({ toggleTheme, theme, onSearchOpen }) {
 
           {/* broadcast-style live indicator */}
           <div className={styles.liveWrap}>
-            <div className={`${styles.livePill} ${liveSession ? styles.livePillActive : ''}`}>
-              <span className={`${styles.liveDot} ${liveSession ? styles.liveDotActive : ''}`} />
+            <div
+              className={`${styles.livePill} ${liveSession ? styles.livePillActive : nextSession ? styles.livePillSoon : ''
+                }`}
+            >
+              <span
+                className={`${styles.liveDot} ${liveSession ? styles.liveDotActive : nextSession ? styles.liveDotSoon : ''
+                  }`}
+              />
               <span className={styles.liveLabel}>
-                {liveSession ? '● LIVE' : '○ OFFLINE'}
+                {liveSession ? '● LIVE' : nextSession ? '◐ SOON' : '○ OFFLINE'}
               </span>
             </div>
             <div className={styles.liveTooltip}>
               {liveSession
                 ? `🔴 ${liveSession.session_name} — ${liveSession.meeting_name}`
-                : 'No session currently live'
+                : nextSession
+                  ? `Starts soon: ${nextSession.session_name} — ${nextSession.meeting_name}`
+                  : 'No session currently live'
               }
             </div>
           </div>
